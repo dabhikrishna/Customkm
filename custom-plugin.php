@@ -23,7 +23,8 @@ function custom_page_content()
     ?>
      <div class="wrap">
     <form action ="" method="post" >
-  name   <input type="text" name="name" value="<?php echo get_option('name');?>"/>
+    <?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
+  name   <input type="text" name="name" value="<?php echo esc_attr(get_option('name'));?>"/>
   <input type="submit" name="submit" value="submit"/>
 </form>
 </div>
@@ -34,7 +35,10 @@ function custom_page_content()
 add_action( 'init', 'data_save_table' );
 function data_save_table( )
 {
-    if(isset($_POST['submit']))
+    if ( isset( $_POST['plugin_options_nonce'] ) && wp_verify_nonce( $_POST['plugin_options_nonce'], 'update_plugin_options' ) ) 
+        // Nonce is valid, process the form submission
+   
+    
     {
         $data_to_store = $_POST['name'];
         $key = 'name';
@@ -51,7 +55,7 @@ function fetch_data_shortcode() {
     $saved_data = get_option($key); // Retrieve the saved data
     return $saved_data; // Return the data
 }
-
+/*using Option API*/
 function my_plugin_submenu_page() {
     add_submenu_page(
         'options-general.php', // Parent menu slug
@@ -69,8 +73,8 @@ function my_plugin_submenu_settings_page() {
         <h2>My Plugin Settings</h2>
         <form method="post" action="">
         
-            <label for="my_plugin_option">My Option:</label>
-            <input type="text"  name="my_plugin_option" value="<?php echo esc_attr(get_option('my_plugin_option')); ?>">
+           
+            Add Data <input type="text"  name="my_data" value="<?php echo esc_attr(get_option('my_data')); ?>"/>
             <input type="submit" name="submit" value="submit">
         </form>
     </div>
@@ -83,8 +87,8 @@ function data_save_table2( )
 {
     if(isset($_POST['submit']))
     {
-        $data_to_store1 = $_POST['my_plugin_option'];
-        $keys = 'my_plugin_option';
+        $data_to_store1 = $_POST['my_data'];
+        $keys = 'my_data';
       
         update_option( $keys, $data_to_store1 );
       
@@ -93,65 +97,85 @@ function data_save_table2( )
 }
 add_shortcode('fetch_data_value', 'fetch_data_value_shortcode');
 function fetch_data_value_shortcode() {
-    $key = 'my_plugin_option'; // Specify the key used to save the data
+    $key = 'my_data'; // Specify the key used to save the data
     $saved_data = get_option($key); // Retrieve the saved data
     return $saved_data; // Return the data
 }
 
-/*function custom_settings_menu() {
-    add_options_page( 'Custom Settings', 'Custom Settings', 'manage_options', 'custom-settings', 'custom_settings_page' );
-}
-add_action( 'admin_menu', 'custom_settings_menu' );
+/*done using Option API*/
 
-// Callback function to render the settings page
-function custom_settings_page() {
+
+/*using Settings API*/
+function my_custom_submenu_page() {
+    add_submenu_page(
+        'options-general.php', // Parent menu slug
+        'My Submenu Page', // Page title
+        'My Submenu', // Menu title
+        'manage_options', // Capability required to access
+        'my-custom-submenu', // Menu slug
+        'my_custom_submenu_callback' // Callback function to display content
+    );
+}
+add_action( 'admin_menu', 'my_custom_submenu_page' );
+
+// Callback function to display submenu page content
+function my_custom_submenu_callback() {
     ?>
     <div class="wrap">
-        <h2>Custom Settings</h2>
+        <h2>My Submenu Page</h2>
         <form method="post" action="options.php">
             <?php
-            // Output security fields for the registered setting "custom_settings_group"
-            settings_fields( 'custom_settings_group' );
-            // Output settings sections and their fields
-            do_settings_sections( 'custom-settings' );
-            // Output save settings button
-            submit_button();
+            // Display settings fields
+            settings_fields( 'my-custom-settings-group' );
+            do_settings_sections( 'my-custom-settings-group' );
             ?>
+            <input type="submit" class="button-primary" value="Save Changes">
         </form>
     </div>
     <?php
 }
-function custom_settings_init() {
-    // Register a new setting for "custom-settings" page
-    register_setting( 'custom_settings_group', 'custom_setting_name' );
 
-    // Add a section to the settings page
-    add_settings_section( 'custom_settings_section', 'Custom Settings Section', 'custom_settings_section_callback', 'custom-settings' );
+// Register settings and fields
+function my_custom_settings_init() {
+    register_setting(
+        'my-custom-settings-group', // Option group
+        'my_option_name', // Option name
+        'my_sanitize_callback' // Sanitization callback function
+    );
 
-    // Add a field to the settings section
-    add_settings_field( 'custom_setting_field', 'Custom Setting Field', 'custom_setting_field_callback', 'custom-settings', 'custom_settings_section' );
+    add_settings_section(
+        'my-settings-section', // Section ID
+        'My Settings Section', // Section title
+        'my_settings_section_callback', // Callback function to display section description (optional)
+        'my-custom-settings-group' // Parent page slug
+    );
+
+    add_settings_field(
+        'my-setting-field', // Field ID
+        'My Setting Field', // Field title
+        'my_setting_field_callback', // Callback function to display field input
+        'my-custom-settings-group', // Parent page slug
+        'my-settings-section' // Section ID
+    );
 }
-add_action( 'admin_init', 'custom_settings_init' );
+add_action( 'admin_init', 'my_custom_settings_init' );
 
-// Callback functions to render settings section and fields
-function custom_settings_section_callback() {
-    echo 'This is a section description.';
+// Callback function to display section description (optional)
+function my_settings_section_callback() {
+    echo '<p>This is a description of my settings section.</p>';
 }
 
-function custom_setting_field_callback() {
-    $setting = get_option( 'custom_setting_name' );
-    echo "<input type='text' name='custom_setting_name' value='$setting' />";
+// Callback function to display field input
+function my_setting_field_callback() {
+    $option_value = get_option( 'my_option_name' );
+    ?>
+    <input type="text" name="my_option_name" value="<?php echo esc_attr( $option_value ); ?>">
+    <?php
 }
-add_action( 'init', 'data_save_table1' );
-function data_save_table1( )
-{
-    if(isset($_POST['submit']))
-    {
-        $data_to_store = $_POST['custom_setting_name'];
-        $key = 'name';
-      
-        update_option( $key, $data_to_store );
-      
 
-    }
-}*/
+// Sanitization callback function
+function my_sanitize_callback( $input ) {
+    return sanitize_text_field( $input );
+}
+
+/*done using Settings API*/
