@@ -1,61 +1,57 @@
 <?php
 /**
-* Plugin Name: Custom Menu
+ * Plugin Name: Custom Menu
+ * Description: A simple Plugin for store and display custom data.
+ * Version: 6.5.2
+ * Author: krishna
+ */
 
-* Description: Test.
-* Version: 0.1
-* Author: your-name
-
-**/
-
-
-
-
-
-function custom_menu_page()
-{
-     add_menu_page('Custom Menu','Custom Menu','manage_options','custom-page-slug','custom_page_content','dashicons-admin-generic',25);
+// Add custom menu page
+function custom_menu_page() {
+    add_menu_page(
+        'Custom Menu', // Page title
+        'Custom Menu', // Menu title
+        'manage_options', // Capability
+        'custom-page-slug', // Menu slug
+        'custom_page_content', // Callback function
+        'dashicons-admin-generic', // Icon
+        25 // Position
+    );
 }
-add_action('admin_menu','custom_menu_page');
+add_action('admin_menu', 'custom_menu_page');
 
-function custom_page_content()
-{
+// Custom page content
+function custom_page_content() {
     ?>
-     <div class="wrap">
-    <form action ="" method="post" >
-    <?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
-  name   <input type="text" name="name" value="<?php echo esc_attr(get_option('name'));?>"/>
-  <input type="submit" name="submit" value="submit"/>
-</form>
-</div>
-
-<?php
+    <div class="wrap">
+        <form action="" method="post">
+            <?php wp_nonce_field('update_plugin_options', 'plugin_options_nonce'); ?>
+            Name: <input type="text" name="name" value="<?php echo esc_attr(get_option('name')); ?>"/>
+            <input type="submit" name="submit" value="Submit"/>
+        </form>
+    </div>
+    <?php
 }
 
-add_action( 'init', 'data_save_table' );
-function data_save_table( )
-{
-    if ( isset( $_POST['plugin_options_nonce'] ) && wp_verify_nonce( $_POST['plugin_options_nonce'], 'update_plugin_options' ) ) 
-        // Nonce is valid, process the form submission
-   
-    
-    {
+// Save data using Option API
+add_action('init', 'data_save_table');
+function data_save_table() {
+    if (isset($_POST['plugin_options_nonce']) && wp_verify_nonce($_POST['plugin_options_nonce'], 'update_plugin_options')) {
         $data_to_store = $_POST['name'];
         $key = 'name';
-      
-        update_option( $key, $data_to_store );
-      
-
+        update_option($key, $data_to_store);
     }
 }
 
+// Add shortcode to fetch data
 add_shortcode('fetch_data', 'fetch_data_shortcode');
 function fetch_data_shortcode() {
     $key = 'name'; // Specify the key used to save the data
     $saved_data = get_option($key); // Retrieve the saved data
     return $saved_data; // Return the data
 }
-/*using Option API*/
+
+// Add submenu page using Option API
 function my_plugin_submenu_page() {
     add_submenu_page(
         'options-general.php', // Parent menu slug
@@ -67,34 +63,31 @@ function my_plugin_submenu_page() {
     );
 }
 add_action('admin_menu', 'my_plugin_submenu_page');
+
+// Submenu page content
 function my_plugin_submenu_settings_page() {
     ?>
     <div class="wrap">
         <h2>My Plugin Settings</h2>
         <form method="post" action="">
-        
-           
-            Add Data <input type="text"  name="my_data" value="<?php echo esc_attr(get_option('my_data')); ?>"/>
-            <input type="submit" name="submit" value="submit">
+            Add Data: <input type="text" name="my_data" value="<?php echo esc_attr(get_option('my_data')); ?>"/>
+            <input type="submit" name="submit" value="Submit">
         </form>
     </div>
     <?php
 }
 
-
-add_action( 'init', 'data_save_table2' );
-function data_save_table2( )
-{
-    if(isset($_POST['submit']))
-    {
+// Save data using Option API for submenu
+add_action('init', 'data_save_table2');
+function data_save_table2() {
+    if (isset($_POST['submit'])) {
         $data_to_store1 = $_POST['my_data'];
         $keys = 'my_data';
-      
-        update_option( $keys, $data_to_store1 );
-      
-
+        update_option($keys, $data_to_store1);
     }
 }
+
+// Add shortcode to fetch data for submenu
 add_shortcode('fetch_data_value', 'fetch_data_value_shortcode');
 function fetch_data_value_shortcode() {
     $key = 'my_data'; // Specify the key used to save the data
@@ -102,10 +95,7 @@ function fetch_data_value_shortcode() {
     return $saved_data; // Return the data
 }
 
-/*done using Option API*/
-
-
-/*using Settings API*/
+// Add submenu page using Settings API
 function my_custom_submenu_page() {
     add_submenu_page(
         'options-general.php', // Parent menu slug
@@ -116,7 +106,7 @@ function my_custom_submenu_page() {
         'my_custom_submenu_callback' // Callback function to display content
     );
 }
-add_action( 'admin_menu', 'my_custom_submenu_page' );
+add_action('admin_menu', 'my_custom_submenu_page');
 
 // Callback function to display submenu page content
 function my_custom_submenu_callback() {
@@ -177,5 +167,3 @@ function my_setting_field_callback() {
 function my_sanitize_callback( $input ) {
     return sanitize_text_field( $input );
 }
-
-/*done using Settings API*/
