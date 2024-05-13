@@ -18,18 +18,18 @@ function custom_menu_page() {
 		25                          // Position
 	);
 }
-add_action('admin_menu', 'custom_menu_page');
+add_action( 'admin_menu', 'custom_menu_page' );
 
 // Custom page content
 function custom_page_content() {
 	?>
 	<div class="logo-container">
-		<img src="<?php echo plugins_url( 'images/custom-logo.png', __FILE__ ); ?>" alt="Plugin Logo">
+		<img src="<?php echo esc_url( plugins_url( 'images/custom-logo.png', __FILE__ ) ); ?>" alt="Plugin Logo">
 	</div>
 	<div class="wrap">
 		<form action="" method="post">
-			<?php wp_nonce_field('update_plugin_options', 'plugin_options_nonce'); ?>
-			Name: <input type="text" name="name" value="<?php echo esc_attr(get_option('name')); ?>"/>
+			<?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
+			Name: <input type="text" name="name" value="<?php echo esc_attr( get_option( 'name' ) ); ?>"/>
 			<input type="submit" name="submit" value="Submit"/>
 		</form>
 	</div>
@@ -37,20 +37,20 @@ function custom_page_content() {
 }
 
 // Save data using Option API
-add_action('init', 'data_save_table');
+add_action( 'init', 'data_save_table' );
 function data_save_table() {
-	if (isset($_POST['plugin_options_nonce']) && wp_verify_nonce($_POST['plugin_options_nonce'], 'update_plugin_options')) {
+	if ( isset( $_POST['plugin_options_nonce'] ) && wp_verify_nonce( $_POST['plugin_options_nonce'], 'update_plugin_options' ) ) {
 		$data_to_store = $_POST['name'];
-		$key = 'name';
-		update_option($key, $data_to_store);
+		$key           = 'name';
+		update_option( $key, $data_to_store );
 	}
 }
 
 // Add shortcode to fetch data
-add_shortcode('fetch_data', 'fetch_data_shortcode');
+add_shortcode( 'fetch_data', 'fetch_data_shortcode' );
 function fetch_data_shortcode() {
-	$key = 'name';                  // Specify the key used to save the data
-	$saved_data = get_option($key); // Retrieve the saved data
+	$key        = 'name';                  // Specify the key used to save the data
+	$saved_data = get_option( $key ); // Retrieve the saved data
 	return $saved_data;             // Return the data
 }
 
@@ -65,7 +65,7 @@ function my_plugin_submenu_page() {
 		'my_plugin_submenu_settings_page' // Callback function
 	);
 }
-add_action('admin_menu', 'my_plugin_submenu_page');
+add_action( 'admin_menu', 'my_plugin_submenu_page' );
 
 // Submenu page content
 function my_plugin_submenu_settings_page() {
@@ -73,7 +73,8 @@ function my_plugin_submenu_settings_page() {
 	<div class="wrap">
 		<h2>My Plugin Settings</h2>
 		<form method="post" action="">
-			Add Data: <input type="text" name="my_data" value="<?php echo esc_attr(get_option('my_data')); ?>"/>
+		<?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
+			Add Data: <input type="text" name="my_data" value="<?php echo esc_attr( get_option( 'my_data' ) ); ?>"/>
 			<input type="submit" name="submit" value="Submit">
 		</form>
 	</div>
@@ -81,20 +82,20 @@ function my_plugin_submenu_settings_page() {
 }
 
 // Save data using Option API for submenu
-add_action('init', 'data_save_table2');
+add_action( 'init', 'data_save_table2' );
 function data_save_table2() {
-	if (isset($_POST['submit'])) {
+	if ( isset( $_POST['plugin_options_nonce'] ) && wp_verify_nonce( $_POST['plugin_options_nonce'], 'update_plugin_options' ) ) {
 		$data_to_store1 = $_POST['my_data'];
-		$keys = 'my_data';
-		update_option($keys, $data_to_store1);
+		$keys           = 'my_data';
+		update_option( $keys, $data_to_store1 );
 	}
 }
 
 // Add shortcode to fetch data for submenu
-add_shortcode('fetch_data_value', 'fetch_data_value_shortcode');
+add_shortcode( 'fetch_data_value', 'fetch_data_value_shortcode' );
 function fetch_data_value_shortcode() {
-	$key = 'my_data';               // Specify the key used to save the data
-	$saved_data = get_option($key); // Retrieve the saved data
+	$key        = 'my_data';               // Specify the key used to save the data
+	$saved_data = get_option( $key ); // Retrieve the saved data
 	return $saved_data;             // Return the data
 }
 
@@ -109,7 +110,7 @@ function my_custom_submenu_page() {
 		'my_custom_submenu_callback' // Callback function to display content
 	);
 }
-add_action('admin_menu', 'my_custom_submenu_page');
+add_action( 'admin_menu', 'my_custom_submenu_page' );
 
 // Callback function to display submenu page content
 function my_custom_submenu_callback() {
@@ -202,28 +203,27 @@ function custom_portfolio_post_type() {
 		'items_list_navigation' => __( 'Items list navigation', 'text_domain' ),
 		'filter_items_list'     => __( 'Filter items list', 'text_domain' ),
 	);
-	$args = array(
-		'label'                 => __( 'Portfolio Item', 'text_domain' ),
-		'description'           => __( 'Portfolio Item Description', 'text_domain' ),
-		'labels'                => $labels,
-		'supports'              => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
-		'taxonomies'            => array( 'category', 'post_tag' ),
-		'hierarchical'          => false,
-		'public'                => true,
-		'show_ui'               => true,
-		'show_in_menu'          => true,
-		'menu_position'         => 5,
-		'menu_icon'             => 'dashicons-portfolio',
-		'show_in_admin_bar'     => true,
-		'show_in_nav_menus'     => true,
-		'can_export'            => true,
-		'has_archive'           => true,
-		'exclude_from_search'   => false,
-		'publicly_queryable'    => true,
-		'capability_type'       => 'page',
+	$args   = array(
+		'label'               => __( 'Portfolio Item', 'text_domain' ),
+		'description'         => __( 'Portfolio Item Description', 'text_domain' ),
+		'labels'              => $labels,
+		'supports'            => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
+		'taxonomies'          => array( 'category', 'post_tag' ),
+		'hierarchical'        => false,
+		'public'              => true,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'menu_position'       => 5,
+		'menu_icon'           => 'dashicons-portfolio',
+		'show_in_admin_bar'   => true,
+		'show_in_nav_menus'   => true,
+		'can_export'          => true,
+		'has_archive'         => true,
+		'exclude_from_search' => false,
+		'publicly_queryable'  => true,
+		'capability_type'     => 'page',
 	);
 	register_post_type( 'portfolio', $args );
-
 }
 add_action( 'init', 'custom_portfolio_post_type', 0 );
 
@@ -248,10 +248,12 @@ function render_portfolio_fields( $post ) {
 	// Render fields
 	?>
 	<p>
+	<?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
 		<label for="client_name">Client Name:</label>
 		<input type="text" id="client_name" name="client_name" value="<?php echo esc_attr( $client_name ); ?>">
 	</p>
 	<p>
+	<?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
 		<label for="project_url">Project URL:</label>
 		<input type="text" id="project_url" name="project_url" value="<?php echo esc_attr( $project_url ); ?>">
 	</p>
@@ -265,25 +267,28 @@ function save_portfolio_custom_fields( $post_id ) {
 	}
 
 	// Save client name
-	if ( isset( $_POST['client_name'] ) ) {
+	if ( isset( $_POST['plugin_options_nonce'] ) && wp_verify_nonce( $_POST['plugin_options_nonce'], 'update_plugin_options' ) ) {
 		update_post_meta( $post_id, 'client_name', sanitize_text_field( $_POST['client_name'] ) );
 	}
 
 	// Save project URL
-	if ( isset( $_POST['project_url'] ) ) {
+	if ( isset( $_POST['plugin_options_nonce'] ) && wp_verify_nonce( $_POST['plugin_options_nonce'], 'update_plugin_options' ) ) {
 		update_post_meta( $post_id, 'project_url', esc_url( $_POST['project_url'] ) );
 	}
 }
 add_action( 'save_post', 'save_portfolio_custom_fields' );
 
 
-add_shortcode('recent_portfolio_posts', 'display_recent_portfolio_posts_shortcode');
+add_shortcode( 'recent_portfolio_posts', 'display_recent_portfolio_posts_shortcode' );
 
 // Shortcode callback function to display recent portfolio posts
-function display_recent_portfolio_posts_shortcode($atts) {
-	$atts = shortcode_atts(array(
-		'count' => 4,               // Default number of posts to display
-	), $atts);
+function display_recent_portfolio_posts_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		array(
+			'count' => 4,               // Default number of posts to display
+		),
+		$atts
+	);
 
 	$args = array(
 		'post_type'      => 'portfolio', // Custom post type name
@@ -292,11 +297,11 @@ function display_recent_portfolio_posts_shortcode($atts) {
 		'order'          => 'DESC',
 	);
 
-	$recent_portfolio_posts = new WP_Query($args);
+	$recent_portfolio_posts = new WP_Query( $args );
 
-	if ($recent_portfolio_posts->have_posts()) {
+	if ( $recent_portfolio_posts->have_posts() ) {
 		$output = '<ul>';
-		while ($recent_portfolio_posts->have_posts()) {
+		while ( $recent_portfolio_posts->have_posts() ) {
 			$recent_portfolio_posts->the_post();
 			$output .= '<li><a href="' . get_permalink() . '">' . get_the_title() . '</a></li>';
 		}
@@ -309,55 +314,3 @@ function display_recent_portfolio_posts_shortcode($atts) {
 	return $output;
 }
 
-
-class My_Widget extends WP_Widget {
-	public function __construct() {
-		parent::__construct(
-			'my-text',                  // Base ID
-			'My Text'                   // Name
-		);
-		add_action( 'widgets_init', function() {
-			register_widget( 'My_Widget' );
-		});
-	}
-
-	public function widget( $args, $instance ) {
-		$args = array(
-			'before_title'  => '<h4 class="widgettitle">',
-			'after_title'   => '</h4>',
-			'before_widget' => '<div class="widget-wrap">',
-			'after_widget'  => '</div></div>',
-		);
-		echo $args['before_widget'];
-		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
-		}
-		echo '<div class="textwidget">';
-		echo esc_html__( $instance['text'], 'text_domain' );
-		echo '</div>';
-		echo $args['after_widget'];
-	}
-
-	public function form( $instance ) {
-		$title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( '', 'text_domain' );
-		$text  = ! empty( $instance['text'] ) ? $instance['text'] : esc_html__( '', 'text_domain' );
-		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php echo esc_html__( 'Title:', 'text_domain' ); ?></label>
-			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-		</p>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'Text' ) ); ?>"><?php echo esc_html__( 'Text:', 'text_domain' ); ?></label>
-			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>" type="text" cols="30" rows="10"><?php echo esc_attr( $text ); ?></textarea>
-		</p>
-		<?php
-	}
-
-	public function update( $new_instance, $old_instance ) {
-		$instance          = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['text']  = ( ! empty( $new_instance['text'] ) ) ? $new_instance['text'] : '';
-		return $instance;
-	}
-}
-$my_widget = new My_Widget();
