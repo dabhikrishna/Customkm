@@ -698,13 +698,10 @@ function my_plugin_page_content() {
 		// Retrieve posts using REST API
 		$url      = home_url();
 		$response = wp_remote_get( rest_url( 'wp/v2/portfolio' ) );
-		//print_r( $response );
 		// Check if request was successful
 		if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
 			// Decode the JSON response body
 			$posts = json_decode( wp_remote_retrieve_body( $response ), true );
-			//$client_name = get_post_meta( $posts['client_name'] );
-			//print_r( $client_name );
 			// Process the retrieved posts
 			echo '<table>';
 			echo '<tr><th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Title</th>
@@ -716,10 +713,7 @@ function my_plugin_page_content() {
 			foreach ( $posts as $post ) {
 				// Get the author's name
 				$post_id = $post['id'];
-				//$client_name = get_post_meta( $post_id ,);
 				$client_name = get_post_meta( $post_id, 'client_name', true );
-				//$author_name = get_the_author_meta( 'client_name', $post['client_name'] );
-				//print_r( $client_name );
 				echo '<tr style="background-color: #ddd;">';
 				echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( $post['title']['rendered'] ) . '</td>';
 				echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( $client_name ) . '</td>'; // Display author's name
