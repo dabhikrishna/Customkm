@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Customkm Menu
- * Plugin URI: https://custom-plugin.com
+ * Plugin URI: https://qrolic.com
  * Description: Customkm Plugin for your site.
  * Version: 6.5.2
  * Author: krishna
- * Author URI: http://custom-plugin.com
+ * Author URI:https://qrolic.com
  * Text Domain: customkm_menu
  *
  * Customkm Menu plugin use for add CUSTOM MENU,CUSTOM SUBMENU,create field and save data using ,
@@ -674,3 +674,106 @@ function process_portfolio_submission() {
 add_action( 'wp_ajax_portfolio_submission', 'process_portfolio_submission' );
 add_action( 'wp_ajax_nopriv_portfolio_submission', 'process_portfolio_submission' );
 
+// Add submenu page
+function my_plugin_submenu() {
+	add_submenu_page(
+		'options-general.php', // Parent menu slug (Options)
+		'Post Retrieval', // Page title
+		'Post Retrieval', // Menu title
+		'manage_options', // Capability required
+		'post-retrieval', // Menu slug
+		'my_plugin_page_content' // Callback function
+	);
+}
+add_action( 'admin_menu', 'my_plugin_submenu' );
+
+// Callback function to render plugin page content
+function my_plugin_page_content() {
+	?>
+	<div class="wrap">
+		<h1>Post Retrieval</h1>
+		<p>Retrieve posts using the REST API.</p>
+		<?php
+		// Retrieve posts using REST API
+		$url      = home_url();
+		$response = wp_remote_get( rest_url( 'wp/v2/posts' ), $url );
+
+		// Check if request was successful
+		if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
+			// Decode the JSON response body
+			$posts = json_decode( wp_remote_retrieve_body( $response ), true );
+
+			// Process the retrieved posts
+			foreach ( $posts as $post ) {
+				// Do something with each post, e.g., echo post titles
+				echo '<div>';
+				echo esc_html( $post['title']['rendered'] ) . '<br>';
+					// Add a delete button for each post
+					echo '<button class="delete-post-button" data-post-id="' . $post['id'] . '">Delete Post</button>';
+					echo '</div>';
+			}
+		}
+		?>
+	</div>
+
+	<script>
+		// JavaScript to handle delete post button clicks
+		document.addEventListener('DOMContentLoaded', function() {
+			var deleteButtons = document.querySelectorAll('.delete-post-button');
+			deleteButtons.forEach(function(button) {
+				button.addEventListener('click', function() {
+					var postId = this.getAttribute('data-post-id');
+					deletePost(postId);
+				});
+			});
+
+			function deletePost(postId) {
+				// Send a DELETE request to delete the post
+				fetch('<?php echo rest_url( 'wp/v2/posts' ); ?>/' + postId, {
+					method: 'DELETE',
+					credentials: 'same-origin',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-WP-Nonce': '<?php echo wp_create_nonce( 'wp_rest' ); ?>'
+					}
+				}).then(function(response) {
+					if (response.ok) {
+						// Post deleted successfully
+						console.log('Post deleted successfully');
+						// You can update UI or do something else here
+					} else {
+						// Failed to delete post
+						console.error('Failed to delete post');
+					}
+				}).catch(function(error) {
+					console.error('Error deleting post:', error);
+				});
+			}
+		});
+	</script>
+
+	<?php
+}
+function prefix_get_endpoint_phrase() {
+	// rest_ensure_response() wraps the data we want to return into a WP_REST_Response, and ensures it will be properly returned.
+	return rest_ensure_response( 'Hello World, this is the WordPress REST API' );
+}
+
+/**
+ * This function is where we register our routes for our example endpoint.
+ */
+function prefix_register_example_routes() {
+	// register_rest_route() handles more arguments but we are going to stick to the basics for now.
+	register_rest_route(
+		'hello-world/v1',
+		'/phrase',
+		array(
+			// By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+			'methods'  => WP_REST_Server::READABLE,
+			// Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+			'callback' => 'prefix_get_endpoint_phrase',
+		)
+	);
+}
+
+add_action( 'rest_api_init', 'prefix_register_example_routes' );
