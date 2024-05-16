@@ -35,7 +35,7 @@ function example_plugin_menu() {
 		'manage_options',         // Capability
 		'example-plugin',         // Menu slug
 		'example_plugin_page',    // Callback function
-		'dashicons-admin-plugins', // Icon
+		'dashicons-admin-page', // Icon
 		27 // Position of the menu in the admin sidebar
 	);
 }
@@ -47,15 +47,12 @@ function example_plugin_page() {
 	<div class="wrap">
 		<h2>My Plugin Settings</h2>
 		<!-- Create tabs navigation -->
-		
 		<h2 class="nav-tab-wrapper">
 			<a href="?page=example-plugin&tab=pluginbasic" class="nav-tab <?php echo 'pluginbasic' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) || ! isset( $_GET['tab'] ) ? 'nav-tab-active' : ''; ?>">Plugin Basic</a>
 			<a href="?page=example-plugin&tab=shortcode" class="nav-tab <?php echo 'shortcode' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Shortcode</a>
 			<a href="?page=example-plugin&tab=recentpost" class="nav-tab <?php echo 'recentpost' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Recent Post</a>
 			<a href="?page=example-plugin&tab=fetchdata" class="nav-tab <?php echo 'fetchdata' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Fetch Data Shortcode</a>
 		</h2>
-	
-		
 		<!-- Display tab content -->
 		<div class="tab-content">
 			<?php
@@ -110,8 +107,7 @@ function example_plugin_page() {
 			?>
 		</div>
 	</div>
-	
-	<style>
+<style>
 
 .plugin-container {
 	max-width: 600px;
@@ -144,7 +140,7 @@ function example_plugin_page() {
 	margin-bottom: 20px;
 }
 
-	</style>
+</style>
 	<?php
 }
 // Enqueue CSS file
@@ -395,9 +391,6 @@ add_filter( 'manage_portfolio_posts_columns', 'modify_portfolio_columns' );
 
 // Display custom data in the columns of the portfolio post type admin table
 function display_portfolio_custom_columns( $column, $post_id ) {
-	//print_r( $post_id );
-	//$data = get_post_meta( $post_id, 'company_name', true );
-	//print_r( $data );
 	switch ( $column ) {
 		case 'company_name':
 			echo esc_html( get_post_meta( $post_id, 'company_name', true ) );
@@ -418,16 +411,19 @@ function display_portfolio_custom_columns( $column, $post_id ) {
 }
 add_action( 'manage_portfolio_posts_custom_column', 'display_portfolio_custom_columns', 10, 2 );
 
+// Add plugin page in admin menu
 function custom_ajax_plugin_menu() {
 	add_menu_page(
-		'Custom AJAX Plugin Settings',
-		'Custom AJAX Plugin',
-		'manage_options',
-		'custom-ajax-plugin-settings',
-		'custom_ajax_plugin_settings_page'
+		'Custom AJAX Plugin Settings',    // Page title
+		'Custom AJAX Plugin',         // Menu title
+		'manage_options',         // Capability
+		'custom-ajax-plugin-settings',         // Menu slug
+		'custom_ajax_plugin_settings_page',    // Callback function
+		'dashicons-menu', // Icon
+		26 // Position of the menu in the admin sidebar
 	);
 }
-
+// Plugin settings page
 function custom_ajax_plugin_settings_page() {
 	?>
 	<div class="wrap">
@@ -451,6 +447,7 @@ function custom_ajax_plugin_ajax_handler() {
 		if ( ! wp_verify_nonce( $_POST['nonce'], 'custom_ajax_plugin_ajax_nonce' ) ) {
 			echo 'ok';
 		}
+		// Sanitize and save store name
 		$store_name = sanitize_text_field( $_POST['store_name'] );
 		update_option( 'store_name', $store_name );
 		echo 'Store name updated successfully!';
@@ -461,7 +458,6 @@ function custom_ajax_plugin_ajax_handler() {
 add_action( 'wp_ajax_custom_ajax_plugin_update_store_name', 'custom_ajax_plugin_ajax_handler' );
 
 // Enqueue JavaScript for AJAX
-
 function custom_ajax_plugin_enqueue_scripts( $hook ) {
 	if ( 'toplevel_page_custom-ajax-plugin-settings' !== $hook ) {
 		return;
@@ -513,7 +509,6 @@ function display_recent_portfolio_posts_shortcode( $atts ) {
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-kmd-widget.php';
 
 function custom_widget() {
-	//echo 'ok';
 	register_widget( 'Kmd_Widget' );
 }
 add_action( 'widgets_init', 'custom_widget' );
