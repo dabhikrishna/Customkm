@@ -704,14 +704,19 @@ function my_plugin_page_content() {
 			$posts = json_decode( wp_remote_retrieve_body( $response ), true );
 
 			// Process the retrieved posts
+			echo '<table>';
+			echo '<tr><th>Title</th><th>Author</th><th>Date</th><th>Action</th></tr>';
+
 			foreach ( $posts as $post ) {
-				// Do something with each post, e.g., echo post titles
-				echo '<div>';
-				echo esc_html( $post['title']['rendered'] ) . '<br>';
-					// Add a delete button for each post
-					echo '<button class="delete-post-button" data-post-id="' . $post['id'] . '">Delete Post</button>';
-					echo '</div>';
+				echo '<tr>';
+				echo '<td>' . esc_html( $post['title']['rendered'] ) . '</td>';
+				echo '<td>' . esc_html( $post['author'] ) . '</td>';
+				echo '<td>' . esc_html( $post['date'] ) . '</td>';
+				echo '<td><button class="delete-post-button" data-post-id="' . $post['id'] . '">Delete Post</button></td>';
+				echo '</tr>';
 			}
+
+			echo '</table>';
 		}
 		?>
 	</div>
