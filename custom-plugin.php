@@ -320,6 +320,7 @@ function custom_portfolio_post_type() {
 		'exclude_from_search' => false,
 		'publicly_queryable'  => true,
 		'capability_type'     => 'page',
+		'show_in_rest'        => true, // Ensure REST API support
 	);
 	register_post_type( 'portfolio', $args );
 }
@@ -674,16 +675,16 @@ function process_portfolio_submission() {
 add_action( 'wp_ajax_portfolio_submission', 'process_portfolio_submission' );
 add_action( 'wp_ajax_nopriv_portfolio_submission', 'process_portfolio_submission' );
 
-// Add submenu page
 function my_plugin_submenu() {
-	add_submenu_page(
-		'options-general.php', // Parent menu slug (Options)
-		'Post Retrieval', // Page title
-		'Post Retrieval', // Menu title
-		'manage_options', // Capability required
-		'post-retrieval', // Menu slug
-		'my_plugin_page_content' // Callback function
-	);
+
+		add_submenu_page(
+			'customkm-page-slug',       // Parent slug
+			'Submenu Page Title',       // Page title
+			'Submenu Menu Title',       // Menu title
+			'manage_options',           // Capability
+			'customkm-submenu-slug',    // Submenu slug
+			'my_plugin_page_content'  // Callback function for submenu content
+		);
 }
 add_action( 'admin_menu', 'my_plugin_submenu' );
 
@@ -696,27 +697,39 @@ function my_plugin_page_content() {
 		<?php
 		// Retrieve posts using REST API
 		$url      = home_url();
-		$response = wp_remote_get( rest_url( 'wp/v2/posts' ), $url );
-
+		$response = wp_remote_get( rest_url( 'wp/v2/portfolio' ) );
+		//print_r( $response );
 		// Check if request was successful
 		if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
 			// Decode the JSON response body
 			$posts = json_decode( wp_remote_retrieve_body( $response ), true );
-
+			//$client_name = get_post_meta( $posts['client_name'] );
+			//print_r( $client_name );
 			// Process the retrieved posts
 			echo '<table>';
-			echo '<tr><th>Title</th><th>Author</th><th>Date</th><th>Action</th></tr>';
+			echo '<tr><th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Title</th>
+			           <th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Author</th>
+					   <th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Date</th>
+					   <th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Action</th>
+				  </tr>';
 
 			foreach ( $posts as $post ) {
-				echo '<tr>';
-				echo '<td>' . esc_html( $post['title']['rendered'] ) . '</td>';
-				echo '<td>' . esc_html( $post['author'] ) . '</td>';
-				echo '<td>' . esc_html( $post['date'] ) . '</td>';
-				echo '<td><button class="delete-post-button" data-post-id="' . $post['id'] . '">Delete Post</button></td>';
+				// Get the author's name
+				$post_id = $post['id'];
+				//$client_name = get_post_meta( $post_id ,);
+				$client_name = get_post_meta( $post_id, 'client_name', true );
+				//$author_name = get_the_author_meta( 'client_name', $post['client_name'] );
+				//print_r( $client_name );
+				echo '<tr style="background-color: #ddd;">';
+				echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( $post['title']['rendered'] ) . '</td>';
+				echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( $client_name ) . '</td>'; // Display author's name
+				echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( $post['date'] ) . '</td>';
+				echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;"><button class="delete-post-button" data-post-id="' . esc_html( $post['id'] ) . '">Delete Post</button></td>';
 				echo '</tr>';
 			}
 
 			echo '</table>';
+
 		}
 		?>
 	</div>
@@ -734,12 +747,12 @@ function my_plugin_page_content() {
 
 			function deletePost(postId) {
 				// Send a DELETE request to delete the post
-				fetch('<?php echo rest_url( 'wp/v2/posts' ); ?>/' + postId, {
+				fetch('<?php echo esc_url( rest_url( 'wp/v2/portfolio' ) ); ?>/' + postId, {
 					method: 'DELETE',
 					credentials: 'same-origin',
 					headers: {
 						'Content-Type': 'application/json',
-						'X-WP-Nonce': '<?php echo wp_create_nonce( 'wp_rest' ); ?>'
+						'X-WP-Nonce': '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ); ?>'
 					}
 				}).then(function(response) {
 					if (response.ok) {
@@ -782,3 +795,4 @@ function prefix_register_example_routes() {
 }
 
 add_action( 'rest_api_init', 'prefix_register_example_routes' );
+
