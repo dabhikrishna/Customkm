@@ -493,7 +493,7 @@ function my_plugin_page_content() {
 					while ( $query->have_posts() ) :
 						$query->the_post(); // Using $query to iterate through posts
 						// Get the post ID
-						$post_id     = get_the_ID();
+						$post_id = get_the_ID();
 						//print_r( $post_id );
 						$client_name = get_post_meta( $post_id, 'client_name', true );
 						$address     = get_post_meta( $post_id, 'address', true );
@@ -566,7 +566,16 @@ function my_plugin_page_content() {
 
 	<?php
 }
-
+// Enqueue the external JavaScript file
+/*function enqueue_delete_post_script() {
+	wp_enqueue_script( 'delete-post-script', plugin_dir_url( __FILE__ ) . 'delete-post.js', array( 'jquery' ), null, true );
+}
+add_action( 'admin_enqueue_scripts', 'enqueue_delete_post_script' );*/
+// Enqueue JavaScript file for portfolio functionality
+function enqueue_submenu_js() {
+	wp_enqueue_script( 'custom-ajax-plugin-script-js', plugin_dir_url( __FILE__ ) . 'js/custom-ajax-plugin-script.js', array( 'jquery' ), null, true );
+}
+add_action( 'admin_enqueue_scripts', 'enqueue_submenu_js' );
 // Handle AJAX request to delete post
 add_action( 'wp_ajax_delete_post_action', 'delete_post_action_callback' );
 function delete_post_action_callback() {
@@ -626,6 +635,7 @@ add_action( 'admin_menu', 'example_plugin_menu' );
 
 // Plugin page content
 function example_plugin_page() {
+	wp_enqueue_style( 'plugin-custom-styles', plugin_dir_url( __FILE__ ) . 'css/plugin-styles.css' );
 	?>
 	<div class="wrap">
 		<h2>My Plugin Settings</h2>
@@ -655,7 +665,7 @@ function example_plugin_page() {
 					echo '<code>[portfolio_submission_form]</code>';
 					echo '<h3>Functionality of Shortcode</h3>';
 					echo '<p>The <code>[portfolio_submission_form]</code> shortcode displays a simple message. You can customize the functionality by modifying the <code> portfolio_submission_form_shortcode_function </code>function in the plugin file.</p>';
-					echo '<form id="portfolio_submission_form">
+					echo '<form id="portfolio_submission_form1">
 					<input type="hidden" name="action" value="portfolio_submission">
 
 					<label for="name">Name:</label>
@@ -690,92 +700,6 @@ function example_plugin_page() {
 			?>
 		</div>
 	</div>
-<style>
-
-.plugin-container {
-	max-width: 600px;
-	margin: 50px auto;
-	background-color: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.plugin_container_shortcode
-{
-	margin-top:20px;
-	max-width: 600px;
-	margin: 50px auto;
-	background-color: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.plugin_container_shortcode p {
-	font-size: 16px;
-	margin-bottom: 20px;
-}
-.plugin_container_shortcode code {
-	font-size: 16px;
-	margin-bottom: 20px;
-}
-.plugin-container p {
-	font-size: 16px;
-	margin-bottom: 20px;
-}
-#portfolio_submission_form {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 20px;
-	background-color: #f7f7f7;
-	border-radius: 5px;
-	color:red !important;
-}
-
-label {
-	display: block;
-	margin-bottom: 5px;
-	font-weight: bold;
-}
-
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-textarea {
-	width: 100%;
-	padding: 10px;
-	margin-bottom: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box;
-}
-
-input[type="button"] {
-	background-color: #007bff;
-	color: #fff;
-	border: none;
-	padding: 10px 20px;
-	cursor: pointer;
-	border-radius: 4px;
-}
-
-input[type="button"]:hover {
-	background-color: #0056b3;
-}
-
-input[type="button"]:focus {
-	outline: none;
-}
-
-input[type="button"]:active {
-	background-color: #0056b3;
-}
-
-#error_message {
-	color: red;
-}
-
-</style>
 	<?php
 }
 function customkm_menu_page() {

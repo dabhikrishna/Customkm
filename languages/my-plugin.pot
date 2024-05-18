@@ -1,0 +1,36 @@
+# Copyright (C) 2024 krishna
+# This file is distributed under the same license as the Customkm Menu plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Customkm Menu 6.5.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-plugin\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-05-17T11:47:48+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: customkm_menu\n"
+
+#. Plugin Name of the plugin
+#: custom-plugin.php
+msgid "Customkm Menu"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: custom-plugin.php
+msgid "https://qrolic.com"
+msgstr ""
+
+#. Description of the plugin
+#: custom-plugin.php
+msgid "Customkm Plugin for your site."
+msgstr ""
+
+#. Author of the plugin
+#: custom-plugin.php
+msgid "krishna"
+msgstr ""
