@@ -6,7 +6,8 @@
  * Version: 6.5.2
  * Author: krishna
  * Author URI:https://qrolic.com
- * Text Domain: customkm_menu
+ * Text Domain: customkm-menu
+ * Domain Path: /languages
  *
  * Customkm Menu plugin use for add CUSTOM MENU,CUSTOM SUBMENU,create field and save data using ,
  * OPTION API AND SETTING API.
@@ -21,6 +22,7 @@
  *
  * Create shortcode for Add form with different fields and insert data in custom post type Portfolio.
  */
+
 
 // Enqueue CSS file
 function your_plugin_enqueue_styles() {
@@ -177,7 +179,7 @@ add_action( 'manage_portfolio_posts_custom_column', 'display_portfolio_custom_co
 function custom_ajax_plugin_menu() {
 	add_menu_page(
 		'Custom AJAX Plugin Settings',    // Page title
-		'Custom AJAX Plugin',         // Menu title
+		esc_html__( 'Custom AJAX Plugin', 'customkm-menu' ),         // Menu title
 		'manage_options',         // Capability
 		'custom-ajax-plugin-settings',         // Menu slug
 		'custom_ajax_plugin_settings_page',    // Callback function
@@ -189,10 +191,10 @@ function custom_ajax_plugin_menu() {
 function custom_ajax_plugin_settings_page() {
 	?>
 	<div class="wrap">
-		<h2>Custom AJAX Plugin Settings</h2>
+		<h2><?php echo esc_html__( 'Custom AJAX Plugin Settings', 'customkm-menu' ); ?></h2>
 		<form id="store-name-form">
 		<?php wp_nonce_field( 'save_store_name_action', 'save_store_name_nonce' ); ?>
-			<label for="store-name">Store Name:</label>
+		<label for="store-name"><?php echo esc_html__( 'Store Name', 'customkm-menu' ); ?></label>
 			<input type="text" id="store-name" name="store_name" value="<?php echo esc_attr( get_option( 'store_name' ) ); ?>">
 			<input type="submit" value="Save">
 		</form>
@@ -447,7 +449,7 @@ function my_plugin_submenu() {
 		add_submenu_page(
 			'custom-ajax-plugin-settings',
 			'Submenu Page Title',       // Page title
-			'Submenu Menu Title',       // Menu title
+			esc_html__( 'Submenu Menu Title', 'customkm-menu' ),       // Menu title
 			'manage_options',           // Capability
 			'customkm-submenu-slug',    // Submenu slug
 			'my_plugin_page_content'  // Callback function for submenu content
@@ -459,8 +461,8 @@ add_action( 'admin_menu', 'my_plugin_submenu' );
 function my_plugin_page_content() {
 	?>
 	<div class="wrap">
-		<h1>Post Retrieval</h1>
-		<p>Retrieve posts using the REST API.</p>
+		<h1><?php echo esc_html__( 'Post Retrievals', 'customkm-menu' ); ?></h1>
+		<p><?php echo esc_html__( 'Retrieve posts using the REST API', 'customkm-menu' ); ?></p>
 		<?php
 		// Retrieve posts using REST API
 		$url      = home_url();
@@ -493,7 +495,7 @@ function my_plugin_page_content() {
 					while ( $query->have_posts() ) :
 						$query->the_post(); // Using $query to iterate through posts
 						// Get the post ID
-						$post_id     = get_the_ID();
+						$post_id = get_the_ID();
 						//print_r( $post_id );
 						$client_name = get_post_meta( $post_id, 'client_name', true );
 						$address     = get_post_meta( $post_id, 'address', true );
@@ -525,47 +527,14 @@ function my_plugin_page_content() {
 		?>
 	</div>
 
-	<script>
-		// JavaScript to handle delete post button clicks
-		jQuery(document).ready(function($) {
-	$('.delete-post-button').on('click', function() {
-		event.preventDefault();
-		var postId = $(this).data('post-id');
-		var deleteButton = $(this); // Store a reference to the clicked button
-
-		var confirmation = confirm('Are you sure you want to delete this post?');
-
-		if (confirmation) {
-			$.ajax({
-				url: '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
-				type: 'POST',
-				data: {
-					action: 'delete_post_action',
-					post_id: postId,
-				},
-				success: function(response) {
-					// If the deletion was successful, remove the row from the table
-					if (response === 'success') {
-						deleteButton.closest('tr').remove();
-					} else {
-						alert('An error occurred while deleting the post.');
-					}
-				},
-				error: function(xhr, status, error) {
-					console.error(xhr.responseText);
-					alert('An error occurred while deleting the post.');
-				}
-			});
-		}
-
-		return false;
-	});
-});
-
-	</script>
-
 	<?php
 }
+// Enqueue the external JavaScript file
+function enqueue_delete_post_script() {
+	wp_enqueue_script( 'delete-post-js', plugins_url( 'js/delete-post.js', __FILE__ ), array( 'jquery' ), '1.0', true );
+	wp_localize_script( 'delete-post-js', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
+}
+add_action( 'admin_enqueue_scripts', 'enqueue_delete_post_script' );
 
 // Handle AJAX request to delete post
 add_action( 'wp_ajax_delete_post_action', 'delete_post_action_callback' );
@@ -614,7 +583,7 @@ function example_plugin_menu() {
 	add_submenu_page(
 		'custom-ajax-plugin-settings',
 		'Example Plugin Page',    // Page title
-		'Plugin Page',         // Menu title
+		esc_html__( 'Plugin Page', 'customkm-menu' ),        // Menu title
 		'manage_options',         // Capability
 		'example-plugin',         // Menu slug
 		'example_plugin_page',    // Callback function
@@ -626,6 +595,7 @@ add_action( 'admin_menu', 'example_plugin_menu' );
 
 // Plugin page content
 function example_plugin_page() {
+	wp_enqueue_style( 'plugin-custom-styles', plugin_dir_url( __FILE__ ) . 'css/plugin-styles.css' );
 	?>
 	<div class="wrap">
 		<h2>My Plugin Settings</h2>
@@ -655,7 +625,7 @@ function example_plugin_page() {
 					echo '<code>[portfolio_submission_form]</code>';
 					echo '<h3>Functionality of Shortcode</h3>';
 					echo '<p>The <code>[portfolio_submission_form]</code> shortcode displays a simple message. You can customize the functionality by modifying the <code> portfolio_submission_form_shortcode_function </code>function in the plugin file.</p>';
-					echo '<form id="portfolio_submission_form">
+					echo '<form id="portfolio_submission_form1">
 					<input type="hidden" name="action" value="portfolio_submission">
 
 					<label for="name">Name:</label>
@@ -690,99 +660,13 @@ function example_plugin_page() {
 			?>
 		</div>
 	</div>
-<style>
-
-.plugin-container {
-	max-width: 600px;
-	margin: 50px auto;
-	background-color: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.plugin_container_shortcode
-{
-	margin-top:20px;
-	max-width: 600px;
-	margin: 50px auto;
-	background-color: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.plugin_container_shortcode p {
-	font-size: 16px;
-	margin-bottom: 20px;
-}
-.plugin_container_shortcode code {
-	font-size: 16px;
-	margin-bottom: 20px;
-}
-.plugin-container p {
-	font-size: 16px;
-	margin-bottom: 20px;
-}
-#portfolio_submission_form {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 20px;
-	background-color: #f7f7f7;
-	border-radius: 5px;
-	color:red !important;
-}
-
-label {
-	display: block;
-	margin-bottom: 5px;
-	font-weight: bold;
-}
-
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-textarea {
-	width: 100%;
-	padding: 10px;
-	margin-bottom: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box;
-}
-
-input[type="button"] {
-	background-color: #007bff;
-	color: #fff;
-	border: none;
-	padding: 10px 20px;
-	cursor: pointer;
-	border-radius: 4px;
-}
-
-input[type="button"]:hover {
-	background-color: #0056b3;
-}
-
-input[type="button"]:focus {
-	outline: none;
-}
-
-input[type="button"]:active {
-	background-color: #0056b3;
-}
-
-#error_message {
-	color: red;
-}
-
-</style>
 	<?php
 }
 function customkm_menu_page() {
 	add_submenu_page(
 		'custom-ajax-plugin-settings',
 		'Customkm Menu',              // Page title
-		'Customkm Menu',              // Menu title
+		esc_html__( 'Customkm Menu', 'customkm-menu' ),              // Menu title
 		'manage_options',           // Capability
 		'customkm-page-slug',         // Menu slug
 		'customkm_page_content',      // Callback function
@@ -898,3 +782,7 @@ function my_setting_field_callback() {
 function my_sanitize_callback( $input ) {
 	return sanitize_text_field( $input );
 }
+function load_customkm_menu_textdomain() {
+	load_plugin_textdomain( 'customkm-menu', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+}
+add_action( 'plugins_loaded', 'load_customkm_menu_textdomain' );
