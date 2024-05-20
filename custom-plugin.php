@@ -412,7 +412,7 @@ function process_portfolio_submission() {
 			$email        = sanitize_email( $_POST['email'] );
 			$phone        = sanitize_text_field( $_POST['phone'] );
 			$address      = sanitize_textarea_field( $_POST['address'] );
-			// Create post object
+
 			$portfolio_data = array(
 				'post_title'  => $name,
 				'post_type'   => 'portfolio',
@@ -423,19 +423,21 @@ function process_portfolio_submission() {
 					'phone'        => $phone,
 					'company_name' => $company_name,
 					'address'      => $address,
+					'email_result' => $email_result,
 				),
 			);
 			// Insert the post into the database
 			$post_id = wp_insert_post( $portfolio_data );
+
 			if ( is_wp_error( $post_id ) ) {
 				echo 'Error: ' . esc_html( $post_id->get_error_message() );
 			} else {
-				echo '<div id="success-message">Success! Your portfolio has been submitted.</div>';
+				echo '<div id="success-message">Success! Your portfolio has been submitted with email .</div>';
 				echo '<script>
 						setTimeout(function() {
 							document.getElementById("success-message").style.display = "none";
 						}, 5000); // Hide after 5 seconds
-					  </script>';
+						</script>';
 			}
 		}
 	}
@@ -491,7 +493,6 @@ function my_plugin_page_content() {
 							'p'         => $post['id'],
 						)
 					); // Specify post type as portfolio
-					//print_r( $query->have_posts() );
 					while ( $query->have_posts() ) :
 						$query->the_post(); // Using $query to iterate through posts
 						// Get the post ID

@@ -1,7 +1,7 @@
 // delete-post.js
 
-jQuery(document).ready(function($) {
-    $('.delete-post-button').on('click', function() {
+jQuery(document).ready(function ($) {
+    $('.delete-post-button').on('click', function () {
         console.log('Delete button clicked');
         var postId = $(this).data('post-id');
         var deleteButton = $(this); // Store a reference to the clicked button
@@ -16,15 +16,15 @@ jQuery(document).ready(function($) {
                     action: 'delete_post_action',
                     post_id: postId,
                 },
-                success: function(response) {
+                success: function (response) {
                     // If the deletion was successful, remove the row from the table
-                    if (response === 'success') {
+                    if ('success' === response ){
                         deleteButton.closest('tr').remove();
                     } else {
                         alert('An error occurred while deleting the post.');
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error(xhr.responseText);
                     alert('An error occurred while deleting the post.');
                 }
@@ -36,4 +36,3 @@ jQuery(document).ready(function($) {
 });
 
 
-  

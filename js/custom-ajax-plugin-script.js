@@ -18,7 +18,7 @@ jQuery(document).ready(function ($) {
 
 $(document).on("click", ".delete-portfolio-post", function() {
     var postId = $(this).data("post-id");
-    if (confirm("Are you sure you want to delete this portfolio post?")) {
+    if ("Are you sure you want to delete this portfolio post?" == confirm("Are you sure you want to delete this portfolio post?")) {
         $.ajax({
             url: ajaxurl,
             method: "POST",
@@ -28,7 +28,7 @@ $(document).on("click", ".delete-portfolio-post", function() {
                 nonce: submenu_ajax_object.nonce, // Pass nonce here
             },
             success: function(response) {
-                if (response === "success") {
+                if ("success" === response) {
                     $("#portfolio-posts-message")
                         .text("Portfolio post deleted successfully.")
                         .show();
@@ -44,4 +44,5 @@ $(document).on("click", ".delete-portfolio-post", function() {
         });
     }
 });
+
 
