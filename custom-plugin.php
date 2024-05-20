@@ -21,128 +21,7 @@
  *
  * Create shortcode for Add form with different fields and insert data in custom post type Portfolio.
  */
-function portfolio_submission_form_shortcode_function( $atts ) {
-	// Shortcode functionality
-	return 'This is an example shortcode output.';
-}
-add_shortcode( 'portfolio_submission_form', 'portfolio_submission_form_shortcode_function' );
 
-// Add plugin page in admin menu
-function example_plugin_menu() {
-	add_menu_page(
-		'Example Plugin Page',    // Page title
-		'Plugin Page',         // Menu title
-		'manage_options',         // Capability
-		'example-plugin',         // Menu slug
-		'example_plugin_page',    // Callback function
-		'dashicons-admin-page', // Icon
-		27 // Position of the menu in the admin sidebar
-	);
-}
-add_action( 'admin_menu', 'example_plugin_menu' );
-
-// Plugin page content
-function example_plugin_page() {
-	?>
-	<div class="wrap">
-		<h2>My Plugin Settings</h2>
-		<!-- Create tabs navigation -->
-		<h2 class="nav-tab-wrapper">
-			<a href="?page=example-plugin&tab=pluginbasic" class="nav-tab <?php echo 'pluginbasic' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) || ! isset( $_GET['tab'] ) ? 'nav-tab-active' : ''; ?>">Plugin Basic</a>
-			<a href="?page=example-plugin&tab=shortcode" class="nav-tab <?php echo 'shortcode' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Shortcode</a>
-			<a href="?page=example-plugin&tab=recentpost" class="nav-tab <?php echo 'recentpost' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Recent Post</a>
-			<a href="?page=example-plugin&tab=fetchdata" class="nav-tab <?php echo 'fetchdata' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Fetch Data Shortcode</a>
-		</h2>
-		<!-- Display tab content -->
-		<div class="tab-content">
-			<?php
-			$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'pluginbasic';
-
-			switch ( $active_tab ) {
-				case 'pluginbasic':
-					echo '<h3>Plugin Information</h3>';
-					echo '<p>Plugin Name :  Customkm Menu</p>';
-					echo '<p>Author :  Krishna</p>';
-					echo '<p>Description : Customkm Plugin for your site.</p>';
-					echo '<P>Version: 6.5.2</P>';
-					break;
-				case 'shortcode':
-					echo '<h3>Shortcode Usage</h3>';
-					echo '<p>Use the following shortcode to display dynamic content:</p>';
-					echo '<code>[portfolio_submission_form]</code>';
-					echo '<h3>Functionality of Shortcode</h3>';
-					echo '<p>The <code>[portfolio_submission_form]</code> shortcode displays a simple message. You can customize the functionality by modifying the <code> portfolio_submission_form_shortcode_function </code>function in the plugin file.</p>';
-					echo '<form id="portfolio_submission_form">
-					<input type="hidden" name="action" value="portfolio_submission">
-
-					<label for="name">Name:</label>
-					<input type="text" id="name" name="name" autocomplete="name" required/><br><br>
-					<label for="company_name">Company Name:</label>
-					<input type="text" id="company_name" name="company_name" autocomplete="on" /><br><br>
-					<label for="email">Email:</label>
-					<input type="email" id="email" name="email" autocomplete="email" required/><br><br>
-					<label for="phone">Phone:</label>
-					<input type="tel" id="phone" name="phone" autocomplete="phone"/><br><br>
-					<label for="address">Address:</label>
-					<textarea id="address" name="address" autocomplete="address"></textarea><br><br>
-					</form>';
-					break;
-				case 'recentpost':
-					echo '<h3>Recent Post</h3>';
-					echo '<p>Use the following shortcode to display dynamic content:</p>
-					<code>[recent_portfolio_posts]</code>';
-					echo 'using this shortcode you display recent posts from the portfolio.';
-					break;
-				case 'fetchdata':
-					echo '<h3>Fetch Data Shortcode</h3>';
-					echo '<p>Use the following shortcode to display dynamic content:</p>
-					<code>[fetch_data]</code>';
-					echo 'using this shortcode you display name of the field.';
-					break;
-				default:
-					// Fallback if invalid tab is accessed
-					echo '<h3>Invalid Tab</h3>';
-					break;
-			}
-			?>
-		</div>
-	</div>
-<style>
-
-.plugin-container {
-	max-width: 600px;
-	margin: 50px auto;
-	background-color: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.plugin_container_shortcode
-{
-	margin-top:20px;
-	max-width: 600px;
-	margin: 50px auto;
-	background-color: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.plugin_container_shortcode p {
-	font-size: 16px;
-	margin-bottom: 20px;
-}
-.plugin_container_shortcode code {
-	font-size: 16px;
-	margin-bottom: 20px;
-}
-.plugin-container p {
-	font-size: 16px;
-	margin-bottom: 20px;
-}
-
-</style>
-	<?php
-}
 // Enqueue CSS file
 function your_plugin_enqueue_styles() {
 	// Enqueue CSS file located within your plugin directory
@@ -151,125 +30,7 @@ function your_plugin_enqueue_styles() {
 add_action( 'wp_enqueue_scripts', 'your_plugin_enqueue_styles' );
 
 // Add custom menu page
-function customkm_menu_page() {
-	add_menu_page(
-		'Customkm Menu',              // Page title
-		'Customkm Menu',              // Menu title
-		'manage_options',           // Capability
-		'customkm-page-slug',         // Menu slug
-		'customkm_page_content',      // Callback function
-		'dashicons-admin-generic',  // Icon
-		25                          // Position
-	);
-}
-add_action( 'admin_menu', 'customkm_menu_page' );
 
-// Custom page content
-function customkm_page_content() {
-	?>
-	<div class="logo-container">
-		<img src="<?php echo esc_url( plugins_url( 'images/custom-logo.png', __FILE__ ) ); ?>" alt="Plugin Logo">
-	</div>
-	<div class="wrap">
-		<form action="" method="post">
-			<?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
-			Name: <input type="text" name="name" value="<?php echo esc_attr( get_option( 'name' ) ); ?>"/>
-			<input type="submit" name="submit" value="Submit"/>
-		</form>
-	</div>
-	<?php
-}
-
-// Save data using Option API
-add_action( 'init', 'data_save_table' );
-function data_save_table() {
-	if ( isset( $_POST['plugin_options_nonce'] ) && wp_verify_nonce( $_POST['plugin_options_nonce'], 'update_plugin_options' ) ) {
-		$data_to_store = $_POST['name'];
-		$key           = 'name';
-		update_option( $key, $data_to_store );
-	}
-}
-
-// Add shortcode to fetch data
-add_shortcode( 'fetch_data', 'fetch_data_shortcode' );
-function fetch_data_shortcode() {
-	$key        = 'name';                  // Specify the key used to save the data
-	$saved_data = get_option( $key ); // Retrieve the saved data
-	return $saved_data;             // Return the data
-}
-
-// Add submenu page using Settings API
-function my_custom_submenu_page() {
-	add_submenu_page(
-		'options-general.php', // Parent menu slug
-		'My Submenu Page', // Page title
-		'My Submenu', // Menu title
-		'manage_options', // Capability required to access
-		'my-custom-submenu', // Menu slug
-		'my_custom_submenu_callback' // Callback function to display content
-	);
-}
-add_action( 'admin_menu', 'my_custom_submenu_page' );
-
-// Callback function to display submenu page content
-function my_custom_submenu_callback() {
-	?>
-	<div class="wrap">
-		<h2>My Submenu Page</h2>
-		<form method="post" action="options.php">
-			<?php
-			// Display settings fields
-			settings_fields( 'my-custom-settings-group' );
-			do_settings_sections( 'my-custom-settings-group' );
-			?>
-			<input type="submit" class="button-primary" value="Save Changes">
-		</form>
-	</div>
-	<?php
-}
-
-// Register settings and fields
-function my_custom_settings_init() {
-	register_setting(
-		'my-custom-settings-group', // Option group
-		'my_option_name', // Option name
-		'my_sanitize_callback' // Sanitization callback function
-	);
-
-	add_settings_section(
-		'my-settings-section', // Section ID
-		'My Settings Section', // Section title
-		'my_settings_section_callback', // Callback function to display section description (optional)
-		'my-custom-settings-group' // Parent page slug
-	);
-
-	add_settings_field(
-		'my-setting-field', // Field ID
-		'My Setting Field', // Field title
-		'my_setting_field_callback', // Callback function to display field input
-		'my-custom-settings-group', // Parent page slug
-		'my-settings-section' // Section ID
-	);
-}
-add_action( 'admin_init', 'my_custom_settings_init' );
-
-// Callback function to display section description (optional)
-function my_settings_section_callback() {
-	echo '<p>This is a description of my settings section.</p>';
-}
-
-// Callback function to display field input
-function my_setting_field_callback() {
-	$option_value = get_option( 'my_option_name' );
-	?>
-	<input type="text" name="my_option_name" value="<?php echo esc_attr( $option_value ); ?>">
-	<?php
-}
-
-// Sanitization callback function
-function my_sanitize_callback( $input ) {
-	return sanitize_text_field( $input );
-}
 function custom_portfolio_post_type() {
 
 	$labels = array(
@@ -320,6 +81,7 @@ function custom_portfolio_post_type() {
 		'exclude_from_search' => false,
 		'publicly_queryable'  => true,
 		'capability_type'     => 'page',
+		'show_in_rest'        => true, // Ensure REST API support
 	);
 	register_post_type( 'portfolio', $args );
 }
@@ -420,7 +182,7 @@ function custom_ajax_plugin_menu() {
 		'custom-ajax-plugin-settings',         // Menu slug
 		'custom_ajax_plugin_settings_page',    // Callback function
 		'dashicons-menu', // Icon
-		26 // Position of the menu in the admin sidebar
+		28 // Position of the menu in the admin sidebar
 	);
 }
 // Plugin settings page
@@ -654,10 +416,11 @@ function process_portfolio_submission() {
 				'post_type'   => 'portfolio',
 				'post_status' => 'publish',
 				'meta_input'  => array(
-					'client_name' => $name,
-					'email'       => $email,
-					'phone'       => $phone,
-					'address'     => $address,
+					'client_name'  => $name,
+					'email'        => $email,
+					'phone'        => $phone,
+					'company_name' => $company_name,
+					'address'      => $address,
 				),
 			);
 			// Insert the post into the database
@@ -665,7 +428,12 @@ function process_portfolio_submission() {
 			if ( is_wp_error( $post_id ) ) {
 				echo 'Error: ' . esc_html( $post_id->get_error_message() );
 			} else {
-				echo 'Success! Your portfolio has been submitted.';
+				echo '<div id="success-message">Success! Your portfolio has been submitted.</div>';
+				echo '<script>
+						setTimeout(function() {
+							document.getElementById("success-message").style.display = "none";
+						}, 5000); // Hide after 5 seconds
+					  </script>';
 			}
 		}
 	}
@@ -674,16 +442,16 @@ function process_portfolio_submission() {
 add_action( 'wp_ajax_portfolio_submission', 'process_portfolio_submission' );
 add_action( 'wp_ajax_nopriv_portfolio_submission', 'process_portfolio_submission' );
 
-// Add submenu page
 function my_plugin_submenu() {
-	add_submenu_page(
-		'options-general.php', // Parent menu slug (Options)
-		'Post Retrieval', // Page title
-		'Post Retrieval', // Menu title
-		'manage_options', // Capability required
-		'post-retrieval', // Menu slug
-		'my_plugin_page_content' // Callback function
-	);
+
+		add_submenu_page(
+			'custom-ajax-plugin-settings',
+			'Submenu Page Title',       // Page title
+			'Submenu Menu Title',       // Menu title
+			'manage_options',           // Capability
+			'customkm-submenu-slug',    // Submenu slug
+			'my_plugin_page_content'  // Callback function for submenu content
+		);
 }
 add_action( 'admin_menu', 'my_plugin_submenu' );
 
@@ -696,63 +464,125 @@ function my_plugin_page_content() {
 		<?php
 		// Retrieve posts using REST API
 		$url      = home_url();
-		$response = wp_remote_get( rest_url( 'wp/v2/posts' ), $url );
-
+		$response = wp_remote_get( rest_url( 'wp/v2/portfolio' ) );
 		// Check if request was successful
 		if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
 			// Decode the JSON response body
 			$posts = json_decode( wp_remote_retrieve_body( $response ), true );
+			// Check if there are posts
+			if ( ! empty( $posts ) ) {
+				echo '<table>';
+				echo '<tr><th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Title</th>
+                        <th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Name</th>
+                        <th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Address</th>
+                        <th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Email</th>
+                        <th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Phone</th>
+                        <th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Company Name</th>
+                        <th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Date</th>
+                        <th style="border: 1px solid #ddd;padding: 8px;text-align: left;background-color: #f2f2f2;">Action</th>
+                    </tr>';
 
-			// Process the retrieved posts
-			foreach ( $posts as $post ) {
-				// Do something with each post, e.g., echo post titles
-				echo '<div>';
-				echo esc_html( $post['title']['rendered'] ) . '<br>';
-					// Add a delete button for each post
-					echo '<button class="delete-post-button" data-post-id="' . $post['id'] . '">Delete Post</button>';
-					echo '</div>';
+				foreach ( $posts as $post ) {
+					$query = new WP_Query(
+						array(
+							'post_type' => 'portfolio',
+							'p'         => $post['id'],
+						)
+					); // Specify post type as portfolio
+					//print_r( $query->have_posts() );
+					while ( $query->have_posts() ) :
+						$query->the_post(); // Using $query to iterate through posts
+						// Get the post ID
+						$post_id     = get_the_ID();
+						//print_r( $post_id );
+						$client_name = get_post_meta( $post_id, 'client_name', true );
+						$address     = get_post_meta( $post_id, 'address', true );
+						$email       = get_post_meta( $post_id, 'email', true );
+						$phone       = get_post_meta( $post_id, 'phone', true );
+						$company     = get_post_meta( $post_id, 'company_name', true );
+						echo '<tr style="background-color: #ddd;">';
+						echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( get_the_title( $post_id ) ) . '</td>';
+						echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( $client_name ) . '</td>'; // Display author's name
+						echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( $address ) . '</td>';
+						echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( $email ) . '</td>';
+						echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( $phone ) . '</td>';
+						echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( $company ) . '</td>';
+						echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;">' . esc_html( get_the_date() ) . '</td>';
+						echo '<td style="border: 1px solid #ddd;padding: 8px;text-align: left;"><button class="delete-post-button" data-post-id="' . esc_html( $post_id ) . '">Delete Post</button></td>';
+						echo '</tr>';
+					endwhile;
+					wp_reset_postdata(); // Reset post data
+				}
+				echo '</table>';
+			} else {
+				// No posts found message
+				echo '<p>No posts found.</p>';
 			}
+		} else {
+			// Error message if request was not successful
+			echo '<p>An error occurred while retrieving posts.</p>';
 		}
 		?>
 	</div>
 
 	<script>
 		// JavaScript to handle delete post button clicks
-		document.addEventListener('DOMContentLoaded', function() {
-			var deleteButtons = document.querySelectorAll('.delete-post-button');
-			deleteButtons.forEach(function(button) {
-				button.addEventListener('click', function() {
-					var postId = this.getAttribute('data-post-id');
-					deletePost(postId);
-				});
-			});
+		jQuery(document).ready(function($) {
+	$('.delete-post-button').on('click', function() {
+		event.preventDefault();
+		var postId = $(this).data('post-id');
+		var deleteButton = $(this); // Store a reference to the clicked button
 
-			function deletePost(postId) {
-				// Send a DELETE request to delete the post
-				fetch('<?php echo rest_url( 'wp/v2/posts' ); ?>/' + postId, {
-					method: 'DELETE',
-					credentials: 'same-origin',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-WP-Nonce': '<?php echo wp_create_nonce( 'wp_rest' ); ?>'
-					}
-				}).then(function(response) {
-					if (response.ok) {
-						// Post deleted successfully
-						console.log('Post deleted successfully');
-						// You can update UI or do something else here
+		var confirmation = confirm('Are you sure you want to delete this post?');
+
+		if (confirmation) {
+			$.ajax({
+				url: '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
+				type: 'POST',
+				data: {
+					action: 'delete_post_action',
+					post_id: postId,
+				},
+				success: function(response) {
+					// If the deletion was successful, remove the row from the table
+					if (response === 'success') {
+						deleteButton.closest('tr').remove();
 					} else {
-						// Failed to delete post
-						console.error('Failed to delete post');
+						alert('An error occurred while deleting the post.');
 					}
-				}).catch(function(error) {
-					console.error('Error deleting post:', error);
-				});
-			}
-		});
+				},
+				error: function(xhr, status, error) {
+					console.error(xhr.responseText);
+					alert('An error occurred while deleting the post.');
+				}
+			});
+		}
+
+		return false;
+	});
+});
+
 	</script>
 
 	<?php
+}
+
+// Handle AJAX request to delete post
+add_action( 'wp_ajax_delete_post_action', 'delete_post_action_callback' );
+function delete_post_action_callback() {
+	$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+
+	// Check if user has permission to delete post
+	if ( current_user_can( 'delete_post', $post_id ) ) {
+		// Delete the post
+		wp_delete_post( $post_id, true );
+		echo 'success';
+	} else {
+		echo 'error';
+	}
+
+	// Always exit to avoid further execution
+	wp_die();
 }
 function prefix_get_endpoint_phrase() {
 	// rest_ensure_response() wraps the data we want to return into a WP_REST_Response, and ensures it will be properly returned.
@@ -777,3 +607,294 @@ function prefix_register_example_routes() {
 }
 
 add_action( 'rest_api_init', 'prefix_register_example_routes' );
+
+
+// Add plugin page in admin menu
+function example_plugin_menu() {
+	add_submenu_page(
+		'custom-ajax-plugin-settings',
+		'Example Plugin Page',    // Page title
+		'Plugin Page',         // Menu title
+		'manage_options',         // Capability
+		'example-plugin',         // Menu slug
+		'example_plugin_page',    // Callback function
+		'dashicons-admin-page', // Icon
+		27 // Position of the menu in the admin sidebar
+	);
+}
+add_action( 'admin_menu', 'example_plugin_menu' );
+
+// Plugin page content
+function example_plugin_page() {
+	?>
+	<div class="wrap">
+		<h2>My Plugin Settings</h2>
+		<!-- Create tabs navigation -->
+		<h2 class="nav-tab-wrapper">
+			<a href="?page=example-plugin&tab=pluginbasic" class="nav-tab <?php echo 'pluginbasic' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) || ! isset( $_GET['tab'] ) ? 'nav-tab-active' : ''; ?>">Plugin Basic</a>
+			<a href="?page=example-plugin&tab=shortcode" class="nav-tab <?php echo 'shortcode' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Shortcode</a>
+			<a href="?page=example-plugin&tab=recentpost" class="nav-tab <?php echo 'recentpost' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Recent Post</a>
+			<a href="?page=example-plugin&tab=fetchdata" class="nav-tab <?php echo 'fetchdata' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Fetch Data Shortcode</a>
+		</h2>
+		<!-- Display tab content -->
+		<div class="tab-content">
+			<?php
+			$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'pluginbasic';
+
+			switch ( $active_tab ) {
+				case 'pluginbasic':
+					echo '<h3>Plugin Information</h3>';
+					echo '<p>Plugin Name :  Customkm Menu</p>';
+					echo '<p>Author :  Krishna</p>';
+					echo '<p>Description : Customkm Plugin for your site.</p>';
+					echo '<P>Version: 6.5.2</P>';
+					break;
+				case 'shortcode':
+					echo '<h3>Shortcode Usage</h3>';
+					echo '<p>Use the following shortcode to display dynamic content:</p>';
+					echo '<code>[portfolio_submission_form]</code>';
+					echo '<h3>Functionality of Shortcode</h3>';
+					echo '<p>The <code>[portfolio_submission_form]</code> shortcode displays a simple message. You can customize the functionality by modifying the <code> portfolio_submission_form_shortcode_function </code>function in the plugin file.</p>';
+					echo '<form id="portfolio_submission_form">
+					<input type="hidden" name="action" value="portfolio_submission">
+
+					<label for="name">Name:</label>
+					<input type="text" id="name" name="name" autocomplete="name" required/><br><br>
+					<label for="company_name">Company Name:</label>
+					<input type="text" id="company_name" name="company_name" autocomplete="on" /><br><br>
+					<label for="email">Email:</label>
+					<input type="email" id="email" name="email" autocomplete="email" required/><br><br>
+					<label for="phone">Phone:</label>
+					<input type="tel" id="phone" name="phone" autocomplete="phone"/><br><br>
+					<label for="address">Address:</label>
+					<textarea id="address" name="address" autocomplete="address"></textarea><br><br>
+					</form>';
+					break;
+				case 'recentpost':
+					echo '<h3>Recent Post</h3>';
+					echo '<p>Use the following shortcode to display dynamic content:</p>
+					<code>[recent_portfolio_posts]</code>';
+					echo 'using this shortcode you display recent posts from the portfolio.';
+					break;
+				case 'fetchdata':
+					echo '<h3>Fetch Data Shortcode</h3>';
+					echo '<p>Use the following shortcode to display dynamic content:</p>
+					<code>[fetch_data]</code>';
+					echo 'using this shortcode you display name of the field.';
+					break;
+				default:
+					// Fallback if invalid tab is accessed
+					echo '<h3>Invalid Tab</h3>';
+					break;
+			}
+			?>
+		</div>
+	</div>
+<style>
+
+.plugin-container {
+	max-width: 600px;
+	margin: 50px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.plugin_container_shortcode
+{
+	margin-top:20px;
+	max-width: 600px;
+	margin: 50px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.plugin_container_shortcode p {
+	font-size: 16px;
+	margin-bottom: 20px;
+}
+.plugin_container_shortcode code {
+	font-size: 16px;
+	margin-bottom: 20px;
+}
+.plugin-container p {
+	font-size: 16px;
+	margin-bottom: 20px;
+}
+#portfolio_submission_form {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+	background-color: #f7f7f7;
+	border-radius: 5px;
+	color:red !important;
+}
+
+label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+input[type="button"] {
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+input[type="button"]:hover {
+	background-color: #0056b3;
+}
+
+input[type="button"]:focus {
+	outline: none;
+}
+
+input[type="button"]:active {
+	background-color: #0056b3;
+}
+
+#error_message {
+	color: red;
+}
+
+</style>
+	<?php
+}
+function customkm_menu_page() {
+	add_submenu_page(
+		'custom-ajax-plugin-settings',
+		'Customkm Menu',              // Page title
+		'Customkm Menu',              // Menu title
+		'manage_options',           // Capability
+		'customkm-page-slug',         // Menu slug
+		'customkm_page_content',      // Callback function
+		'dashicons-admin-generic',  // Icon
+		25                          // Position
+	);
+}
+add_action( 'admin_menu', 'customkm_menu_page' );
+
+// Custom page content
+function customkm_page_content() {
+	?>
+	<div class="logo-container">
+		<img src="<?php echo esc_url( plugins_url( 'images/custom-logo.png', __FILE__ ) ); ?>" alt="Plugin Logo">
+	</div>
+	<div class="wrap">
+		<form action="" method="post">
+			<?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
+			Name: <input type="text" name="name" value="<?php echo esc_attr( get_option( 'name' ) ); ?>"/>
+			<input type="submit" name="submit" value="Submit"/>
+		</form>
+	</div>
+	<?php
+}
+
+// Save data using Option API
+add_action( 'init', 'data_save_table' );
+function data_save_table() {
+	if ( isset( $_POST['plugin_options_nonce'] ) && wp_verify_nonce( $_POST['plugin_options_nonce'], 'update_plugin_options' ) ) {
+		$data_to_store = $_POST['name'];
+		$key           = 'name';
+		update_option( $key, $data_to_store );
+	}
+}
+
+// Add shortcode to fetch data
+add_shortcode( 'fetch_data', 'fetch_data_shortcode' );
+function fetch_data_shortcode() {
+	$key        = 'name';                  // Specify the key used to save the data
+	$saved_data = get_option( $key ); // Retrieve the saved data
+	return $saved_data;             // Return the data
+}
+
+// Add submenu page using Settings API
+function my_custom_submenu_page() {
+	add_submenu_page(
+		'options-general.php', // Parent menu slug
+		'My Submenu Page', // Page title
+		'My Submenu', // Menu title
+		'manage_options', // Capability required to access
+		'my-custom-submenu', // Menu slug
+		'my_custom_submenu_callback' // Callback function to display content
+	);
+}
+add_action( 'admin_menu', 'my_custom_submenu_page' );
+
+// Callback function to display submenu page content
+function my_custom_submenu_callback() {
+	?>
+	<div class="wrap">
+		<h2>My Submenu Page</h2>
+		<form method="post" action="options.php">
+			<?php
+			// Display settings fields
+			settings_fields( 'my-custom-settings-group' );
+			do_settings_sections( 'my-custom-settings-group' );
+			?>
+			<input type="submit" class="button-primary" value="Save Changes">
+		</form>
+	</div>
+	<?php
+}
+
+// Register settings and fields
+function my_custom_settings_init() {
+	register_setting(
+		'my-custom-settings-group', // Option group
+		'my_option_name', // Option name
+		'my_sanitize_callback' // Sanitization callback function
+	);
+
+	add_settings_section(
+		'my-settings-section', // Section ID
+		'My Settings Section', // Section title
+		'my_settings_section_callback', // Callback function to display section description (optional)
+		'my-custom-settings-group' // Parent page slug
+	);
+
+	add_settings_field(
+		'my-setting-field', // Field ID
+		'My Setting Field', // Field title
+		'my_setting_field_callback', // Callback function to display field input
+		'my-custom-settings-group', // Parent page slug
+		'my-settings-section' // Section ID
+	);
+}
+add_action( 'admin_init', 'my_custom_settings_init' );
+
+// Callback function to display section description (optional)
+function my_settings_section_callback() {
+	echo '<p>This is a description of my settings section.</p>';
+}
+
+// Callback function to display field input
+function my_setting_field_callback() {
+	$option_value = get_option( 'my_option_name' );
+	?>
+	<input type="text" name="my_option_name" value="<?php echo esc_attr( $option_value ); ?>">
+	<?php
+}
+
+// Sanitization callback function
+function my_sanitize_callback( $input ) {
+	return sanitize_text_field( $input );
+}
