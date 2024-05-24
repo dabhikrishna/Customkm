@@ -102,24 +102,9 @@ function custom_portfolio_custom_fields() {
 }
 add_action( 'add_meta_boxes', 'custom_portfolio_custom_fields' );
 
-function render_portfolio_fields( $post ) {
+function render_portfolio_fields() {
 	// Retrieve existing values for fields
-	$client_name = get_post_meta( $post->ID, 'client_name', true );
-	$project_url = get_post_meta( $post->ID, 'project_url', true );
-
-	// Render fields
-	?>
-	<p>
-	<?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
-		<label for="client_name">Client Name:</label>
-		<input type="text" id="client_name" name="client_name" value="<?php echo esc_attr( $client_name ); ?>">
-	</p>
-	<p>
-	<?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
-		<label for="project_url">Project URL:</label>
-		<input type="text" id="project_url" name="project_url" value="<?php echo esc_attr( $project_url ); ?>">
-	</p>
-	<?php
+	include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-renders.php';
 }
 
 // Save Custom Fields
@@ -189,18 +174,7 @@ function custom_ajax_plugin_menu() {
 }
 // Plugin settings page
 function custom_ajax_plugin_settings_page() {
-	?>
-	<div class="wrap">
-		<h2><?php echo esc_html__( 'Custom AJAX Plugin Settings', 'customkm-menu' ); ?></h2>
-		<form id="store-name-form">
-		<?php wp_nonce_field( 'save_store_name_action', 'save_store_name_nonce' ); ?>
-		<label for="store-name"><?php echo esc_html__( 'Store Name', 'customkm-menu' ); ?></label>
-			<input type="text" id="store-name" name="store_name" value="<?php echo esc_attr( get_option( 'store_name' ) ); ?>">
-			<input type="submit" value="Save">
-		</form>
-		<div id="store-name-result"></div>
-	</div>
-	<?php
+	include_once plugin_dir_path( __FILE__ ) . 'templates/custom-ajax.php';
 }
 
 add_action( 'admin_menu', 'custom_ajax_plugin_menu' );
@@ -332,21 +306,7 @@ function portfolio_submission_form_shortcode( $atts ) {
 	?>
 	<div class="my">
 	<h2 style="font-weight: bold;"><?php echo esc_html( $atts['title'] ); ?></h2>
-	<form id="portfolio_submission_form">
-		<input type="hidden" name="action" value="portfolio_submission">
-		<?php wp_nonce_field( 'portfolio_submission_nonce', 'portfolio_submission_nonce_field' ); ?>
-		<label for="name">Name:</label>
-		<input type="text" id="name" name="name" autocomplete="name" required/><br><br>
-		<label for="company_name">Company Name:</label>
-		<input type="text" id="company_name" name="company_name" autocomplete="company_name" /><br><br>
-		<label for="email">Email:</label>
-		<input type="email" id="email" name="email" autocomplete="email" required/><br><br>
-		<label for="phone">Phone:</label>
-		<input type="tel" id="phone" name="phone" autocomplete="phone"/><br><br>
-		<label for="address">Address:</label>
-		<textarea id="address" name="address" autocomplete="address" rows="10" cols="50"></textarea><br><br>
-		<input type="button" id="submit_btn" value="Submit">
-	</form>
+	<?php include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-form.php'; ?>
 	<div id="response_msg"></div>
 	</div>
 	<script>
@@ -597,71 +557,7 @@ add_action( 'admin_menu', 'example_plugin_menu' );
 // Plugin page content
 function example_plugin_page() {
 	wp_enqueue_style( 'plugin-custom-styles', plugin_dir_url( __FILE__ ) . 'css/plugin-styles.css' );
-	?>
-	<div class="wrap">
-		<h2>My Plugin Settings</h2>
-		<!-- Create tabs navigation -->
-		<h2 class="nav-tab-wrapper">
-			<a href="?page=example-plugin&tab=pluginbasic" class="nav-tab <?php echo 'pluginbasic' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) || ! isset( $_GET['tab'] ) ? 'nav-tab-active' : ''; ?>">Plugin Basic</a>
-			<a href="?page=example-plugin&tab=shortcode" class="nav-tab <?php echo 'shortcode' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Shortcode</a>
-			<a href="?page=example-plugin&tab=recentpost" class="nav-tab <?php echo 'recentpost' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Recent Post</a>
-			<a href="?page=example-plugin&tab=fetchdata" class="nav-tab <?php echo 'fetchdata' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Fetch Data Shortcode</a>
-		</h2>
-		<!-- Display tab content -->
-		<div class="tab-content">
-			<?php
-			$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'pluginbasic';
-
-			switch ( $active_tab ) {
-				case 'pluginbasic':
-					echo '<h3>Plugin Information</h3>';
-					echo '<p>Plugin Name :  Customkm Menu</p>';
-					echo '<p>Author :  Krishna</p>';
-					echo '<p>Description : Customkm Plugin for your site.</p>';
-					echo '<P>Version: 6.5.2</P>';
-					break;
-				case 'shortcode':
-					echo '<h3>Shortcode Usage</h3>';
-					echo '<p>Use the following shortcode to display dynamic content:</p>';
-					echo '<code>[portfolio_submission_form]</code>';
-					echo '<h3>Functionality of Shortcode</h3>';
-					echo '<p>The <code>[portfolio_submission_form]</code> shortcode displays a simple message. You can customize the functionality by modifying the <code> portfolio_submission_form_shortcode_function </code>function in the plugin file.</p>';
-					echo '<form id="portfolio_submission_form1">
-					<input type="hidden" name="action" value="portfolio_submission">
-
-					<label for="name">Name:</label>
-					<input type="text" id="name" name="name" autocomplete="name" required/><br><br>
-					<label for="company_name">Company Name:</label>
-					<input type="text" id="company_name" name="company_name" autocomplete="on" /><br><br>
-					<label for="email">Email:</label>
-					<input type="email" id="email" name="email" autocomplete="email" required/><br><br>
-					<label for="phone">Phone:</label>
-					<input type="tel" id="phone" name="phone" autocomplete="phone"/><br><br>
-					<label for="address">Address:</label>
-					<textarea id="address" name="address" autocomplete="address"></textarea><br><br>
-					</form>';
-					break;
-				case 'recentpost':
-					echo '<h3>Recent Post</h3>';
-					echo '<p>Use the following shortcode to display dynamic content:</p>
-					<code>[recent_portfolio_posts]</code>';
-					echo 'using this shortcode you display recent posts from the portfolio.';
-					break;
-				case 'fetchdata':
-					echo '<h3>Fetch Data Shortcode</h3>';
-					echo '<p>Use the following shortcode to display dynamic content:</p>
-					<code>[fetch_data]</code>';
-					echo 'using this shortcode you display name of the field.';
-					break;
-				default:
-					// Fallback if invalid tab is accessed
-					echo '<h3>Invalid Tab</h3>';
-					break;
-			}
-			?>
-		</div>
-	</div>
-	<?php
+	include_once plugin_dir_path( __FILE__ ) . 'templates/example-plugin.php';
 }
 function customkm_menu_page() {
 	add_submenu_page(
@@ -679,18 +575,7 @@ add_action( 'admin_menu', 'customkm_menu_page' );
 
 // Custom page content
 function customkm_page_content() {
-	?>
-	<div class="logo-container">
-		<img src="<?php echo esc_url( plugins_url( 'images/custom-logo.png', __FILE__ ) ); ?>" alt="Plugin Logo">
-	</div>
-	<div class="wrap">
-		<form action="" method="post">
-			<?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
-			Name: <input type="text" name="name" value="<?php echo esc_attr( get_option( 'name' ) ); ?>"/>
-			<input type="submit" name="submit" value="Submit"/>
-		</form>
-	</div>
-	<?php
+	include_once plugin_dir_path( __FILE__ ) . 'templates/customkm-page.php';
 }
 
 // Save data using Option API
@@ -726,19 +611,7 @@ add_action( 'admin_menu', 'my_custom_submenu_page' );
 
 // Callback function to display submenu page content
 function my_custom_submenu_callback() {
-	?>
-	<div class="wrap">
-		<h2>My Submenu Page</h2>
-		<form method="post" action="options.php">
-			<?php
-			// Display settings fields
-			settings_fields( 'my-custom-settings-group' );
-			do_settings_sections( 'my-custom-settings-group' );
-			?>
-			<input type="submit" class="button-primary" value="Save Changes">
-		</form>
-	</div>
-	<?php
+	include_once plugin_dir_path( __FILE__ ) . 'templates/custom-submenu.php';
 }
 
 // Register settings and fields
