@@ -32,8 +32,6 @@ function your_plugin_enqueue_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'your_plugin_enqueue_styles' );
 
-
-
 /**
  * Adds custom fields to the portfolio post type.
  */
@@ -57,7 +55,9 @@ function render_portfolio_fields() {
 	include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-renders.php';
 }
 
-// Save Custom Fields
+/**
+ * Save Custom Fields
+ */
 function save_portfolio_custom_fields( $post_id ) {
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 		return;
@@ -75,7 +75,9 @@ function save_portfolio_custom_fields( $post_id ) {
 }
 add_action( 'save_post', 'save_portfolio_custom_fields' );
 
-// Add plugin page in admin menu
+/**
+ * Add plugin page in admin menu
+ */
 function custom_ajax_plugin_menu() {
 	add_menu_page(
 		'Custom AJAX Plugin Settings',    // Page title
@@ -168,8 +170,6 @@ function display_recent_portfolio_posts_shortcode( $atts ) {
 }
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-kmd-widget.php';
-
-
 
 // Enqueue jQuery in WordPress
 function enqueue_jquery() {
