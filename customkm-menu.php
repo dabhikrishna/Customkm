@@ -9,18 +9,7 @@
  * Text Domain: customkm-menu
  * Domain Path: /languages
  *
- * Customkm Menu plugin use for add CUSTOM MENU,CUSTOM SUBMENU,create field and save data using ,
- * OPTION API AND SETTING API.
- *
- * Create register post type PORTFOLIO and save their custom field with view.
- *
- * Create code for display recent post type from portfolio menu.
- *
- * Build a widget that displays recent comments or posts in the sidebar of your WordPress site.
- *
- * Incorporate AJAX into customkm plugin to perform asynchronous tasks, such as loading content dynamically or submitting form data without page reloads.
- *
- * Create shortcode for Add form with different fields and insert data in custom post type Portfolio.
+ * Customkm Menu plugin adds custom menus, submenus, fields, shortcode and post types to your WordPress site, enhancing its functionality.
  */
 
 /**
@@ -283,7 +272,8 @@ function my_plugin_submenu() {
 			esc_html__( 'Submenu Menu Title', 'customkm-menu' ),       // Menu title
 			'manage_options',           // Capability
 			'customkm-submenu-slug',    // Submenu slug
-			'my_plugin_page_content'  // Callback function for submenu content
+			'my_plugin_page_content',  // Callback function for submenu content
+			26
 		);
 }
 add_action( 'admin_menu', 'my_plugin_submenu' );
@@ -428,7 +418,7 @@ add_action( 'admin_menu', 'example_plugin_menu' );
 
 // Plugin page content
 function example_plugin_page() {
-	wp_enqueue_style( 'plugin-custom-styles', plugin_dir_url( __FILE__ ) . 'css/plugin-styles.css' );
+	wp_enqueue_style( 'plugin-custom-styles', plugin_dir_url( __FILE__ ) . 'css/plugin-styles.css', array(), '1.0');
 	include_once plugin_dir_path( __FILE__ ) . 'templates/example-plugin.php';
 }
 
@@ -488,7 +478,8 @@ function my_custom_submenu_page() {
 		'My Submenu', // Menu title
 		'manage_options', // Capability required to access
 		'my-custom-submenu', // Menu slug
-		'my_custom_submenu_callback' // Callback function to display content
+		'my_custom_submenu_callback', // Callback function to display content
+		28
 	);
 }
 add_action( 'admin_menu', 'my_custom_submenu_page' );

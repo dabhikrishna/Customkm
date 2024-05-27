@@ -63,8 +63,8 @@ class Kmd_Widget extends WP_Widget {
 
 	public function update( $new_instance, $old_instance ) {
 		$instance                    = array();
-		$instance['title']           = ! empty( $new_instance['title'] ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['number_of_posts'] = ! empty( $new_instance['number_of_posts'] ) ? strip_tags( $new_instance['number_of_posts'] ) : '';
+		$instance['title']           = ! empty( $new_instance['title'] ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
+		$instance['number_of_posts'] = ! empty( $new_instance['number_of_posts'] ) ? wp_strip_all_tags( $new_instance['number_of_posts'] ) : '';
 		return $instance;
 	}
 }
