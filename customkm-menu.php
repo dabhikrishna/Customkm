@@ -16,8 +16,11 @@
  * Enqueues the stylesheet for the plugin.
  */
 function your_plugin_enqueue_styles() {
-	// Enqueue CSS file located within your plugin directory
-	wp_enqueue_style( 'your-plugin-style', plugins_url( '/css/portfolio-submission-form.css', __FILE__ ), array(), '1.0', 'all' );
+	if ( has_shortcode( get_post()->post_content, 'portfolio_submission_form' ) ) {
+		// Enqueue CSS file located within your plugin directory
+
+		wp_enqueue_style( 'your-plugin-style', plugins_url( '/css/portfolio-submission-form.css', __FILE__ ), array(), '1.0', 'all' );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'your_plugin_enqueue_styles' );
 
@@ -420,7 +423,7 @@ add_action( 'admin_menu', 'example_plugin_menu' );
 
 // Plugin page content
 function example_plugin_page() {
-	wp_enqueue_style( 'plugin-custom-styles', plugin_dir_url( __FILE__ ) . 'css/plugin-styles.css', array(), '1.0');
+	wp_enqueue_style( 'plugin-custom-styles', plugin_dir_url( __FILE__ ) . 'css/plugin-styles.css', array(), '1.0' );
 	include_once plugin_dir_path( __FILE__ ) . 'templates/example-plugin.php';
 }
 
