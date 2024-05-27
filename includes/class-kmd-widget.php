@@ -31,7 +31,6 @@ class Kmd_Widget extends WP_Widget {
 				'order'          => 'DESC',
 			)
 		);
-
 		if ( $recent_posts->have_posts() ) {
 			echo '<ul>';
 			while ( $recent_posts->have_posts() ) {
