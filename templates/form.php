@@ -17,5 +17,3 @@
 		<th>Date</th>
 		<th>Action</th>
 	</tr>
-
-		

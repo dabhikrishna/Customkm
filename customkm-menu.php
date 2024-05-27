@@ -40,12 +40,14 @@ add_action( 'add_meta_boxes', 'custom_portfolio_custom_fields' );
  * Renders the custom fields for the portfolio post type.
  */
 function render_portfolio_fields() {
-	// Retrieve existing values for fields
+	// Include the template file for rendering the custom fields
 	include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-renders.php';
 }
 
 /**
- * Save Custom Fields
+ * Saves the custom fields for the portfolio post type.
+ *
+ * @param int $post_id The ID of the post being saved.
  */
 function save_portfolio_custom_fields( $post_id ) {
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -208,6 +210,7 @@ function my_plugin_enqueue_scripts() {
 		admin_url( 'admin-ajax.php' ) // Data
 	);
 }
+
 // Hook into appropriate action
 add_action( 'wp_enqueue_scripts', 'my_plugin_enqueue_scripts' );
 
@@ -265,7 +268,6 @@ add_action( 'wp_ajax_nopriv_portfolio_submission', 'process_portfolio_submission
  * Adds a submenu page to the custom AJAX plugin settings.
  */
 function my_plugin_submenu() {
-
 		add_submenu_page(
 			'custom-ajax-plugin-settings',
 			'Submenu Page Title',       // Page title
@@ -307,13 +309,13 @@ function my_plugin_page_content() {
 					while ( $query->have_posts() ) :
 						$query->the_post(); // Using $query to iterate through posts
 						// Get the post ID
-						$post_id = get_the_ID();
-						//print_r( $post_id );
+						$post_id     = get_the_ID();
 						$client_name = get_post_meta( $post_id, 'client_name', true );
 						$address     = get_post_meta( $post_id, 'address', true );
 						$email       = get_post_meta( $post_id, 'email', true );
 						$phone       = get_post_meta( $post_id, 'phone', true );
 						$company     = get_post_meta( $post_id, 'company_name', true );
+
 						include plugin_dir_path( __FILE__ ) . 'templates/post-row.php';
 					endwhile;
 					wp_reset_postdata(); // Reset post data
