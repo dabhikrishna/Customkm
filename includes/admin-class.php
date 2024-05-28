@@ -1,14 +1,14 @@
 <?php
 namespace CustomPlugin\Includes;
 
-use function CustomPlugin\Includes\custom_portfolio_post_type;
-use function CustomPlugin\Includes\modify_portfolio_columns;
-use function CustomPlugin\Includes\display_portfolio_custom_columns;
+use function CustomPlugin\Includes\customkm_portfolio_post_type;
+use function CustomPlugin\Includes\customkm_modify_portfolio_columns;
+use function CustomPlugin\Includes\customkmdisplay_portfolio_custom_columns;
 
 /**
  * Registers a custom post type for portfolio items.
  */
-function custom_portfolio_post_type() {
+function customkm_portfolio_post_type() {
 	// Labels for the custom post type
 	$labels = array(
 		'name'                  => _x( 'Portfolio', 'Post Type General Name', 'text_domain' ),
@@ -66,7 +66,7 @@ function custom_portfolio_post_type() {
 	// Register the custom post type
 	register_post_type( 'portfolio', $args );
 }
-add_action( 'init', 'CustomPlugin\Includes\custom_portfolio_post_type', 0 );
+add_action( 'init', 'CustomPlugin\Includes\customkm_portfolio_post_type', 0 );
 
 /**
  * Modifies the columns displayed in the portfolio post type admin table.
@@ -74,7 +74,7 @@ add_action( 'init', 'CustomPlugin\Includes\custom_portfolio_post_type', 0 );
  * @param array $columns Existing columns in the admin table.
  * @return array Modified columns array.
  */
-function modify_portfolio_columns( $columns ) {
+function customkm_modify_portfolio_columns( $columns ) {
 	$columns['client_name']  = 'Name';
 	$columns['address']      = 'Address';
 	$columns['email']        = 'Email';
@@ -84,7 +84,7 @@ function modify_portfolio_columns( $columns ) {
 	unset( $columns['tags'] ); // Remove tags column
 	return $columns;
 }
-add_filter( 'manage_portfolio_posts_columns', 'CustomPlugin\Includes\modify_portfolio_columns' );
+add_filter( 'manage_portfolio_posts_columns', 'CustomPlugin\Includes\customkm_modify_portfolio_columns' );
 
 /**
  * Displays custom data in the columns of the portfolio post type admin table.
@@ -92,7 +92,7 @@ add_filter( 'manage_portfolio_posts_columns', 'CustomPlugin\Includes\modify_port
  * @param string $column  The name of the column being displayed.
  * @param int    $post_id The ID of the post.
  */
-function display_portfolio_custom_columns( $column, $post_id ) {
+function customkm_display_portfolio_custom_columns( $column, $post_id ) {
 	switch ( $column ) {
 		case 'company_name':
 			echo esc_html( get_post_meta( $post_id, 'company_name', true ) );
@@ -111,4 +111,4 @@ function display_portfolio_custom_columns( $column, $post_id ) {
 			break;
 	}
 }
-add_action( 'manage_portfolio_posts_custom_column', 'CustomPlugin\Includes\display_portfolio_custom_columns', 10, 2 );
+add_action( 'manage_portfolio_posts_custom_column', 'CustomPlugin\Includes\customkm_display_portfolio_custom_columns', 10, 2 );
