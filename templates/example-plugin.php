@@ -2,6 +2,7 @@
 		<h2>My Plugin Settings</h2>
 		<!-- Create tabs navigation -->
 		<h2 class="nav-tab-wrapper">
+<<<<<<< HEAD
 	<?php
 	// Generate nonce
 	$nonce = wp_create_nonce( 'example-plugin-nonce' );
@@ -9,6 +10,15 @@
 	$link_url = add_query_arg( '_wpnonce', $nonce, '?page=example-plugin&tab=pluginbasic' );
 	?>
 	<a href="<?php echo esc_url( $link_url ); ?>" class="nav-tab <?php echo ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'example-plugin-nonce' ) ) || ! isset( $_GET['tab'] ) ? 'nav-tab-active' : ''; ?>">Plugin Basic</a>
+=======
+    <?php
+    // Generate nonce
+    $nonce = wp_create_nonce( 'example-plugin-nonce' );
+    // Append nonce to the link URL
+    $link_url = add_query_arg( '_wpnonce', $nonce, '?page=example-plugin&tab=pluginbasic' );
+    ?>
+    <a href="<?php echo esc_url( $link_url ); ?>" class="nav-tab <?php echo ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'example-plugin-nonce' ) ) || ! isset( $_GET['tab'] ) ? 'nav-tab-active' : ''; ?>">Plugin Basic</a>
+>>>>>>> fe1afce7531428735af396a88d83061d0754f1e6
 </h2>
 
 
