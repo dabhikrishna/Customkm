@@ -29,7 +29,7 @@ jQuery(document).ready(function ($) {
         var formData = $('#portfolio_submission_form').serialize();
         $.ajax({
             type: 'POST',
-            url: ajaxurl, // Note: No quotes around ajaxurl
+            url: my_custom_script_object.ajax_url, // Note: No quotes around ajaxurl
             data: formData,
             success: function (response) {
                 $('#response_msg').html(response);

@@ -44,5 +44,3 @@ $(document).on("click", ".delete-portfolio-post", function() {
         });
     }
 });
-
-

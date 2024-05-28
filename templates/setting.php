@@ -1,0 +1,1 @@
+<input type="text" name="my_option_name" value="<?php echo esc_attr( $option_value ); ?>">
