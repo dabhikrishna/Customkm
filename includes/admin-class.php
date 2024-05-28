@@ -3,7 +3,7 @@ namespace CustomPlugin\Includes;
 
 use function CustomPlugin\Includes\customkm_portfolio_post_type;
 use function CustomPlugin\Includes\customkm_modify_portfolio_columns;
-use function CustomPlugin\Includes\customkmdisplay_portfolio_custom_columns;
+use function CustomPlugin\Includes\customkm_display_portfolio_custom_columns;
 
 /**
  * Registers a custom post type for portfolio items.

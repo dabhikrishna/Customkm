@@ -11,7 +11,6 @@
 	<a href="<?php echo esc_url( $link_url ); ?>" class="nav-tab <?php echo ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'example-plugin-nonce' ) ) || ! isset( $_GET['tab'] ) ? 'nav-tab-active' : ''; ?>">Plugin Basic</a>
 </h2>
 
-
 	<a href="?page=example-plugin&tab=shortcode" class="nav-tab <?php echo 'shortcode' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Shortcode</a>
 	<!-- Add nonce fields for each form -->
 	<?php wp_nonce_field( 'example-plugin-action', 'example-plugin-nonce' ); ?>
@@ -29,8 +28,6 @@
 		echo '';
 		// Nonce is invalid or missing, handle accordingly (e.g., show an error message)
 	}
-
-
 
 	switch ( $active_tab ) {
 		case 'pluginbasic':
