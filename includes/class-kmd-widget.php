@@ -7,14 +7,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Kmd_Widget extends WP_Widget {
 	public function __construct() {
 		$widget_options = array(
-			'classname'   => 'recent_posts_widget',
+			'classname'   => 'Kmd_widget',
 			'description' => 'Displays a list of recent posts.',
 		);
-		parent::__construct( 'recent_posts_widget', 'Recent Posts Widget', $widget_options );
+		parent::__construct( 'kmd_widget', 'Kmd Widget', $widget_options );
 	}
 
 	public function widget( $args, $instance ) {
-		$title           = apply_filters( 'widget_title', $instance['title'] );
+		$title           = ! empty( $instance['title'] ) ? apply_filters( 'widget_title', $instance['title'] ) : '';
 		$number_of_posts = ! empty( $instance['number_of_posts'] ) ? $instance['number_of_posts'] : 5;
 
 		echo esc_attr( $args['before_widget'] );
@@ -31,7 +31,6 @@ class Kmd_Widget extends WP_Widget {
 				'order'          => 'DESC',
 			)
 		);
-
 		if ( $recent_posts->have_posts() ) {
 			echo '<ul>';
 			while ( $recent_posts->have_posts() ) {
@@ -63,8 +62,8 @@ class Kmd_Widget extends WP_Widget {
 
 	public function update( $new_instance, $old_instance ) {
 		$instance                    = array();
-		$instance['title']           = ! empty( $new_instance['title'] ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['number_of_posts'] = ! empty( $new_instance['number_of_posts'] ) ? strip_tags( $new_instance['number_of_posts'] ) : '';
+		$instance['title']           = ! empty( $new_instance['title'] ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
+		$instance['number_of_posts'] = ! empty( $new_instance['number_of_posts'] ) ? wp_strip_all_tags( $new_instance['number_of_posts'] ) : '';
 		return $instance;
 	}
 }

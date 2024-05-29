@@ -1,3 +1,15 @@
+<?php
+/**
+ * Plugin settings page for custom AJAX plugin.
+ *
+ * @since      1.0.0
+ *
+ * @package    Customkm Menu
+ * @subpackage customkm-menu/templates
+ */
+
+// Wrap the content in a div with the class 'wrap'.
+?>
 <div class="wrap">
 		<h2><?php echo esc_html__( 'Custom AJAX Plugin Settings', 'customkm-menu' ); ?></h2>
 		<form id="store-name-form">

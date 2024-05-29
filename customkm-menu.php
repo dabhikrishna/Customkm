@@ -2,119 +2,65 @@
 /**
  * Plugin Name: Customkm Menu
  * Plugin URI: https://qrolic.com
- * Description: Customkm Plugin for your site.
- * Version: 6.5.2
+ * Description:Customkm Menu is the ultimate solution for streamlining website enhancement. This plugin enables you to effortlessly create bespoke menus and submenus, integrate fields, and securely store data leveraging the powerful OPTION API and SETTING API. Moreover, it streamlines the process of establishing a PORTFOLIO post type to elegantly showcase your projects. What's more, Customkm Menu seamlessly incorporates shortcode support, empowering you to seamlessly embed dynamic content throughout your website's pages and posts.
+ * Version: 1.0.0
  * Author: krishna
  * Author URI:https://qrolic.com
  * Text Domain: customkm-menu
  * Domain Path: /languages
  *
- * Customkm Menu plugin use for add CUSTOM MENU,CUSTOM SUBMENU,create field and save data using ,
- * OPTION API AND SETTING API.
- *
- * Create register post type PORTFOLIO and save their custom field with view.
- *
- * Create code for display recent post type from portfolio menu.
- *
- * Build a widget that displays recent comments or posts in the sidebar of your WordPress site.
- *
- * Incorporate AJAX into customkm plugin to perform asynchronous tasks, such as loading content dynamically or submitting form data without page reloads.
- *
- * Create shortcode for Add form with different fields and insert data in custom post type Portfolio.
+ * Customkm Menu plugin adds custom menus, submenus, fields, shortcode and post types to your WordPress site, enhancing its functionality.
  */
+
+// Add a custom button next to Activate button on the plugins page
+function customkm_add_custom_plugin_button( $links ) {
+	$custom_plugin_page = admin_url( 'admin.php?page=custom-ajax-plugin-settings' );
+
+	// Add the custom button link.
+	$custom_link = '<a href="' . esc_url( $custom_plugin_page ) . '">Plugin details</a>';
+	array_unshift( $links, $custom_link );
+
+	return $links;
+}
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'customkm_add_custom_plugin_button' );
 
 
 /**
  * Enqueues the stylesheet for the plugin.
  */
-function your_plugin_enqueue_styles() {
-	// Enqueue CSS file located within your plugin directory
-	wp_enqueue_style( 'your-plugin-style', plugins_url( '/css/portfolio-submission-form.css', __FILE__ ), array(), '1.0', 'all' );
+function customkm_enqueue_styles() {
+	if ( has_shortcode( get_post()->post_content, 'portfolio_submission_form' ) ) {
+		// Enqueue CSS file located within your plugin directory
+		wp_enqueue_style(
+			'your_plugin_portfolio_submission_form_style', // Handle
+			plugins_url( '/css/portfolio-submission-form.css', __FILE__ ), // URL to CSS file
+			array(), // Dependencies
+			'1.0', // Version number
+			'all' // Media type
+		);
+	}
 }
-add_action( 'wp_enqueue_scripts', 'your_plugin_enqueue_styles' );
-
-/**
- * Registers a custom post type for portfolio items.
- */
-function custom_portfolio_post_type() {
-	// Labels for the custom post type
-	$labels = array(
-		'name'                  => _x( 'Portfolio', 'Post Type General Name', 'text_domain' ),
-		'singular_name'         => _x( 'Portfolio Item', 'Post Type Singular Name', 'text_domain' ),
-		'menu_name'             => __( 'Portfolio', 'text_domain' ),
-		'name_admin_bar'        => __( 'Portfolio', 'text_domain' ),
-		'archives'              => __( 'Portfolio Archives', 'text_domain' ),
-		'attributes'            => __( 'Portfolio Attributes', 'text_domain' ),
-		'parent_item_colon'     => __( 'Parent Item:', 'text_domain' ),
-		'all_items'             => __( 'All Items', 'text_domain' ),
-		'add_new_item'          => __( 'Add New Item', 'text_domain' ),
-		'add_new'               => __( 'Add New', 'text_domain' ),
-		'new_item'              => __( 'New Item', 'text_domain' ),
-		'edit_item'             => __( 'Edit Item', 'text_domain' ),
-		'update_item'           => __( 'Update Item', 'text_domain' ),
-		'view_item'             => __( 'View Item', 'text_domain' ),
-		'view_items'            => __( 'View Items', 'text_domain' ),
-		'search_items'          => __( 'Search Item', 'text_domain' ),
-		'not_found'             => __( 'Not found', 'text_domain' ),
-		'not_found_in_trash'    => __( 'Not found in Trash', 'text_domain' ),
-		'featured_image'        => __( 'Featured Image', 'text_domain' ),
-		'set_featured_image'    => __( 'Set featured image', 'text_domain' ),
-		'remove_featured_image' => __( 'Remove featured image', 'text_domain' ),
-		'use_featured_image'    => __( 'Use as featured image', 'text_domain' ),
-		'insert_into_item'      => __( 'Insert into item', 'text_domain' ),
-		'uploaded_to_this_item' => __( 'Uploaded to this item', 'text_domain' ),
-		'items_list'            => __( 'Items list', 'text_domain' ),
-		'items_list_navigation' => __( 'Items list navigation', 'text_domain' ),
-		'filter_items_list'     => __( 'Filter items list', 'text_domain' ),
-	);
-
-	// Arguments for registering the custom post type
-	$args = array(
-		'label'               => __( 'Portfolio Item', 'text_domain' ),
-		'description'         => __( 'Portfolio Item Description', 'text_domain' ),
-		'labels'              => $labels,
-		'supports'            => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
-		'taxonomies'          => array(),
-		'hierarchical'        => false,
-		'public'              => true,
-		'show_ui'             => true,
-		'show_in_menu'        => true,
-		'menu_position'       => 24,
-		'menu_icon'           => 'dashicons-portfolio',
-		'show_in_admin_bar'   => true,
-		'show_in_nav_menus'   => true,
-		'can_export'          => true,
-		'has_archive'         => true,
-		'exclude_from_search' => false,
-		'publicly_queryable'  => true,
-		'capability_type'     => 'page',
-		'show_in_rest'        => true, // Ensure REST API support
-	);
-
-	// Register the custom post type
-	register_post_type( 'portfolio', $args );
-}
-add_action( 'init', 'custom_portfolio_post_type', 0 );
+add_action( 'wp_enqueue_scripts', 'customkm_enqueue_styles' );
 
 /**
  * Adds custom fields to the portfolio post type.
  */
-function custom_portfolio_custom_fields() {
+function customkm_portfolio_custom_fields() {
 	add_meta_box(
 		'portfolio_fields',
 		'Portfolio Fields',
-		'render_portfolio_fields',
+		'customkm_render_portfolio_fields',
 		'portfolio',
 		'normal',
 		'default'
 	);
 }
-add_action( 'add_meta_boxes', 'custom_portfolio_custom_fields' );
+add_action( 'add_meta_boxes', 'customkm_portfolio_custom_fields' );
 
 /**
  * Renders the custom fields for the portfolio post type.
  */
-function render_portfolio_fields() {
+function customkm_render_portfolio_fields() {
 	// Include the template file for rendering the custom fields
 	include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-renders.php';
 }
@@ -124,7 +70,7 @@ function render_portfolio_fields() {
  *
  * @param int $post_id The ID of the post being saved.
  */
-function save_portfolio_custom_fields( $post_id ) {
+function customkm_save_portfolio_custom_fields( $post_id ) {
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 		return;
 	}
@@ -139,63 +85,18 @@ function save_portfolio_custom_fields( $post_id ) {
 		update_post_meta( $post_id, 'project_url', esc_url( $_POST['project_url'] ) );
 	}
 }
-add_action( 'save_post', 'save_portfolio_custom_fields' );
-
-/**
- * Modifies the columns displayed in the portfolio post type admin table.
- *
- * @param array $columns Existing columns in the admin table.
- * @return array Modified columns array.
- */
-function modify_portfolio_columns( $columns ) {
-	$columns['client_name']  = 'Name';
-	$columns['address']      = 'Address';
-	$columns['email']        = 'Email';
-	$columns['phone']        = 'Phone';
-	$columns['company_name'] = 'company_name';
-	unset( $columns['categories'] ); // Remove categories column
-	unset( $columns['tags'] ); // Remove tags column
-	return $columns;
-}
-add_filter( 'manage_portfolio_posts_columns', 'modify_portfolio_columns' );
-
-/**
- * Displays custom data in the columns of the portfolio post type admin table.
- *
- * @param string $column  The name of the column being displayed.
- * @param int    $post_id The ID of the post.
- */
-function display_portfolio_custom_columns( $column, $post_id ) {
-	switch ( $column ) {
-		case 'company_name':
-			echo esc_html( get_post_meta( $post_id, 'company_name', true ) );
-			break;
-		case 'address':
-			echo esc_html( get_post_meta( $post_id, 'address', true ) );
-			break;
-		case 'email':
-			echo esc_html( get_post_meta( $post_id, 'email', true ) );
-			break;
-		case 'phone':
-			echo esc_html( get_post_meta( $post_id, 'phone', true ) );
-			break;
-		case 'client_name':
-			echo esc_html( get_post_meta( $post_id, 'client_name', true ) );
-			break;
-	}
-}
-add_action( 'manage_portfolio_posts_custom_column', 'display_portfolio_custom_columns', 10, 2 );
+add_action( 'save_post', 'customkm_save_portfolio_custom_fields' );
 
 /**
  * Adds a custom menu page in the admin menu.
  */
-function custom_ajax_plugin_menu() {
+function customkm_ajax_plugin_menu() {
 	add_menu_page(
 		'Custom AJAX Plugin Settings',    // Page title
 		esc_html__( 'Custom AJAX Plugin', 'customkm-menu' ),         // Menu title
 		'manage_options',         // Capability
 		'custom-ajax-plugin-settings',         // Menu slug
-		'custom_ajax_plugin_settings_page',    // Callback function
+		'customkm_ajax_plugin_settings_page',    // Callback function
 		'dashicons-menu', // Icon
 		28 // Position of the menu in the admin sidebar
 	);
@@ -204,15 +105,15 @@ function custom_ajax_plugin_menu() {
 /**
  * Callback function to display the plugin settings page.
  */
-function custom_ajax_plugin_settings_page() {
+function customkm_ajax_plugin_settings_page() {
 	include_once plugin_dir_path( __FILE__ ) . 'templates/custom-ajax.php';
 }
-add_action( 'admin_menu', 'custom_ajax_plugin_menu' );
+add_action( 'admin_menu', 'customkm_ajax_plugin_menu' );
 
 /**
  * Handles AJAX request to update store name.
  */
-function custom_ajax_plugin_ajax_handler() {
+function customkm_ajax_plugin_ajax_handler() {
 	if ( isset( $_POST['store_name'] ) ) {
 		// Verify nonce
 		if ( ! wp_verify_nonce( $_POST['nonce'], 'custom_ajax_plugin_ajax_nonce' ) ) {
@@ -225,12 +126,12 @@ function custom_ajax_plugin_ajax_handler() {
 	}
 	wp_die();
 }
-add_action( 'wp_ajax_custom_ajax_plugin_update_store_name', 'custom_ajax_plugin_ajax_handler' );
+add_action( 'wp_ajax_custom_ajax_plugin_update_store_name', 'customkm_ajax_plugin_ajax_handler' );
 
 /**
  * Enqueues JavaScript for AJAX.
  */
-function custom_ajax_plugin_enqueue_scripts( $hook ) {
+function customkm_ajax_plugin_enqueue_scripts( $hook ) {
 	if ( 'toplevel_page_custom-ajax-plugin-settings' !== $hook ) {
 		return;
 	}
@@ -241,24 +142,30 @@ function custom_ajax_plugin_enqueue_scripts( $hook ) {
 		array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
 	);
 }
-add_action( 'admin_enqueue_scripts', 'custom_ajax_plugin_enqueue_scripts' );
+add_action( 'admin_enqueue_scripts', 'customkm_ajax_plugin_enqueue_scripts' );
 
 /**
  * Registers a shortcode to display recent portfolio posts.
  */
-add_shortcode( 'recent_portfolio_posts', 'display_recent_portfolio_posts_shortcode' );
-// Shortcode callback function to display recent portfolio posts
-function display_recent_portfolio_posts_shortcode( $atts ) {
-	$atts = shortcode_atts(
-		array(
-			'count' => 4,               // Default number of posts to display
-		),
-		$atts
-	);
+// Add shortcode and cron event initialization
+add_shortcode( 'recent_portfolio_posts', 'customkm_display_recent_portfolio_posts_shortcode' );
+add_action( 'init', 'customkm_schedule_portfolio_posts_refresh' );
 
+// Schedule cron event to refresh portfolio posts
+function customkm_schedule_portfolio_posts_refresh() {
+	if ( ! wp_next_scheduled( 'customkm_refresh_portfolio_posts_event' ) ) {
+		wp_schedule_event( time(), 'hourly', 'customkm_refresh_portfolio_posts_event' );
+	}
+}
+
+// Cron event callback to refresh portfolio posts
+add_action( 'customkm_refresh_portfolio_posts_event', 'customkm_refresh_portfolio_posts' );
+
+// Callback function to refresh recent portfolio posts
+function customkm_refresh_portfolio_posts() {
 	$args = array(
-		'post_type'      => 'portfolio', // Custom post type name
-		'posts_per_page' => $atts['count'],
+		'post_type'      => 'portfolio',
+		'posts_per_page' => -1, // Retrieve all posts
 		'orderby'        => 'date',
 		'order'          => 'DESC',
 	);
@@ -277,20 +184,32 @@ function display_recent_portfolio_posts_shortcode( $atts ) {
 		$output = 'No recent portfolio posts found.';
 	}
 
-	return $output;
+	// Update transient with refreshed portfolio posts
+	$transient_value = $output;
+	set_transient( 'customkm_recent_portfolio_posts', $transient_value, 60 * 60 ); // Cache for 1 hour
 }
+
+// Shortcode callback function to display recent portfolio posts
+function customkm_display_recent_portfolio_posts_shortcode( $atts ) {
+	// Check if transient exists
+	$transient_value = get_transient( 'customkm_recent_portfolio_posts' );
+	if ( false === $transient_value ) {
+		// If transient doesn't exist, refresh portfolio posts
+		customkm_refresh_portfolio_posts();
+		$transient_value = get_transient( 'customkm_recent_portfolio_posts' );
+	}
+
+	return $transient_value;
+}
+
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-kmd-widget.php';
-
-/**
- * Registers the custom widget area and adds the recent posts widget to it.
- */
-function custom_widget() {
+function customkm_widget() {
 	register_widget( 'Kmd_Widget' );
 }
-add_action( 'widgets_init', 'custom_widget' );
+add_action( 'widgets_init', 'customkm_widget' );
 
-function widgets_init() {
+function customkm_widgets_init() {
 	// Register the custom widget area
 	register_sidebar(
 		array(
@@ -304,36 +223,41 @@ function widgets_init() {
 		)
 	);
 
-	// Add recent posts widget to the custom widget area
+	// Display recent posts in the custom widget area
 	if ( is_active_sidebar( 'custom-widget-area' ) ) {
-		// Instantiate the custom recent posts widget
-		$recent_posts_widget = new Custom_Widget();
 
-		// Add the widget to the custom widget area
-		the_widget(
-			'Custom_Widget', // Widget class name
-			array(), // Widget arguments (empty for default settings)
+		// Query recent posts
+		$recent_posts = wp_get_recent_posts(
 			array(
-				'before_widget' => '<section id="%1$s" class="widget %2$s">',
-				'after_widget'  => '</section>',
-				'before_title'  => '<h2 class="widget-title">',
-				'after_title'   => '</h2>',
+				'post_type'   => 'portfolio',
+				'numberposts' => 5, // Number of posts to display
+				'post_status' => 'publish',
 			)
 		);
+		// Output post titles
+		$recent_post_html = '<ul>';
+		foreach ( $recent_posts as $post ) {
+			// Replace placeholders with actual post data
+			$recent_post_html  = str_replace( '{permalink}', esc_url( get_permalink( $post['ID'] ) ), $recent_post_html );
+			$recent_post_html  = str_replace( '{title}', esc_html( $post['post_title'] ), $recent_post_html );
+			$recent_post_html .= '</ul>';
+			// Append HTML for each recent post to the main HTML variable
+			return $recent_post_html;
+		}
 	}
 }
-add_action( 'widgets_init', 'widgets_init' );
+add_action( 'widgets_init', 'customkm_widgets_init' );
 
 // Enqueue jQuery in WordPress
-function enqueue_jquery() {
+function customkm_enqueue_jquery() {
 	wp_enqueue_script( 'jquery' );
 }
-add_action( 'wp_enqueue_scripts', 'enqueue_jquery' );
+add_action( 'wp_enqueue_scripts', 'customkm_enqueue_jquery' );
 
 /**
  * Creates a shortcode for the form.
  */
-function portfolio_submission_form_shortcode( $atts ) {
+function customkm_portfolio_submission_form_shortcode( $atts ) {
 		// Extract shortcode attributes
 		$atts = shortcode_atts(
 			array(
@@ -345,18 +269,13 @@ function portfolio_submission_form_shortcode( $atts ) {
 
 	ob_start();
 	?>
-	<div class="my">
-	<h2 style="font-weight: bold;"><?php echo esc_html( $atts['title'] ); ?></h2>
 	<?php include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-form.php'; ?>
-	<div id="response_msg"></div>
-	</div>
-
 	<?php
 	return ob_get_clean();
 }
-add_shortcode( 'portfolio_submission_form', 'portfolio_submission_form_shortcode' );
+add_shortcode( 'portfolio_submission_form', 'customkm_portfolio_submission_form_shortcode' );
 
-function my_plugin_enqueue_scripts() {
+function customkm_enqueue_scripts() {
 	// Enqueue custom script
 	wp_enqueue_script(
 		'my-custom-script', // Handle
@@ -369,18 +288,18 @@ function my_plugin_enqueue_scripts() {
 	// Pass Ajax URL to script
 	wp_localize_script(
 		'my-custom-script', // Script handle
-		'ajaxurl', // Object name
-		admin_url( 'admin-ajax.php' ) // Data
+		'my_custom_script_object', // Object name
+		array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) // Data
 	);
 }
 
 // Hook into appropriate action
-add_action( 'wp_enqueue_scripts', 'my_plugin_enqueue_scripts' );
+add_action( 'wp_enqueue_scripts', 'customkm_enqueue_scripts' );
 
 /**
  * Processes form submission for portfolio.
  */
-function process_portfolio_submission() {
+function customkm_process_portfolio_submission() {
 	if ( isset( $_POST['portfolio_submission_nonce_field'] ) && wp_verify_nonce( $_POST['portfolio_submission_nonce_field'], 'portfolio_submission_nonce' ) ) {
 		if ( isset( $_POST['name'] ) && isset( $_POST['email'] ) ) {
 
@@ -413,39 +332,34 @@ function process_portfolio_submission() {
 			if ( is_wp_error( $post_id ) ) {
 				echo 'Error: ' . esc_html( $post_id->get_error_message() );
 			} else {
-				echo '<div id="success-message">Success! Your portfolio has been submitted with email .</div>';
-				echo '<script>
-						setTimeout(function() {
-							document.getElementById("success-message").style.display = "none";
-						}, 5000); // Hide after 5 seconds
-						</script>';
+				include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-submission.php';
 			}
 		}
 	}
 	die();
 }
-add_action( 'wp_ajax_portfolio_submission', 'process_portfolio_submission' );
-add_action( 'wp_ajax_nopriv_portfolio_submission', 'process_portfolio_submission' );
+add_action( 'wp_ajax_portfolio_submission', 'customkm_process_portfolio_submission' );
+add_action( 'wp_ajax_nopriv_portfolio_submission', 'customkm_process_portfolio_submission' );
 
 /**
  * Adds a submenu page to the custom AJAX plugin settings.
  */
-function my_plugin_submenu() {
+function customkm_submenu() {
 		add_submenu_page(
 			'custom-ajax-plugin-settings',
 			'Submenu Page Title',       // Page title
 			esc_html__( 'Submenu Menu Title', 'customkm-menu' ),       // Menu title
 			'manage_options',           // Capability
 			'customkm-submenu-slug',    // Submenu slug
-			'my_plugin_page_content'  // Callback function for submenu content
+			'customkm_page_contents'  // Callback function for submenu content
 		);
 }
-add_action( 'admin_menu', 'my_plugin_submenu' );
+add_action( 'admin_menu', 'customkm_submenu' );
 
 /**
  * Callback function to render plugin page content.
  */
-function my_plugin_page_content() {
+function customkm_page_contents() {
 	?>
 	<div class="wrap">
 		<h1><?php echo esc_html__( 'Post Retrievals', 'customkm-menu' ); ?></h1>
@@ -461,7 +375,6 @@ function my_plugin_page_content() {
 			// Check if there are posts
 			if ( ! empty( $posts ) ) {
 				include_once plugin_dir_path( __FILE__ ) . 'templates/form.php';
-
 				foreach ( $posts as $post ) {
 					$query = new WP_Query(
 						array(
@@ -478,23 +391,7 @@ function my_plugin_page_content() {
 						$email       = get_post_meta( $post_id, 'email', true );
 						$phone       = get_post_meta( $post_id, 'phone', true );
 						$company     = get_post_meta( $post_id, 'company_name', true );
-						echo '<tr style="background-color: #ddd;">';
-						echo '<style>
-						td {
-							border: 1px solid #ddd;
-							padding: 8px;
-							text-align: left;
-						}
-						</style>';
-						echo '<td>' . esc_html( get_the_title( $post_id ) ) . '</td>';
-						echo '<td>' . esc_html( $client_name ) . '</td>';
-						echo '<td>' . esc_html( $address ) . '</td>';
-						echo '<td>' . esc_html( $email ) . '</td>';
-						echo '<td>' . esc_html( $phone ) . '</td>';
-						echo '<td>' . esc_html( $company ) . '</td>';
-						echo '<td>' . esc_html( get_the_date() ) . '</td>';
-						echo '<td><button class="delete-post-button" data-post-id="' . esc_html( $post_id ) . '" data-nonce="' . esc_attr( wp_create_nonce( 'delete_post_nonce' ) ) . '">Delete Post</button></td>';
-						echo '</tr>';
+						include plugin_dir_path( __FILE__ ) . 'templates/post-row.php';
 					endwhile;
 					wp_reset_postdata(); // Reset post data
 				}
@@ -513,17 +410,13 @@ function my_plugin_page_content() {
 	<?php
 }
 
-
 /**
  * Enqueue the external JavaScript file.
  */
-function enqueue_delete_post_script() {
+function customkm_enqueue_delete_post_script() {
 	// Create a nonce
 	$nonce = wp_create_nonce( 'delete_post_nonce' );
-
-	// Enqueue the JavaScript file
 	wp_enqueue_script( 'delete-post-js', plugins_url( 'js/delete-post.js', __FILE__ ), array( 'jquery' ), '1.0', true );
-
 	// Localize the script with the 'ajaxurl' and the nonce
 	wp_localize_script(
 		'delete-post-js',
@@ -534,12 +427,12 @@ function enqueue_delete_post_script() {
 		)
 	);
 }
-add_action( 'admin_enqueue_scripts', 'enqueue_delete_post_script' );
+add_action( 'admin_enqueue_scripts', 'customkm_enqueue_delete_post_script' );
 /**
  * Handle AJAX request to delete post.
  */
-add_action( 'wp_ajax_delete_post_action', 'delete_post_action_callback' );
-function delete_post_action_callback() {
+add_action( 'wp_ajax_delete_post_action', 'customkm_delete_post_action_callback' );
+function customkm_delete_post_action_callback() {
 	check_ajax_referer( 'delete_post_nonce', 'nonce' );
 	$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
 
@@ -555,53 +448,56 @@ function delete_post_action_callback() {
 	// Always exit to avoid further execution
 	wp_die();
 }
+
 /**
  * Callback function to return a simple response.
  */
-function prefix_get_endpoint_phrase() {
+function customkm_prefix_get_endpoint_phrase() {
 	// rest_ensure_response() wraps the data we want to return into a WP_REST_Response, and ensures it will be properly returned.
-	return rest_ensure_response( 'Hello World, this is the WordPress REST API' );
+	return rest_ensure_response( 'Hello World' );
 }
 
 /**
  * Registers routes for the example endpoint.
  */
-function prefix_register_example_routes() {
+function customkm_prefix_register_example_routes() {
 	// register_rest_route() handles more arguments but we are going to stick to the basics for now.
 	register_rest_route(
 		'hello-world/v1',
 		'/phrase',
 		array(
 			// By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
-			'methods'  => WP_REST_Server::READABLE,
+			'methods'             => WP_REST_Server::READABLE,
 			// Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-			'callback' => 'prefix_get_endpoint_phrase',
+			'callback'            => 'customkm_prefix_get_endpoint_phrase',
+			// Add the permission callback to allow public access
+			'permission_callback' => '__return_true',
 		)
 	);
 }
-add_action( 'rest_api_init', 'prefix_register_example_routes' );
+add_action( 'rest_api_init', 'customkm_prefix_register_example_routes' );
 
 /**
  * Adds a plugin page to the admin menu.
  */
-function example_plugin_menu() {
+function customkm_example_plugin_menu() {
 	add_submenu_page(
 		'custom-ajax-plugin-settings',
 		'Example Plugin Page',    // Page title
 		esc_html__( 'Plugin Page', 'customkm-menu' ),        // Menu title
 		'manage_options',         // Capability
 		'example-plugin',         // Menu slug
-		'example_plugin_page',    // Callback function
-		'dashicons-admin-page', // Icon
-		27 // Position of the menu in the admin sidebar
+		'customkm_example_plugin_page',    // Callback function
+		27, // Position of the menu in the admin sidebar
+		'dashicons-admin-page' // Icon
 	);
 }
-add_action( 'admin_menu', 'example_plugin_menu' );
+add_action( 'admin_menu', 'customkm_example_plugin_menu' );
 
 // Plugin page content
-function example_plugin_page() {
-	wp_enqueue_style( 'plugin-custom-styles', plugin_dir_url( __FILE__ ) . 'css/plugin-styles.css' );
-	include_once plugin_dir_path( __FILE__ ) . 'templates/example-plugin.php';
+function customkm_example_plugin_page() {
+		wp_enqueue_style( 'plugin-custom-styles', plugin_dir_url( __FILE__ ) . 'css/plugin-styles.css', array(), '1.0' );
+		include_once plugin_dir_path( __FILE__ ) . 'templates/example-plugin.php';
 }
 
 /**
@@ -615,8 +511,8 @@ function customkm_menu_page() {
 		'manage_options',           // Capability
 		'customkm-page-slug',         // Menu slug
 		'customkm_page_content',      // Callback function
-		'dashicons-admin-generic',  // Icon
-		25                          // Position
+		25,                          // Position
+		'dashicons-admin-generic' // Icon
 	);
 }
 add_action( 'admin_menu', 'customkm_menu_page' );
@@ -631,8 +527,8 @@ function customkm_page_content() {
 /**
  * Saves data using Option API.
  */
-add_action( 'init', 'data_save_table' );
-function data_save_table() {
+add_action( 'init', 'customkm_data_save_table' );
+function customkm_data_save_table() {
 	if ( isset( $_POST['plugin_options_nonce'] ) && wp_verify_nonce( $_POST['plugin_options_nonce'], 'update_plugin_options' ) ) {
 		$data_to_store = $_POST['name'];
 		$key           = 'name';
@@ -643,8 +539,8 @@ function data_save_table() {
 /**
  * Adds shortcode to fetch data.
  */
-add_shortcode( 'fetch_data', 'fetch_data_shortcode' );
-function fetch_data_shortcode() {
+add_shortcode( 'fetch_data', 'customkm_fetch_data_shortcode' );
+function customkm_fetch_data_shortcode() {
 	$key        = 'name';                  // Specify the key used to save the data
 	$saved_data = get_option( $key ); // Retrieve the saved data
 	return $saved_data;             // Return the data
@@ -653,29 +549,30 @@ function fetch_data_shortcode() {
 /**
  * Adds a submenu page using Settings API.
  */
-function my_custom_submenu_page() {
+function customkm_my_custom_submenu_page() {
 	add_submenu_page(
 		'options-general.php', // Parent menu slug
 		'My Submenu Page', // Page title
 		'My Submenu', // Menu title
 		'manage_options', // Capability required to access
 		'my-custom-submenu', // Menu slug
-		'my_custom_submenu_callback' // Callback function to display content
+		'customkm_my_custom_submenu_callback', // Callback function to display content
+		28
 	);
 }
-add_action( 'admin_menu', 'my_custom_submenu_page' );
+add_action( 'admin_menu', 'customkm_my_custom_submenu_page' );
 
 /**
  * Callback function to display submenu page content.
  */
-function my_custom_submenu_callback() {
+function customkm_my_custom_submenu_callback() {
 	include_once plugin_dir_path( __FILE__ ) . 'templates/custom-submenu.php';
 }
 
 /**
  * Registers settings and fields.
  */
-function my_custom_settings_init() {
+function customkm_my_custom_settings_init() {
 	register_setting(
 		'my-custom-settings-group', // Option group
 		'my_option_name', // Option name
@@ -685,41 +582,41 @@ function my_custom_settings_init() {
 	add_settings_section(
 		'my-settings-section', // Section ID
 		'My Settings Section', // Section title
-		'my_settings_section_callback', // Callback function to display section description (optional)
+		'customkm_my_settings_section_callback', // Callback function to display section description (optional)
 		'my-custom-settings-group' // Parent page slug
 	);
 
 	add_settings_field(
 		'my-setting-field', // Field ID
 		'My Setting Field', // Field title
-		'my_setting_field_callback', // Callback function to display field input
+		'customkm_my_setting_field_callback', // Callback function to display field input
 		'my-custom-settings-group', // Parent page slug
 		'my-settings-section' // Section ID
 	);
 }
-add_action( 'admin_init', 'my_custom_settings_init' );
+add_action( 'admin_init', 'customkm_my_custom_settings_init' );
 
 /**
  * Callback function to display section description (optional).
  */
-function my_settings_section_callback() {
+function customkm_my_settings_section_callback() {
 	echo '<p>This is a description of my settings section.</p>';
 }
 
 /**
  * Callback function to display field input.
  */
-function my_setting_field_callback() {
+function customkm_my_setting_field_callback() {
 	$option_value = get_option( 'my_option_name' );
 	?>
-	<input type="text" name="my_option_name" value="<?php echo esc_attr( $option_value ); ?>">
+	<?php include_once plugin_dir_path( __FILE__ ) . 'templates/setting.php'; ?>
 	<?php
 }
 
 /**
  * Sanitization callback function.
  */
-function my_sanitize_callback( $input ) {
+function customkm_my_sanitize_callback( $input ) {
 	return sanitize_text_field( $input );
 }
 
@@ -730,3 +627,8 @@ function load_customkm_menu_textdomain() {
 	load_plugin_textdomain( 'customkm-menu', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'load_customkm_menu_textdomain' );
+
+/**
+ * Includes necessary files.
+ */
+require_once plugin_dir_path( __FILE__ ) . 'includes/admin-class.php';
