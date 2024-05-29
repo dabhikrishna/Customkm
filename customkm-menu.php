@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Customkm Menu
  * Plugin URI: https://qrolic.com
- * Description: Customkm Plugin for your site.
- * Version: 6.5.2
+ * Description:Customkm Menu is the ultimate solution for streamlining website enhancement. This plugin enables you to effortlessly create bespoke menus and submenus, integrate fields, and securely store data leveraging the powerful OPTION API and SETTING API. Moreover, it streamlines the process of establishing a PORTFOLIO post type to elegantly showcase your projects. What's more, Customkm Menu seamlessly incorporates shortcode support, empowering you to seamlessly embed dynamic content throughout your website's pages and posts.
+ * Version: 1.0.0
  * Author: krishna
  * Author URI:https://qrolic.com
  * Text Domain: customkm-menu
@@ -12,13 +12,32 @@
  * Customkm Menu plugin adds custom menus, submenus, fields, shortcode and post types to your WordPress site, enhancing its functionality.
  */
 
+// Add a custom button next to Activate button on the plugins page
+function customkm_add_custom_plugin_button( $links ) {
+	$custom_plugin_page = admin_url( 'admin.php?page=custom-ajax-plugin-settings' );
+
+	// Add the custom button link.
+	$custom_link = '<a href="' . esc_url( $custom_plugin_page ) . '">Plugin details</a>';
+	array_unshift( $links, $custom_link );
+
+	return $links;
+}
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'customkm_add_custom_plugin_button' );
+
+
 /**
  * Enqueues the stylesheet for the plugin.
  */
 function customkm_enqueue_styles() {
 	if ( has_shortcode( get_post()->post_content, 'portfolio_submission_form' ) ) {
 		// Enqueue CSS file located within your plugin directory
-		wp_enqueue_style( 'customkm-plugin-style', plugins_url( '/css/portfolio-submission-form.css', __FILE__ ), array(), '1.0', 'all' );
+		wp_enqueue_style(
+			'your_plugin_portfolio_submission_form_style', // Handle
+			plugins_url( '/css/portfolio-submission-form.css', __FILE__ ), // URL to CSS file
+			array(), // Dependencies
+			'1.0', // Version number
+			'all' // Media type
+		);
 	}
 }
 add_action( 'wp_enqueue_scripts', 'customkm_enqueue_styles' );
@@ -128,19 +147,25 @@ add_action( 'admin_enqueue_scripts', 'customkm_ajax_plugin_enqueue_scripts' );
 /**
  * Registers a shortcode to display recent portfolio posts.
  */
+// Add shortcode and cron event initialization
 add_shortcode( 'recent_portfolio_posts', 'customkm_display_recent_portfolio_posts_shortcode' );
-// Shortcode callback function to display recent portfolio posts
-function customkm_display_recent_portfolio_posts_shortcode( $atts ) {
-	$atts = shortcode_atts(
-		array(
-			'count' => 4,               // Default number of posts to display
-		),
-		$atts
-	);
+add_action( 'init', 'customkm_schedule_portfolio_posts_refresh' );
 
+// Schedule cron event to refresh portfolio posts
+function customkm_schedule_portfolio_posts_refresh() {
+	if ( ! wp_next_scheduled( 'customkm_refresh_portfolio_posts_event' ) ) {
+		wp_schedule_event( time(), 'hourly', 'customkm_refresh_portfolio_posts_event' );
+	}
+}
+
+// Cron event callback to refresh portfolio posts
+add_action( 'customkm_refresh_portfolio_posts_event', 'customkm_refresh_portfolio_posts' );
+
+// Callback function to refresh recent portfolio posts
+function customkm_refresh_portfolio_posts() {
 	$args = array(
-		'post_type'      => 'portfolio', // Custom post type name
-		'posts_per_page' => $atts['count'],
+		'post_type'      => 'portfolio',
+		'posts_per_page' => -1, // Retrieve all posts
 		'orderby'        => 'date',
 		'order'          => 'DESC',
 	);
@@ -159,8 +184,24 @@ function customkm_display_recent_portfolio_posts_shortcode( $atts ) {
 		$output = 'No recent portfolio posts found.';
 	}
 
-	return $output;
+	// Update transient with refreshed portfolio posts
+	$transient_value = $output;
+	set_transient( 'customkm_recent_portfolio_posts', $transient_value, 60 * 60 ); // Cache for 1 hour
 }
+
+// Shortcode callback function to display recent portfolio posts
+function customkm_display_recent_portfolio_posts_shortcode( $atts ) {
+	// Check if transient exists
+	$transient_value = get_transient( 'customkm_recent_portfolio_posts' );
+	if ( false === $transient_value ) {
+		// If transient doesn't exist, refresh portfolio posts
+		customkm_refresh_portfolio_posts();
+		$transient_value = get_transient( 'customkm_recent_portfolio_posts' );
+	}
+
+	return $transient_value;
+}
+
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-kmd-widget.php';
 function customkm_widget() {
@@ -413,7 +454,7 @@ function customkm_delete_post_action_callback() {
  */
 function customkm_prefix_get_endpoint_phrase() {
 	// rest_ensure_response() wraps the data we want to return into a WP_REST_Response, and ensures it will be properly returned.
-	return rest_ensure_response( 'Hello World, this is the WordPress REST API' );
+	return rest_ensure_response( 'Hello World' );
 }
 
 /**
@@ -486,8 +527,8 @@ function customkm_page_content() {
 /**
  * Saves data using Option API.
  */
-add_action( 'init', 'data_save_table' );
-function data_save_table() {
+add_action( 'init', 'customkm_data_save_table' );
+function customkm_data_save_table() {
 	if ( isset( $_POST['plugin_options_nonce'] ) && wp_verify_nonce( $_POST['plugin_options_nonce'], 'update_plugin_options' ) ) {
 		$data_to_store = $_POST['name'];
 		$key           = 'name';
@@ -498,8 +539,8 @@ function data_save_table() {
 /**
  * Adds shortcode to fetch data.
  */
-add_shortcode( 'fetch_data', 'fetch_data_shortcode' );
-function fetch_data_shortcode() {
+add_shortcode( 'fetch_data', 'customkm_fetch_data_shortcode' );
+function customkm_fetch_data_shortcode() {
 	$key        = 'name';                  // Specify the key used to save the data
 	$saved_data = get_option( $key ); // Retrieve the saved data
 	return $saved_data;             // Return the data
@@ -508,30 +549,30 @@ function fetch_data_shortcode() {
 /**
  * Adds a submenu page using Settings API.
  */
-function my_custom_submenu_page() {
+function customkm_my_custom_submenu_page() {
 	add_submenu_page(
 		'options-general.php', // Parent menu slug
 		'My Submenu Page', // Page title
 		'My Submenu', // Menu title
 		'manage_options', // Capability required to access
 		'my-custom-submenu', // Menu slug
-		'my_custom_submenu_callback', // Callback function to display content
+		'customkm_my_custom_submenu_callback', // Callback function to display content
 		28
 	);
 }
-add_action( 'admin_menu', 'my_custom_submenu_page' );
+add_action( 'admin_menu', 'customkm_my_custom_submenu_page' );
 
 /**
  * Callback function to display submenu page content.
  */
-function my_custom_submenu_callback() {
+function customkm_my_custom_submenu_callback() {
 	include_once plugin_dir_path( __FILE__ ) . 'templates/custom-submenu.php';
 }
 
 /**
  * Registers settings and fields.
  */
-function my_custom_settings_init() {
+function customkm_my_custom_settings_init() {
 	register_setting(
 		'my-custom-settings-group', // Option group
 		'my_option_name', // Option name
@@ -541,31 +582,31 @@ function my_custom_settings_init() {
 	add_settings_section(
 		'my-settings-section', // Section ID
 		'My Settings Section', // Section title
-		'my_settings_section_callback', // Callback function to display section description (optional)
+		'customkm_my_settings_section_callback', // Callback function to display section description (optional)
 		'my-custom-settings-group' // Parent page slug
 	);
 
 	add_settings_field(
 		'my-setting-field', // Field ID
 		'My Setting Field', // Field title
-		'my_setting_field_callback', // Callback function to display field input
+		'customkm_my_setting_field_callback', // Callback function to display field input
 		'my-custom-settings-group', // Parent page slug
 		'my-settings-section' // Section ID
 	);
 }
-add_action( 'admin_init', 'my_custom_settings_init' );
+add_action( 'admin_init', 'customkm_my_custom_settings_init' );
 
 /**
  * Callback function to display section description (optional).
  */
-function my_settings_section_callback() {
+function customkm_my_settings_section_callback() {
 	echo '<p>This is a description of my settings section.</p>';
 }
 
 /**
  * Callback function to display field input.
  */
-function my_setting_field_callback() {
+function customkm_my_setting_field_callback() {
 	$option_value = get_option( 'my_option_name' );
 	?>
 	<?php include_once plugin_dir_path( __FILE__ ) . 'templates/setting.php'; ?>
@@ -575,7 +616,7 @@ function my_setting_field_callback() {
 /**
  * Sanitization callback function.
  */
-function my_sanitize_callback( $input ) {
+function customkm_my_sanitize_callback( $input ) {
 	return sanitize_text_field( $input );
 }
 

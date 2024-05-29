@@ -1,3 +1,17 @@
+<?php
+/**
+ * HTML form for portfolio submission.
+ *
+ * This file represents an HTML form for submitting portfolio information.
+ * It includes fields for name, company name, email, phone, and address.
+ * It also includes a nonce field for security.
+ *
+ * @since      1.0.0
+ *
+ * @package    Customkm Menu
+ * @subpackage customkm-menu/templates
+ */
+?>
 <div class="my">
 	<h2 style="font-weight: bold;"><?php echo esc_html( $atts['title'] ); ?></h2>
 <form id="portfolio_submission_form">

@@ -1,3 +1,17 @@
+<?php
+/**
+ * HTML table for displaying data.
+ *
+ * This file represents an HTML table for displaying data, typically retrieved from a database or other source.
+ * It includes styling for table headers and defines columns for various data fields.
+ *
+ * @link       https://example.com
+ * @since      1.0.0
+ *
+ * @package    Customkm Menu
+ * @subpackage customkm-menu/templates
+ */
+?>
 <table>
 	<style>
 		th {
