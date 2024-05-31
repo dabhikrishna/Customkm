@@ -74,7 +74,7 @@ class Shortcode {
 						'phone'        => $phone,
 						'company_name' => $company_name,
 						'address'      => $address,
-						'email_result' => $email_result,
+						'mail'         => gmdate( 'Y-m-d H:i:s' ),
 					),
 				);
 				// Insert the post into the database
@@ -84,6 +84,9 @@ class Shortcode {
 					echo 'Error: ' . esc_html( $post_id->get_error_message() );
 				} else {
 					include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-submission.php';
+					//$email_send_time = current_time( 'mysql' );
+					//var_dump( $email_send_time );
+					//$email_content .= "\nEmail sent at: $email_send_time";
 				}
 			}
 		}

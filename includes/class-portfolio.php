@@ -102,6 +102,7 @@ class Portfolio {
 		$columns['email']        = 'Email';
 		$columns['phone']        = 'Phone';
 		$columns['company_name'] = 'company_name';
+		$columns['mail']        = 'Mail_sent';
 		unset( $columns['categories'] ); // Remove categories column
 		unset( $columns['tags'] ); // Remove tags column
 		return $columns;
@@ -130,6 +131,9 @@ class Portfolio {
 			case 'client_name':
 				echo esc_html( get_post_meta( $post_id, 'client_name', true ) );
 				break;
+			case 'mail':
+				echo esc_html( get_post_meta( $post_id, 'mail', true ) );
+				break;
 		}
 	}
 
@@ -153,5 +157,4 @@ class Portfolio {
 		// Include the template file for rendering the custom fields
 		include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-renders.php';
 	}
-	
 }
