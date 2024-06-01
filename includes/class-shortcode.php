@@ -2,7 +2,18 @@
 
 namespace CustomkmMenu\Includes;
 
+if ( ! defined( 'PM_PLUGIN_DIR' ) ) {
+	define( 'PM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
+/**
+ * Class Shortcode
+ * Handles registration of custom shortcodes and related functionalities.
+ */
 class Shortcode {
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		add_shortcode( 'portfolio_submission_form', array( $this, 'customkm_portfolio_submission_form_shortcode' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'customkm_enqueue_scripts' ) );
@@ -24,8 +35,8 @@ class Shortcode {
 		);
 
 		ob_start();
+		include_once PM_PLUGIN_DIR . 'templates/portfolio-form.php';
 		?>
-		<?php include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-form.php'; ?>
 		<?php
 		return ob_get_clean();
 	}
@@ -74,7 +85,7 @@ class Shortcode {
 						'phone'        => $phone,
 						'company_name' => $company_name,
 						'address'      => $address,
-						'email_result' => $email_result,
+						'mail'         => gmdate( 'Y-m-d H:i:s' ),
 					),
 				);
 				// Insert the post into the database
@@ -83,7 +94,7 @@ class Shortcode {
 				if ( is_wp_error( $post_id ) ) {
 					echo 'Error: ' . esc_html( $post_id->get_error_message() );
 				} else {
-					include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-submission.php';
+					include PM_PLUGIN_DIR . 'templates/portfolio-submission.php';
 				}
 			}
 		}

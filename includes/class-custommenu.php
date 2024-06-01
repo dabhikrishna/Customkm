@@ -2,6 +2,14 @@
 
 namespace CustomkmMenu\Includes;
 
+if ( ! defined( 'PM_PLUGIN_DIR' ) ) {
+	define( 'PM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
+/**
+ * Class CustomMenu
+ * Handles custom menu functionality and settings.
+ */
 class CustomMenu {
 	/**
 	* Constructor.
@@ -33,7 +41,7 @@ class CustomMenu {
 	* Custom page content for submenu.
 	*/
 	public function page_content() {
-		include_once plugin_dir_path( __FILE__ ) . 'templates/customkm-page.php';
+		include_once PM_PLUGIN_DIR . 'templates/customkm-page.php';
 	}
 
 	/**
@@ -74,7 +82,7 @@ class CustomMenu {
 	* Callback function to display submenu page content.
 	*/
 	public function custom_submenu_callback() {
-		include_once plugin_dir_path( __FILE__ ) . 'templates/custom-submenu.php';
+		include_once PM_PLUGIN_DIR . 'templates/custom-submenu.php';
 	}
 
 	/**
@@ -115,8 +123,9 @@ class CustomMenu {
 	 */
 	public function setting_field_callback() {
 		$option_value = get_option( 'my_option_name' );
+		include_once PM_PLUGIN_DIR . 'templates/setting.php';
 		?>
-		<?php include_once plugin_dir_path( __FILE__ ) . 'templates/setting.php'; ?>
+		
 		<?php
 	}
 

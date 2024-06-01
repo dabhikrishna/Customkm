@@ -2,6 +2,14 @@
 
 namespace CustomkmMenu\Includes;
 
+if ( ! defined( 'PM_PLUGIN_DIR' ) ) {
+	define( 'PM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
+/**
+ * Class AjaxPlugin
+ * Handles AJAX functionality for the custom plugin.
+ */
 class AjaxPlugin {
 	/**
 	 * Constructor.
@@ -11,6 +19,10 @@ class AjaxPlugin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'customkm_ajax_plugin_enqueue_scripts' ) );
 		add_action( 'wp_ajax_custom_ajax_plugin_update_store_name', array( $this, 'customkm_ajax_plugin_ajax_handler' ) );
 	}
+
+	/**
+	 * Adds the plugin menu page to the WordPress admin dashboard.
+	 */
 	public function ajax_plugin_menu() {
 		add_menu_page(
 			'Custom AJAX Plugin Settings',    // Page title
@@ -27,7 +39,7 @@ class AjaxPlugin {
 	 * Callback function to display the plugin settings page.
 	 */
 	public function settings_page() {
-		require_once plugin_dir_path( __FILE__ ) . 'templates/custom-ajax.php';
+		require_once PM_PLUGIN_DIR . 'templates/custom-ajax.php';
 		//include_once plugin_dir_path( __FILE__ ) . 'templates/custom-ajax.php';
 	}
 

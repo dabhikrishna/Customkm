@@ -1,8 +1,20 @@
 <?php
 
+
 namespace CustomkmMenu\Includes;
 
+if ( ! defined( 'PM_PLUGIN_DIR' ) ) {
+	define( 'PM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
+/**
+ * Class ExamplePlugin
+ * @package CustomkmMenu\Includes
+ */
 class ExamplePlugin {
+	/**
+	 * ExamplePlugin constructor.
+	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'customkm_example_plugin_menu' ) );
 	}
@@ -22,9 +34,11 @@ class ExamplePlugin {
 		);
 	}
 
-	// Plugin page content
+	/**
+	 * Plugin page content
+	 */
 	public function plugin_page() {
 		wp_enqueue_style( 'plugin-custom-styles', plugin_dir_url( __FILE__ ) . 'css/plugin-styles.css', array(), '1.0' );
-		include_once plugin_dir_path( __FILE__ ) . 'templates/example-plugin.php';
+		include_once PM_PLUGIN_DIR . 'templates/example-plugin.php';
 	}
 }
