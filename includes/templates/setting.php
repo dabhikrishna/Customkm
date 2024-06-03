@@ -2,7 +2,7 @@
 /**
  * Input field for a custom option.
  *
- * This file represents an HTML input field for a custom option.
+ * This file represents an HTML input field for a custom options.
  *
  * @since      1.0.0
  *
