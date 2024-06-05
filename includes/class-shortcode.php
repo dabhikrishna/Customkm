@@ -69,6 +69,11 @@ class Shortcode {
 					echo 'Please fill out all required fields.';
 					die();
 				}
+				// Check if the form has already been submitted successfully
+				if ( isset( $_SESSION['portfolio_submission_success'] ) && $_SESSION['portfolio_submission_success'] ) {
+					echo 'Portfolio already submitted successfully. Please wait before submitting again.';
+					die();
+				}
 				$name         = sanitize_text_field( $_POST['name'] );
 				$company_name = sanitize_text_field( $_POST['company_name'] );
 				$email        = sanitize_email( $_POST['email'] );
@@ -93,9 +98,49 @@ class Shortcode {
 
 				if ( is_wp_error( $post_id ) ) {
 					echo 'Error: ' . esc_html( $post_id->get_error_message() );
-				} else {
-					include PM_PLUGIN_DIR . 'templates/portfolio-submission.php';
 				}
+				// Send custom email to submitted email address
+				$subject  = 'Portfolio Submission Received';
+				$message  = 'Dear ' . $name . ',<br><br>';
+				$message .= 'Thank you for submitting your portfolio. We have received your submission and will review it shortly.<br><br>';
+				$message .= 'Best regards,<br>Your Website Team';
+	
+				$headers[] = 'Content-Type: text/html; charset=UTF-8';
+	
+				$email_sent = wp_mail( $email, $subject, $message, $headers );
+	
+				// Display success message based on email sending status
+				if ( $email_sent ) {
+					echo 'Portfolio submitted successfully. We will review it shortly.';
+				} else {
+					echo 'Error sending email. Please try again later.';
+				} /*else {
+						$subject = 'Portfolio Submission Received';
+					$message     = 'Dear ' . $name . ',<br><br>';
+					$message    .= 'Thank you for submitting your portfolio. We have received your submission and will review it shortly.<br><br>';
+					$message    .= 'Best regards,<br>Your Website Team';
+
+					$headers[] = 'Content-Type: text/html; charset=UTF-8';
+					if ( wp_mail( $email, $subject, $message, $headers ) ) {
+						// Set session variable to indicate successful submission
+						$_SESSION['portfolio_submission_success'] = true;
+
+						// Display success message
+						echo 'Portfolio submitted successfully. We will review it shortly.';
+					} else {
+						echo 'Error sending email. Please try again later.';
+					}
+
+					//wp_mail( $email, $subject, $message, $headers );
+					// Set transient to indicate successful submission for 10 seconds
+					//set_transient( 'portfolio_submission_success', 'Portfolio submitted successfully. We will review it shortly.', 10 );
+
+					// Display success message
+					//echo 'Portfolio submitted successfully. We will review it shortly.';
+					//set_transient( 'portfolio_submission_success', 'Portfolio submitted successfully. We will review it shortly.', 10 );
+
+					//include PM_PLUGIN_DIR . 'templates/portfolio-submission.php';
+				}*/
 			}
 		}
 		die();

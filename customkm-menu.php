@@ -120,3 +120,37 @@ function customkm_deactivate_plugin() {
 	$wp_rewrite->flush_rules(); // To make sure the changes take effect immediately
 }
 register_deactivation_hook( __FILE__, 'customkm_deactivate_plugin' );
+
+
+/**
+ * Shortcode function to display sent email details
+ */
+function display_sent_emails() {
+	// Query sent emails
+	$sent_emails = get_posts(
+		array(
+			'post_type'      => 'portfolio', // Assuming 'portfolio' is the post type where email details are stored
+			'meta_key'       => 'email', // Assuming 'email' is the meta key for storing email addresses
+			'posts_per_page' => -1, // Retrieve all sent emails
+		)
+	);
+
+	// Display sent emails
+	$output = '';
+	if ( $sent_emails ) {
+		$output .= '<ul>';
+		foreach ( $sent_emails as $email ) {
+			$email_address = get_post_meta( $email->ID, 'email', true );
+			$sent_time     = get_post_meta( $email->ID, 'mail', true ); // Assuming 'mail' is the meta key for storing sent time
+			$output       .= '<li>Email: ' . $email_address . ' - Sent Time: ' . $sent_time . '</li>';
+		}
+		$output .= '</ul>';
+	} else {
+		$output .= 'No emails have been sent yet.';
+	}
+
+	return $output;
+}
+
+// Register the shortcode
+add_shortcode( 'sent_emails', 'display_sent_emails' );

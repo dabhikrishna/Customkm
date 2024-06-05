@@ -240,5 +240,5 @@ msgid "Project URL:"
 msgstr ""
 
 #: templates/portfolio-submission.php:14
-msgid "Success! Your portfolio has been submitted with email ."
+msgid "Success! Your portfolio has been submitted with email."
 msgstr ""
