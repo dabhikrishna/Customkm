@@ -74,4 +74,5 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'customkm_add_
 function load_customkm_menu_textdomain() {
 	load_plugin_textdomain( 'customkm-menu', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
+
 add_action( 'plugins_loaded', 'load_customkm_menu_textdomain' );
