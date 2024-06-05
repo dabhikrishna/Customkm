@@ -22,12 +22,12 @@
 		}
 	</style>
 	<tr>
-		<th>Title</th>
-		<th>Name</th>
-		<th>Address</th>
-		<th>Email</th>
-		<th>Phone</th>
-		<th>Company Name</th>
-		<th>Date</th>
-		<th>Action</th>
+	<th><?php echo esc_html__( 'Title', 'customkm-menu' ); ?></th>
+		<th><?php echo esc_html__( 'Name', 'customkm-menu' ); ?></th>
+		<th><?php echo esc_html__( 'Address', 'customkm-menu' ); ?></th>
+		<th><?php echo esc_html__( 'Email', 'customkm-menu' ); ?></th>
+		<th><?php echo esc_html__( 'Phone', 'customkm-menu' ); ?></th>
+		<th><?php echo esc_html__( 'Company Name', 'customkm-menu' ); ?></th>
+		<th><?php echo esc_html__( 'Date', 'customkm-menu' ); ?></th>
+		<th><?php echo esc_html__( 'Action', 'customkm-menu' ); ?></th>
 	</tr>

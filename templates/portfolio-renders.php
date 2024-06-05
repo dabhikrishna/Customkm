@@ -13,8 +13,8 @@
 ?>
 <form method="post">
 	<?php wp_nonce_field( 'update_plugin_options', 'plugin_options_nonce' ); ?>
-	<label for="client_name">Client Name:</label>
+	<label for="client_name"><?php echo esc_html__( 'Client Name:', 'customkm-menu' ); ?></label>
 	<input type="text" name="client_name" id="client_name" value="" />
-	<label for="project_url">Project URL:</label>
+	<label for="project_url"><?php echo esc_html__( 'Project URL:', 'customkm-menu' ); ?></label>
 	<input type="url" name="project_url" id="project_url" value="" />
 </form>

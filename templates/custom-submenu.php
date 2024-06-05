@@ -14,7 +14,7 @@
 // Wrap the content in a div with the class 'wrap' to style it appropriately.
 ?>
 <div class="wrap">
-		<h2>My Submenu Page</h2>
+		<h2><?php echo esc_html__( 'My Submenu Page', 'customkm-menu' ); ?></h2>
 		<form method="post" action="options.php">
 			<?php
 			// Display settings fields

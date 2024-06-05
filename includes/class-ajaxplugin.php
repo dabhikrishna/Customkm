@@ -73,6 +73,6 @@ class AjaxPlugin {
 			'custom_ajax_plugin_ajax_object',
 			array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
 		);
-		//}
+	
 	}
 }

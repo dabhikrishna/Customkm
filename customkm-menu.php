@@ -58,44 +58,30 @@ require_once PM_PLUGIN_DIR . 'includes/class-exampleplugin.php';
 require_once PM_PLUGIN_DIR . 'includes/class-restapi.php';
 require_once PM_PLUGIN_DIR . 'includes/class-kmd-widget.php';
 require_once PM_PLUGIN_DIR . 'includes/class-widget.php';
+require_once PM_PLUGIN_DIR . 'includes/class-portfolio-email-notification.php'; // Include
+
 
 use CustomkmMenu\Includes\Portfolio; //Import the Portfolio class from the CustomkmMenu\Includes namespace.
-
-$portfolio = new Portfolio(); //Initialize a new instance of the Portfolio class for managing portfolio-related functionalities.
-
 use CustomkmMenu\Includes\AjaxPlugin; //Import the AjaxPlugin class from the CustomkmMenu\Includes namespace.
-
-$ajaxplugin = new AjaxPlugin(); // Initialize a new instance of the AjaxPlugin class for handling Ajax functionality within the plugin.
-
 use CustomkmMenu\Includes\Shortcode; //Import the Shortcode class from the CustomkmMenu\Includes namespace.
-
-$shortcode = new Shortcode(); // Initialize a new instance of the Shortcode class for managing custom shortcodes.
-
 use CustomkmMenu\Includes\PostRetrievals; //Import the PostRetrievals class from the CustomkmMenu\Includes namespace.
-
-$postretrievals = new PostRetrievals(); // Initialize a new instance of the PostRetrievals class for retrieving posts.
-
 use CustomkmMenu\Includes\CustomMenu; //Import the CustomMenu class from the CustomkmMenu\Includes namespace.
-
-$custommenu = new CustomMenu(); //Initialize a new instance of the CustomMenu class for managing custom menus.
-
 use CustomkmMenu\Includes\RecentPortfolio; //Import the RecentPortfolio class from the CustomkmMenu\Includes namespace.
-
-$recentportfolio = new RecentPortfolio(); // Initialize a new instance of the RecentPortfolio class for managing recent portfolio items.
-
 use CustomkmMenu\Includes\ExamplePlugin; //Import the ExamplePlugin class from the CustomkmMenu\Includes namespace.
-
-$exampleplugin = new ExamplePlugin(); //Initialize a new instance of the ExamplePlugin class (replace with actual purpose).
-
 use CustomkmMenu\Includes\RestApi; //Import the RestApi class from the CustomkmMenu\Includes namespace.
-
-$restapi = new RestApi(); //Initialize a new instance of the RestApi class for handling REST API functionalities.
-
 use CustomkmMenu\Includes\Widget; //Import the RestApi class from the CustomkmMenu\Includes namespace.
+use CustomkmMenu\Includes\Portfolio_Email_Notification;
 
-$widget = new Widget(); ////Initialize a new instance of the widget class for display recent posts using widget.
-
-
+$portfolio       = new Portfolio(); //Initialize a new instance of the Portfolio class for managing portfolio-related functionalities.
+$ajaxplugin      = new AjaxPlugin(); // Initialize a new instance of the AjaxPlugin class for handling Ajax functionality within the plugin.
+$shortcode       = new Shortcode(); // Initialize a new instance of the Shortcode class for managing custom shortcodes.
+$postretrievals  = new PostRetrievals(); // Initialize a new instance of the PostRetrievals class for retrieving posts.
+$custommenu      = new CustomMenu(); //Initialize a new instance of the CustomMenu class for managing custom menus.
+$recentportfolio = new RecentPortfolio(); // Initialize a new instance of the RecentPortfolio class for managing recent portfolio items.
+$exampleplugin   = new ExamplePlugin(); //Initialize a new instance of the ExamplePlugin class (replace with actual purpose).
+$restapi         = new RestApi(); //Initialize a new instance of the RestApi class for handling REST API functionalities.
+$widget          = new Widget(); ////Initialize a new instance of the widget class for display recent posts using widget.
+$cron            = new Portfolio_Email_Notification();
 /**
  *Add a custom button next to Activate button on the plugins page
  */
@@ -118,18 +104,19 @@ function load_customkm_menu_textdomain() {
 }
 add_action( 'plugins_loaded', 'load_customkm_menu_textdomain' );
 
-/**
- * activation hook.
- */
-function customkm_menu_activate() {
-
-	register_post_type( 'name', array( 'public' => true ) );
+// Activation hook
+function customkm_activate_plugin() {
+	// Change permalink structure to Post name
+	global $wp_rewrite;
+	$wp_rewrite->set_permalink_structure( '/%postname%/' );
+	$wp_rewrite->flush_rules(); // To make sure the changes take effect immediately
 }
-register_activation_hook( __FILE__, 'customkm_menu_activate' );
+register_activation_hook( __FILE__, 'customkm_activate_plugin' );
 
-/**
- * Deactivation hook.
- */
-function customkm_menu_deactivate() {
+function customkm_deactivate_plugin() {
+	// Change permalink structure to Plain
+	global $wp_rewrite;
+	$wp_rewrite->set_permalink_structure( '' );
+	$wp_rewrite->flush_rules(); // To make sure the changes take effect immediately
 }
-register_deactivation_hook( __FILE__, 'customkm_menu_deactivate' );
+register_deactivation_hook( __FILE__, 'customkm_deactivate_plugin' );

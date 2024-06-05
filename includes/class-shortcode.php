@@ -105,7 +105,7 @@ class Shortcode {
 	* Enqueues the stylesheet for the plugin.
 	*/
 	public function customkm_enqueue_styles() {
-		if ( has_shortcode( get_post()->post_content, 'portfolio_submission_form' ) ) {
+		//if ( has_shortcode( get_post()->post_content, 'portfolio_submission_form' ) ) {
 			// Enqueue CSS file located within your plugin directory
 			wp_enqueue_style(
 				'your_plugin_portfolio_submission_form_style', // Handle
@@ -114,6 +114,6 @@ class Shortcode {
 				'1.0', // Version number
 				'all' // Media type
 			);
-		}
+		//}
 	}
 }
