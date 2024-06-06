@@ -20,3 +20,4 @@
 		</form>
 		<div id="store-name-result"></div>
 	</div>
+	

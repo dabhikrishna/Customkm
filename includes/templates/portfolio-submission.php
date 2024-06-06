@@ -11,7 +11,7 @@
  * @subpackage customkm-menu/templates
  */
 ?>
-<div id="success-message">Success! Your portfolio has been submitted with email .</div>
+<div id="success-message">Success! Your portfolio has been submitted with emails .</div>
 
 <script>
 	setTimeout(function() {

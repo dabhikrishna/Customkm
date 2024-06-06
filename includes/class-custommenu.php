@@ -2,6 +2,14 @@
 
 namespace CustomkmMenu\Includes;
 
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
+/**
+ * Class CustomMenu
+ * Handles custom menu functionality and settings.
+ */
 class CustomMenu {
 	/**
 	* Constructor.
@@ -13,6 +21,7 @@ class CustomMenu {
 		add_action( 'admin_menu', array( $this, 'customkm_my_custom_submenu_page' ) );
 		add_action( 'admin_init', array( $this, 'customkm_my_custom_settings_init' ) );
 	}
+
 	/**
 	* Adds a submenu page to the custom AJAX plugin settings.
 	*/
@@ -33,7 +42,7 @@ class CustomMenu {
 	* Custom page content for submenu.
 	*/
 	public function page_content() {
-		include_once plugin_dir_path( __FILE__ ) . 'templates/customkm-page.php';
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/customkm-page.php';
 	}
 
 	/**
@@ -66,15 +75,15 @@ class CustomMenu {
 			'My Submenu', // Menu title
 			'manage_options', // Capability required to access
 			'my-custom-submenu', // Menu slug
-			array( $this, 'custom_submenu_callback' ), // Callback function to display content
+			array( $this, 'customkm_submenu_callback' ), // Callback function to display content
 			28
 		);
 	}
 	/**
 	* Callback function to display submenu page content.
 	*/
-	public function custom_submenu_callback() {
-		include_once plugin_dir_path( __FILE__ ) . 'templates/custom-submenu.php';
+	public function customkm_submenu_callback() {
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/custom-submenu.php';
 	}
 
 	/**
@@ -84,20 +93,20 @@ class CustomMenu {
 		register_setting(
 			'my-custom-settings-group', // Option group
 			'my_option_name', // Option name
-			'my_sanitize_callback' // Sanitization callback function
+			array( $this, 'customkm_my_sanitize_callback' ) // Sanitization callback function
 		);
 
 		add_settings_section(
 			'my-settings-section', // Section ID
 			'My Settings Section', // Section title
-			array( $this, 'settings_section_callback' ), // Callback function to display section description (optional)
+			array( $this, 'customkm_settings_section_callback' ), // Callback function to display section description (optional)
 			'my-custom-settings-group' // Parent page slug
 		);
 
 		add_settings_field(
 			'my-setting-field', // Field ID
 			'My Setting Field', // Field title
-			array( $this, 'setting_field_callback' ), // Callback function to display field input
+			array( $this, 'customkm_setting_field_callback' ), // Callback function to display field input
 			'my-custom-settings-group', // Parent page slug
 			'my-settings-section' // Section ID
 		);
@@ -106,17 +115,18 @@ class CustomMenu {
 	/**
 	 * Callback function to display section description (optional).
 	 */
-	public function settings_section_callback() {
+	public function customkm_settings_section_callback() {
 		echo '<p>This is a description of my settings section.</p>';
 	}
 
 	/**
 	 * Callback function to display field input.
 	 */
-	public function setting_field_callback() {
+	public function customkm_setting_field_callback() {
 		$option_value = get_option( 'my_option_name' );
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/setting.php';
 		?>
-		<?php include_once plugin_dir_path( __FILE__ ) . 'templates/setting.php'; ?>
+		
 		<?php
 	}
 

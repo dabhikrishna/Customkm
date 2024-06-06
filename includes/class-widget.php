@@ -2,8 +2,14 @@
 
 namespace CustomkmMenu\Includes;
 
+/**
+ * Class Widget
+ * Handles registration of custom widgets and widget areas.
+ */
 class Widget {
-
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		add_action( 'widgets_init', array( $this, 'customkm_widget' ) );
 		add_action( 'widgets_init', array( $this, 'customkm_widgets_init' ) );

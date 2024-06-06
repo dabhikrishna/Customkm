@@ -14,7 +14,7 @@
 ?>
 <div class="my">
 	<h2 style="font-weight: bold;"><?php echo esc_html( $atts['title'] ); ?></h2>
-<form id="portfolio_submission_form">
+	<form id="portfolio_submission_form">
 		<input type="hidden" name="action" value="portfolio_submission">
 		<?php wp_nonce_field( 'portfolio_submission_nonce', 'portfolio_submission_nonce_field' ); ?>
 		<label for="name">Name:</label>
@@ -30,4 +30,4 @@
 		<input type="button" id="submit_btn" value="Submit">
 	</form>
 	<div id="response_msg"></div>
-	</div>
+</div>

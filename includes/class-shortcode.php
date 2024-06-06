@@ -14,6 +14,9 @@ class Shortcode {
 	/**
 	 * Constructor.
 	 */
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		add_shortcode( 'portfolio_submission_form', array( $this, 'customkm_portfolio_submission_form_shortcode' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'customkm_enqueue_scripts' ) );
@@ -25,6 +28,7 @@ class Shortcode {
 		// Schedule cron job
 		//$this->schedule_cron_job();
 	}
+
 	/**
 	* Creates a shortcode for the form.
 	*/
@@ -62,6 +66,7 @@ class Shortcode {
 			array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) // Data
 		);
 	}
+
 	/**
 	* Processes form submission for portfolio.
 	*/
@@ -71,6 +76,11 @@ class Shortcode {
 
 				if ( empty( $_POST['name'] ) || empty( $_POST['email'] ) || empty( $_POST['company_name'] ) || empty( $_POST['phone'] ) || empty( $_POST['address'] ) ) {
 					echo 'Please fill out all required fields.';
+					die();
+				}
+				// Check if the form has already been submitted successfully
+				if ( isset( $_SESSION['portfolio_submission_success'] ) && $_SESSION['portfolio_submission_success'] ) {
+					echo 'Portfolio already submitted successfully. Please wait before submitting again.';
 					die();
 				}
 				// Check if the form has already been submitted successfully
@@ -94,6 +104,7 @@ class Shortcode {
 						'phone'        => $phone,
 						'company_name' => $company_name,
 						'address'      => $address,
+						'mail'         => gmdate( 'Y-m-d H:i:s' ),
 						'mail'         => gmdate( 'Y-m-d H:i:s' ),
 					),
 				);

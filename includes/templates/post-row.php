@@ -3,7 +3,7 @@
  * Table row for displaying portfolio information.
  *
  * This file represents an HTML table row for displaying portfolio information.
- * It includes columns for title, client name, address, email, phone, company, date, and a delete button.
+ * It includes columns for title, client name, address, email, phone, company, dates, and a delete button.
  * The delete button includes data attributes for post ID and nonce for security.
  *
  * @since      1.0.0
