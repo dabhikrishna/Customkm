@@ -56,7 +56,7 @@ require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-custommenu.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-recentportfolio.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-exampleplugin.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-restapi.php';
-require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-kmd-widget.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR. 'includes/class-kmd-widget.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-widget.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio-email-notification.php'; // Include
 
@@ -124,7 +124,7 @@ register_deactivation_hook( __FILE__, 'customkm_deactivate_plugin' );
 /**
  * Shortcode function to display sent email details
  */
-function display_sent_emails() {
+function customkm_display_sent_emails() {
 	// Query sent emails
 	$sent_emails = get_posts(
 		array(
@@ -152,4 +152,4 @@ function display_sent_emails() {
 }
 
 // Register the shortcode
-add_shortcode( 'sent_emails', 'display_sent_emails' );
+add_shortcode( 'sent_emails', 'customkm_display_sent_emails' );
