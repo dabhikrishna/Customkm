@@ -59,6 +59,7 @@ require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-restapi.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-kmd-widget.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-widget.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio-email-notification.php'; // Include
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-settings.php';
 
 use CustomkmMenu\Includes\Portfolio; //Import the Portfolio class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\AjaxPlugin; //Import the AjaxPlugin class from the CustomkmMenu\Includes namespace.
@@ -153,3 +154,5 @@ function customkm_display_sent_emails() {
 
 // Register the shortcode
 add_shortcode( 'sent_emails', 'customkm_display_sent_emails' );
+
+
