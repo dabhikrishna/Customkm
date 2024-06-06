@@ -20,6 +20,10 @@ class Shortcode {
 		add_action( 'wp_ajax_portfolio_submission', array( $this, 'customkm_process_portfolio_submission' ) );
 		add_action( 'wp_ajax_nopriv_portfolio_submission', array( $this, 'customkm_process_portfolio_submission' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'customkm_enqueue_styles' ) );
+		add_action( 'portfolio_submit_cron_job_weekly', array( $this, 'customkm_process_portfolio_submission' ) );
+
+		// Schedule cron job
+		//$this->schedule_cron_job();
 	}
 	/**
 	* Creates a shortcode for the form.
@@ -99,27 +103,43 @@ class Shortcode {
 				if ( is_wp_error( $post_id ) ) {
 					echo 'Error: ' . esc_html( $post_id->get_error_message() );
 				}
+				$email_notification_enable = get_option( 'enable_email_notification', 'on' );
+				$notification_frequency    = get_option( 'notification_frequency', 'weekly' );
+				//var_dump( $notification_frequency );
 				// Send custom email to submitted email address
-				$subject  = 'Portfolio Submission Received';
-				$message  = 'Dear ' . $name . ',<br><br>';
-				$message .= 'Thank you for submitting your portfolio. We have received your submission and will review it shortly.<br><br>';
-				$message .= 'Best regards,<br>Your Website Team';
+				if ( $email_notification_enable === 'on' && $notification_frequency === 'weekly' ) {
+					$subject  = 'Portfolio Submission Received';
+					$message  = 'Dear ' . $name . ',<br><br>';
+					$message .= 'Thank you for submitting your portfolio. We have received your submission and will review it shortly.<br><br>';
+					$message .= 'Best regards,<br>Your Website Team';
 
-				$headers[] = 'Content-Type: text/html; charset=UTF-8';
+					$headers[] = 'Content-Type: text/html; charset=UTF-8';
 
-				$email_sent = wp_mail( $email, $subject, $message, $headers );
-
-				// Display success message based on email sending status
-				if ( $email_sent ) {
-					echo 'Portfolio submitted successfully. We will review it shortly.';
+					$email_sent = wp_mail( $email, $subject, $message, $headers );
+					// Schedule cron job
+					$this->schedule_cron_job();
+					// Display success message based on email sending status
+					if ( $email_sent ) {
+						echo 'Portfolio submitted successfully. We will review it shortly.';
+					} else {
+						echo 'Error sending email. Please try again later.';
+					}
 				} else {
-					echo 'Error sending email. Please try again later.';
+					include PM_PLUGIN_DIR . 'templates/portfolio-submission.php';
 				}
-			}
-		}
-		die();
-	}
 
+				// Schedule cron job based on notification frequency
+
+			}
+			die();
+		}
+	}
+	private function schedule_cron_job() {
+		// Schedule cron job
+		if ( ! wp_next_scheduled( 'portfolio_submit_cron_job_weekly' ) ) {
+			wp_schedule_event( time(), 'weekly', 'portfolio_submit_cron_job_weekly' );
+		}
+	}
 	/**
 	* Enqueues the stylesheet for the plugin.
 	*/

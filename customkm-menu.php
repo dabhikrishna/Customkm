@@ -110,3 +110,93 @@ function display_sent_emails() {
 
 // Register the shortcode
 add_shortcode( 'sent_emails', 'display_sent_emails' );
+
+// Step 1: Create Settings Page
+function notification_settings_page() {
+	?>
+	<div class="wrap">
+		<h1>Email Notification Settings</h1>
+		<form method="post" action="options.php">
+			<?php
+			settings_fields( 'notification_settings' );
+			do_settings_sections( 'notification_settings' );
+			submit_button();
+			?>
+		</form>
+	</div>
+	<?php
+}
+
+// Step 2: Register Settings
+function notification_settings_init() {
+	register_setting( 'notification_settings', 'enable_email_notification' );
+	register_setting( 'notification_settings', 'notification_frequency' );
+
+	add_settings_section( 'notification_settings_section', 'Notification Settings', 'notification_settings_section_callback', 'notification_settings' );
+
+	add_settings_field( 'enable_email_notification', 'Enable Email Notification', 'enable_email_notification_callback', 'notification_settings', 'notification_settings_section' );
+
+	add_settings_field( 'notification_frequency', 'Notification Frequency', 'notification_frequency_callback', 'notification_settings', 'notification_settings_section' );
+}
+
+// Step 3: Display Settings Fields
+function notification_settings_section_callback() {
+	echo 'Configure your email notification preferences.';
+}
+
+function enable_email_notification_callback() {
+	$enable_email_notification = get_option( 'enable_email_notification' );
+	echo '<input type="checkbox" name="enable_email_notification" ' . checked( 1, $enable_email_notification, false ) . ' />';
+}
+
+function notification_frequency_callback() {
+	$notification_frequency = get_option( 'notification_frequency' );
+	$options                = array(
+		'daily'   => 'Daily',
+		'weekly'  => 'Weekly',
+		'monthly' => 'Monthly',
+	);
+	echo '<select name="notification_frequency">';
+	foreach ( $options as $key => $value ) {
+		echo '<option value="' . $key . '" ' . selected( $notification_frequency, $key, false ) . '>' . $value . '</option>';
+	}
+	echo '</select>';
+}
+
+// Step 4: Save Settings
+add_action( 'admin_init', 'notification_settings_init' );
+
+// Step 5: Add Menu Item
+function add_notification_settings_page() {
+	add_options_page( 'Notification Settings', 'Notification Settings', 'manage_options', 'notification_settings', 'notification_settings_page' );
+}
+add_action( 'admin_menu', 'add_notification_settings_page' );
+
+
+/**
+ * activation hook.
+ */
+
+function customkm_activate_plugin() {
+	// Change permalink structure to Post name
+	global $wp_rewrite;
+	$wp_rewrite->set_permalink_structure( '/%postname%/' );
+	$wp_rewrite->flush_rules(); // To make sure the changes take effect immediately
+}
+
+register_activation_hook( __FILE__, 'customkm_activate_plugin' );
+
+/**
+ * Deactivation hook.
+ */
+
+function customkm_deactivate_plugin() {
+	// Change permalink structure to Plain
+	global $wp_rewrite;
+	$wp_rewrite->set_permalink_structure( '' );
+	$wp_rewrite->flush_rules(); // To make sure the changes take effect immediately
+}
+register_deactivation_hook( __FILE__, 'customkm_deactivate_plugin' );
+
+
+
