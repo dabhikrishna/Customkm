@@ -2,8 +2,8 @@
 
 namespace CustomkmMenu\Includes;
 
-if ( ! defined( 'PM_PLUGIN_DIR' ) ) {
-	define( 'PM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 
 /**
@@ -20,7 +20,9 @@ class Shortcode {
 		add_action( 'wp_ajax_portfolio_submission', array( $this, 'customkm_process_portfolio_submission' ) );
 		add_action( 'wp_ajax_nopriv_portfolio_submission', array( $this, 'customkm_process_portfolio_submission' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'customkm_enqueue_styles' ) );
+		add_action( 'portfolio_submit_cron_job_weekly', array( $this, 'customkm_process_portfolio_submission' ) );
 	}
+
 	/**
 	* Creates a shortcode for the form.
 	*/
@@ -35,7 +37,7 @@ class Shortcode {
 		);
 
 		ob_start();
-		include_once PM_PLUGIN_DIR . 'templates/portfolio-form.php';
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/portfolio-form.php';
 		?>
 		<?php
 		return ob_get_clean();
@@ -58,6 +60,7 @@ class Shortcode {
 			array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) // Data
 		);
 	}
+
 	/**
 	* Processes form submission for portfolio.
 	*/
@@ -67,6 +70,11 @@ class Shortcode {
 
 				if ( empty( $_POST['name'] ) || empty( $_POST['email'] ) || empty( $_POST['company_name'] ) || empty( $_POST['phone'] ) || empty( $_POST['address'] ) ) {
 					echo 'Please fill out all required fields.';
+					die();
+				}
+				// Check if the form has already been submitted successfully
+				if ( isset( $_SESSION['portfolio_submission_success'] ) && $_SESSION['portfolio_submission_success'] ) {
+					echo 'Portfolio already submitted successfully. Please wait before submitting again.';
 					die();
 				}
 				$name         = sanitize_text_field( $_POST['name'] );
@@ -93,12 +101,35 @@ class Shortcode {
 
 				if ( is_wp_error( $post_id ) ) {
 					echo 'Error: ' . esc_html( $post_id->get_error_message() );
-				} else {
-					include PM_PLUGIN_DIR . 'templates/portfolio-submission.php';
 				}
+				// Send custom email to submitted email address
+				$subject  = 'Portfolio Submission Received';
+				$message  = 'Dear ' . $name . ',<br><br>';
+				$message .= 'Thank you for submitting your portfolio. We have received your submission and will review it shortly.<br><br>';
+				$message .= 'Best regards,<br>Your Website Team';
+
+				$headers[] = 'Content-Type: text/html; charset=UTF-8';
+
+				$email_sent = wp_mail( $email, $subject, $message, $headers );
+
+				// Display success message based on email sending status
+				if ( $email_sent ) {
+					echo 'Portfolio submitted successfully. We will review it shortly.';
+				} else {
+					include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-submission.php';
+					echo 'Error sending email. Please try again later.';
+				}
+				// Schedule cron job based on notification frequency
+
 			}
+			die();
 		}
-		die();
+	}
+	private function schedule_cron_job() {
+		// Schedule cron job
+		if ( ! wp_next_scheduled( 'portfolio_submit_cron_job_weekly' ) ) {
+			wp_schedule_event( time(), 'weekly', 'portfolio_submit_cron_job_weekly' );
+		}
 	}
 
 	/**
@@ -106,14 +137,14 @@ class Shortcode {
 	*/
 	public function customkm_enqueue_styles() {
 		//if ( has_shortcode( get_post()->post_content, 'portfolio_submission_form' ) ) {
-			// Enqueue CSS file located within your plugin directory
-			wp_enqueue_style(
-				'your_plugin_portfolio_submission_form_style', // Handle
-				plugins_url( '/css/portfolio-submission-form.css', __FILE__ ), // URL to CSS file
-				array(), // Dependencies
-				'1.0', // Version number
-				'all' // Media type
-			);
+		wp_enqueue_style(
+			'your_plugin_portfolio_submission_form_style', // Handle
+			plugins_url( '/css/portfolio-submission-form.css', __FILE__ ), // URL to CSS file
+			array(), // Dependencies
+			'1.0', // Version number
+			'all' // Media type
+		);
 		//}
 	}
+	
 }

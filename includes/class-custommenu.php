@@ -2,8 +2,8 @@
 
 namespace CustomkmMenu\Includes;
 
-if ( ! defined( 'PM_PLUGIN_DIR' ) ) {
-	define( 'PM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 
 /**
@@ -21,6 +21,7 @@ class CustomMenu {
 		add_action( 'admin_menu', array( $this, 'customkm_my_custom_submenu_page' ) );
 		add_action( 'admin_init', array( $this, 'customkm_my_custom_settings_init' ) );
 	}
+
 	/**
 	* Adds a submenu page to the custom AJAX plugin settings.
 	*/
@@ -41,7 +42,7 @@ class CustomMenu {
 	* Custom page content for submenu.
 	*/
 	public function page_content() {
-		include_once PM_PLUGIN_DIR . 'templates/customkm-page.php';
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/customkm-page.php';
 	}
 
 	/**
@@ -82,7 +83,7 @@ class CustomMenu {
 	* Callback function to display submenu page content.
 	*/
 	public function customkm_submenu_callback() {
-		include_once PM_PLUGIN_DIR . 'templates/custom-submenu.php';
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/custom-submenu.php';
 	}
 
 	/**
@@ -123,7 +124,7 @@ class CustomMenu {
 	 */
 	public function customkm_setting_field_callback() {
 		$option_value = get_option( 'my_option_name' );
-		include_once PM_PLUGIN_DIR . 'templates/setting.php';
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/setting.php';
 		?>
 		
 		<?php

@@ -2,8 +2,8 @@
 
 namespace CustomkmMenu\Includes;
 
-if ( ! defined( 'PM_PLUGIN_DIR' ) ) {
-	define( 'PM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 
 /**
@@ -171,6 +171,6 @@ class Portfolio {
 	 */
 	public function render_portfolio_fields() {
 		// Include the template file for rendering the custom fields
-		include_once PM_PLUGIN_DIR . 'templates/portfolio-renders.php';
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/portfolio-renders.php';
 	}
 }

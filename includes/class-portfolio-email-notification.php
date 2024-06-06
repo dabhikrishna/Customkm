@@ -14,9 +14,6 @@ class Portfolio_Email_Notification {
 	}
 
 	public function send_email_notification() {
-		// error_log( 'Cron job started for portfolio email notification.' );
-		// return;
-
 		// Fetch portfolio posts with associated emails
 		$args = array(
 			'post_type'      => 'portfolio',
@@ -49,8 +46,6 @@ class Portfolio_Email_Notification {
 
 			}
 		}
-
-		//error_log( print_r( $debug, true ) );
 		// Reset post data
 		wp_reset_postdata();
 	}

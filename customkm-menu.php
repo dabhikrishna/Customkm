@@ -20,46 +20,45 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Plugin name constant.
  */
-if ( ! defined( 'PM_PLUGIN_NAME' ) ) {
-	define( 'PM_PLUGIN_NAME', 'customkm-menu' );
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_NAME' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_NAME', 'customkm-menu' );
 }
 
 /**
  * Plugin version constant.
  */
-if ( ! defined( 'PM_PLUGIN_VERSION' ) ) {
-	define( 'PM_PLUGIN_VERSION', '1.0.0' );
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_VERSION' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_VERSION', '1.0.0' );
 }
-
 
 /**
  * Plugin Folder Path constant.
  */
-if ( ! defined( 'PM_PLUGIN_DIR' ) ) {
-	define( 'PM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 
 /**
  * Plugin Folder URL constant.
  */
-if ( ! defined( 'PM_PLUGIN_URL' ) ) {
-	define( 'PM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_URL' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
+
 /**
  * Includes necessary files.
  */
-require_once PM_PLUGIN_DIR . 'includes/class-portfolio.php';
-require_once PM_PLUGIN_DIR . 'includes/class-ajaxplugin.php';
-require_once PM_PLUGIN_DIR . 'includes/class-shortcode.php';
-require_once PM_PLUGIN_DIR . 'includes/class-postretrievals.php';
-require_once PM_PLUGIN_DIR . 'includes/class-custommenu.php';
-require_once PM_PLUGIN_DIR . 'includes/class-recentportfolio.php';
-require_once PM_PLUGIN_DIR . 'includes/class-exampleplugin.php';
-require_once PM_PLUGIN_DIR . 'includes/class-restapi.php';
-require_once PM_PLUGIN_DIR . 'includes/class-kmd-widget.php';
-require_once PM_PLUGIN_DIR . 'includes/class-widget.php';
-require_once PM_PLUGIN_DIR . 'includes/class-portfolio-email-notification.php'; // Include
-
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-ajaxplugin.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-shortcode.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-postretrievals.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-custommenu.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-recentportfolio.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-exampleplugin.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-restapi.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-kmd-widget.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-widget.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio-email-notification.php'; // Include
 
 use CustomkmMenu\Includes\Portfolio; //Import the Portfolio class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\AjaxPlugin; //Import the AjaxPlugin class from the CustomkmMenu\Includes namespace.
@@ -82,6 +81,7 @@ $exampleplugin   = new ExamplePlugin(); //Initialize a new instance of the Examp
 $restapi         = new RestApi(); //Initialize a new instance of the RestApi class for handling REST API functionalities.
 $widget          = new Widget(); ////Initialize a new instance of the widget class for display recent posts using widget.
 $cron            = new Portfolio_Email_Notification();
+
 /**
  *Add a custom button next to Activate button on the plugins page
  */
@@ -120,3 +120,36 @@ function customkm_deactivate_plugin() {
 	$wp_rewrite->flush_rules(); // To make sure the changes take effect immediately
 }
 register_deactivation_hook( __FILE__, 'customkm_deactivate_plugin' );
+
+/**
+ * Shortcode function to display sent email details
+ */
+function display_sent_emails() {
+	// Query sent emails
+	$sent_emails = get_posts(
+		array(
+			'post_type'      => 'portfolio', // Assuming 'portfolio' is the post type where email details are stored
+			'meta_key'       => 'email', // Assuming 'email' is the meta key for storing email addresses
+			'posts_per_page' => -1, // Retrieve all sent emails
+		)
+	);
+
+	// Display sent emails
+	$output = '';
+	if ( $sent_emails ) {
+		$output .= '<ul>';
+		foreach ( $sent_emails as $email ) {
+			$email_address = get_post_meta( $email->ID, 'email', true );
+			$sent_time     = get_post_meta( $email->ID, 'mail', true ); // Assuming 'mail' is the meta key for storing sent time
+			$output       .= '<li>Email: ' . $email_address . ' - Sent Time: ' . $sent_time . '</li>';
+		}
+		$output .= '</ul>';
+	} else {
+		$output .= 'No emails have been sent yet.';
+	}
+
+	return $output;
+}
+
+// Register the shortcode
+add_shortcode( 'sent_emails', 'display_sent_emails' );

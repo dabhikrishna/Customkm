@@ -2,8 +2,8 @@
 
 namespace CustomkmMenu\Includes;
 
-if ( ! defined( 'PM_PLUGIN_DIR' ) ) {
-	define( 'PM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 
 /**
@@ -39,7 +39,7 @@ class AjaxPlugin {
 	 * Callback function to display the plugin settings page.
 	 */
 	public function settings_page() {
-		require_once PM_PLUGIN_DIR . 'templates/custom-ajax.php';
+		require_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/custom-ajax.php';
 		//include_once plugin_dir_path( __FILE__ ) . 'templates/custom-ajax.php';
 	}
 
@@ -73,6 +73,5 @@ class AjaxPlugin {
 			'custom_ajax_plugin_ajax_object',
 			array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
 		);
-	
 	}
 }
