@@ -27,7 +27,7 @@ class CustomMenu {
 	*/
 	public function customkm_menu_page() {
 		add_submenu_page(
-			'custom-ajax-plugin-settings',
+			'customkm-ajax-plugin-settings',
 			'Customkm Menu',              // Page title
 			esc_html__( 'Customkm Menu', 'customkm-menu' ),              // Menu title
 			'manage_options',           // Capability
@@ -74,7 +74,7 @@ class CustomMenu {
 			'My Submenu Page', // Page title
 			'My Submenu', // Menu title
 			'manage_options', // Capability required to access
-			'my-custom-submenu', // Menu slug
+			'customkm-my-custom-submenu', // Menu slug
 			array( $this, 'customkm_submenu_callback' ), // Callback function to display content
 			28
 		);

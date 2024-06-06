@@ -56,7 +56,7 @@ require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-custommenu.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-recentportfolio.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-exampleplugin.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-restapi.php';
-require_once CUSTOMKM_MENU_PLUGIN_DIR. 'includes/class-kmd-widget.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-kmd-widget.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-widget.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio-email-notification.php'; // Include
 
@@ -86,7 +86,7 @@ $cron            = new Portfolio_Email_Notification();
  *Add a custom button next to Activate button on the plugins page
  */
 function customkm_add_custom_plugin_button( $links ) {
-	$custom_plugin_page = admin_url( 'admin.php?page=custom-ajax-plugin-settings' );
+	$custom_plugin_page = admin_url( 'admin.php?page=customkm-ajax-plugin-settings' );
 	$custom_link_text   = esc_html__( 'Plugin details', 'customkm-menu' );
 
 	$custom_link = '<a href="' . esc_url( $custom_plugin_page ) . '">' . esc_html( $custom_link_text ) . '</a>';

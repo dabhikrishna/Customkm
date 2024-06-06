@@ -2,8 +2,8 @@
 
 namespace CustomkmMenu\Includes;
 
-if ( ! defined( 'PM_PLUGIN_DIR' ) ) {
-	define( 'PM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 
 /**
@@ -11,9 +11,7 @@ if ( ! defined( 'PM_PLUGIN_DIR' ) ) {
  * Handles registration of custom shortcodes and related functionalities.
  */
 class Shortcode {
-	/**
-	 * Constructor.
-	 */
+
 	/**
 	 * Constructor.
 	 */
@@ -24,9 +22,6 @@ class Shortcode {
 		add_action( 'wp_ajax_nopriv_portfolio_submission', array( $this, 'customkm_process_portfolio_submission' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'customkm_enqueue_styles' ) );
 		add_action( 'portfolio_submit_cron_job_weekly', array( $this, 'customkm_process_portfolio_submission' ) );
-
-		// Schedule cron job
-		//$this->schedule_cron_job();
 	}
 
 	/**
@@ -43,7 +38,7 @@ class Shortcode {
 		);
 
 		ob_start();
-		include_once PM_PLUGIN_DIR . 'templates/portfolio-form.php';
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/portfolio-form.php';
 		?>
 		<?php
 		return ob_get_clean();
@@ -105,7 +100,7 @@ class Shortcode {
 						'company_name' => $company_name,
 						'address'      => $address,
 						'mail'         => gmdate( 'Y-m-d H:i:s' ),
-						'mail'         => gmdate( 'Y-m-d H:i:s' ),
+
 					),
 				);
 				// Insert the post into the database
@@ -114,11 +109,6 @@ class Shortcode {
 				if ( is_wp_error( $post_id ) ) {
 					echo 'Error: ' . esc_html( $post_id->get_error_message() );
 				}
-				$email_notification_enable = get_option( 'enable_email_notification', 'on' );
-				$notification_frequency    = get_option( 'notification_frequency', 'weekly' );
-				//var_dump( $notification_frequency );
-				// Send custom email to submitted email address
-				if ( $email_notification_enable === 'on' && $notification_frequency === 'weekly' ) {
 					$subject  = 'Portfolio Submission Received';
 					$message  = 'Dear ' . $name . ',<br><br>';
 					$message .= 'Thank you for submitting your portfolio. We have received your submission and will review it shortly.<br><br>';
@@ -130,13 +120,10 @@ class Shortcode {
 					// Schedule cron job
 					$this->schedule_cron_job();
 					// Display success message based on email sending status
-					if ( $email_sent ) {
-						echo 'Portfolio submitted successfully. We will review it shortly.';
-					} else {
-						echo 'Error sending email. Please try again later.';
-					}
+				if ( $email_sent ) {
+					echo 'Portfolio submitted successfully. We will review it shortly.';
 				} else {
-					include PM_PLUGIN_DIR . 'templates/portfolio-submission.php';
+					echo 'Error sending email. Please try again later.';
 				}
 
 				// Schedule cron job based on notification frequency
@@ -151,11 +138,11 @@ class Shortcode {
 			wp_schedule_event( time(), 'weekly', 'portfolio_submit_cron_job_weekly' );
 		}
 	}
+
 	/**
 	* Enqueues the stylesheet for the plugin.
 	*/
 	public function customkm_enqueue_styles() {
-		//if ( has_shortcode( get_post()->post_content, 'portfolio_submission_form' ) ) {
 			// Enqueue CSS file located within your plugin directory
 			wp_enqueue_style(
 				'your_plugin_portfolio_submission_form_style', // Handle
@@ -164,6 +151,5 @@ class Shortcode {
 				'1.0', // Version number
 				'all' // Media type
 			);
-		//}
 	}
 }

@@ -23,7 +23,7 @@ class ExamplePlugin {
 	 */
 	public function customkm_example_plugin_menu() {
 		add_submenu_page(
-			'custom-ajax-plugin-settings',
+			'customkm-ajax-plugin-settings',
 			'Example Plugin Page',    // Page title
 			esc_html__( 'Plugin Page', 'customkm-menu' ),        // Menu title
 			'manage_options',         // Capability
