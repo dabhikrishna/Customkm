@@ -123,7 +123,7 @@ function customkm_deactivate_plugin() {
 register_deactivation_hook( __FILE__, 'customkm_deactivate_plugin' );
 
 /**
- * Shortcode function to display sent email details
+ * Shortcode function to display sent email detail
  */
 function customkm_display_sent_emails() {
 	// Query sent emails
