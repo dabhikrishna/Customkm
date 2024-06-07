@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Customkm Menus
+ * Plugin Name: Customkm Menu
  * Plugin URI: https://qrolic.com
  * Description:Customkm Menu is the ultimate solution for streamlining website enhancement. This plugin enables you to effortlessly create bespoke menus and submenus, integrate fields, and securely store data leveraging the powerful OPTION API and SETTING API. Moreover, it streamlines the process of establishing a PORTFOLIO post type to elegantly showcase your projects. What's more, Customkm Menu seamlessly incorporates shortcode support, empowering you to seamlessly embed dynamic content throughout your website's pages and posts.
  * Version: 1.0.0
