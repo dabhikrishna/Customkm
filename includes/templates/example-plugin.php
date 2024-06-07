@@ -15,28 +15,28 @@
 // Wrap the content in a div with the class 'wrap'.
 ?>
 <div class="wrap">
-	<h2>My Plugin Settings</h2>
+	<h2><?php echo esc_html__( 'My Plugin Settings', 'customkm-menu' ); ?></h2>
 	<!-- Create tabs navigation -->
 	<h2 class="nav-tab-wrapper">
 	<?php
 	// Generate nonce
-	$nonce = wp_create_nonce( 'example-plugin-nonce' );
+	$nonce = wp_create_nonce( 'customkm-example-plugin-nonce' );
 	// Append nonce to the link URL
 	$link_url = add_query_arg( '_wpnonce', $nonce, '?page=example-plugin&tab=pluginbasic' );
 	?>
 	<a href="<?php echo esc_url( $link_url ); ?>" class="nav-tab <?php echo ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'example-plugin-nonce' ) ) || ! isset( $_GET['tab'] ) ? 'nav-tab-active' : ''; ?>">Plugin Basic</a>
-	<a href="?page=example-plugin&tab=shortcode" class="nav-tab <?php echo 'shortcode' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Shortcode</a>
+	<a href="?page=customkm-example-plugin&tab=shortcode" class="nav-tab <?php echo 'shortcode' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Shortcode</a>
 	<!-- Add nonce fields for each form -->
-	<?php wp_nonce_field( 'example-plugin-action', 'example-plugin-nonce' ); ?>
-	<a href="?page=example-plugin&tab=recentpost" class="nav-tab <?php echo 'recentpost' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Recent Post</a>
-	<a href="?page=example-plugin&tab=fetchdata" class="nav-tab <?php echo 'fetchdata' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Fetch Data Shortcode</a>
+	<?php wp_nonce_field( 'customkm-example-plugin-action', 'customkm-example-plugin-nonce' ); ?>
+	<a href="?page=customkm-example-plugin&tab=recentpost" class="nav-tab <?php echo 'recentpost' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Recent Post</a>
+	<a href="?page=customkm-example-plugin&tab=fetchdata" class="nav-tab <?php echo 'fetchdata' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>">Fetch Data Shortcode</a>
 </h2>
 <!-- Display tab content -->
 <div class="tab-content">
 	<?php
 	$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'pluginbasic';
 	// Verify nonce
-	if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'example-plugin-nonce' ) ) :
+	if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'customkm-example-plugin-nonce' ) ) :
 		?>
 	<?php else : ?>
 		<?php // Nonce is invalid or missing, handle accordingly (e.g., show an error message) ?>
@@ -46,11 +46,11 @@
 	switch ( $active_tab ) :
 		case 'pluginbasic':
 			?>
-			<h3>Plugin Information</h3>
-			<p>Plugin Name : Customkm Menu</p>
-			<p>Author : Krishna</p>
-			<p>Description : Customkm Plugin for your site.</p>
-			<P>Version: 6.5.2</P>
+			<h3><?php echo esc_html__( 'Plugin Information', 'customkm-menu' ); ?></h3>
+			<p><?php echo esc_html__( 'Plugin Name : Customkm Menu', 'customkm-menu' ); ?></p>
+			<p><?php echo esc_html__( 'Author : Krishna', 'customkm-menu' ); ?></p>
+			<p><?php echo esc_html__( 'Description : Customkm Plugin for your site.', 'customkm-menu' ); ?></p>
+			<P><?php echo esc_html__( 'Version: 1.0.0', 'customkm-menu' ); ?>version :1.0.0</P>
 			<?php
 			break;
 		case 'shortcode':

@@ -4,7 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class Kmd_Widget
+ * A custom WordPress widget to display a list of recent posts.
+ */
 class Kmd_Widget extends WP_Widget {
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		$widget_options = array(
 			'classname'   => 'Kmd_widget',
@@ -67,4 +74,3 @@ class Kmd_Widget extends WP_Widget {
 		return $instance;
 	}
 }
-	$my_widget = new Kmd_Widget();
