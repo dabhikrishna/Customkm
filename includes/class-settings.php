@@ -1,7 +1,12 @@
 <?php
-
-
-
+/**
+ * Settings Class
+ *
+ * This class handles the settings related functionalities for the Akila Portfolio plugin,
+ * including adding settings page, rendering settings page content, and handling form submissions.
+ *
+ * @since 1.0.0
+ */
 class Settings {
 
 	/**
@@ -34,7 +39,7 @@ class Settings {
 
 			$notification_frequency = isset( $_POST['notification_frequency'] ) ? sanitize_text_field( $_POST['notification_frequency'] ) : 'daily';
 			update_option( 'notification_frequency', $notification_frequency );
-/*
+
 			if ( $email_notifications ) {
 				if ( ! wp_next_scheduled( 'portfolio_email_notification_cron' ) ) {
 					$interval = $this->get_notification_interval( $notification_frequency );
@@ -42,7 +47,7 @@ class Settings {
 				}
 			} else {
 				wp_clear_scheduled_hook( 'portfolio_email_notification_cron' );
-			}*/
+			}
 
 			?>
 		<div class="updated"><p><?php esc_html_e( 'Settings saved successfully.', 'portfolio' ); ?></p></div>
@@ -51,7 +56,7 @@ class Settings {
 
 		$email_notifications    = get_option( 'email_notifications', 1 );
 		$notification_frequency = get_option( 'notification_frequency', 'daily' );
-		//Searching (akila_notification_frequency) in the database will show that daily, monthly, weekly are set.
+		//Searching (notification_frequency) in the database will show that daily, monthly, weekly are set.
 		?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Email Settings', 'portfolio' ); ?></h1>
@@ -113,13 +118,13 @@ class Settings {
 	 */
 	public function add_settings_page() {
 		add_menu_page(
-			esc_html__( 'Email Settings', 'portfolio' ),
-			esc_html__( 'Email Settings', 'portfolio' ),
-			'manage_options',
-			'settings',
-			array( $this, 'settings_page' ),
-			'dashicons-admin-generic',
-			30
+			esc_html__( 'Email Settings', 'portfolio' ),   // Page title
+			esc_html__( 'Email Settings', 'portfolio' ),   // Menu title
+			'manage_options',  // Capability
+			'settings',        // Menu slug
+			array( $this, 'settings_page' ),   // Callback function
+			'dashicons-admin-generic',         // Icon
+			30      // Position
 		);
 	}
 }
