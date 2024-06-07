@@ -2,7 +2,18 @@
 
 namespace CustomkmMenu\Includes;
 
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
+/**
+ * Class ExamplePlugin
+ * @package CustomkmMenu\Includes
+ */
 class ExamplePlugin {
+	/**
+	 * ExamplePlugin constructor.
+	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'customkm_example_plugin_menu' ) );
 	}
@@ -11,7 +22,7 @@ class ExamplePlugin {
 	 */
 	public function customkm_example_plugin_menu() {
 		add_submenu_page(
-			'custom-ajax-plugin-settings',
+			'customkm-ajax-plugin-settings',
 			'Example Plugin Page',    // Page title
 			esc_html__( 'Plugin Page', 'customkm-menu' ),        // Menu title
 			'manage_options',         // Capability
@@ -22,9 +33,11 @@ class ExamplePlugin {
 		);
 	}
 
-	// Plugin page content
+	/**
+	 * Plugin page content
+	 */
 	public function plugin_page() {
 		wp_enqueue_style( 'plugin-custom-styles', plugin_dir_url( __FILE__ ) . 'css/plugin-styles.css', array(), '1.0' );
-		include_once plugin_dir_path( __FILE__ ) . 'templates/example-plugin.php';
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/example-plugin.php';
 	}
 }

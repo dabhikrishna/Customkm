@@ -2,7 +2,14 @@
 
 namespace CustomkmMenu\Includes;
 
+/**
+ * Class RestApi
+ * Handles registration of custom REST API endpoints.
+ */
 class RestApi {
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		add_action( 'rest_api_init', array( $this, 'prefix_register_example_routes' ) );
 	}

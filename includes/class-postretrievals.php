@@ -2,18 +2,31 @@
 
 namespace CustomkmMenu\Includes;
 
+// If this file is called directly, abort.
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
+/**
+ * Class PostRetrievals
+ * Handles functionality related to retrieving and displaying posts.
+ */
 class PostRetrievals {
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'customkm_submenu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'customkm_enqueue_delete_post_script' ) );
 		add_action( 'wp_ajax_delete_post_action', array( $this, 'customkm_delete_post_action_callback' ) );
 	}
+
 	/**
 	* Adds a submenu page to the custom AJAX plugin settings.
 	*/
 	public function customkm_submenu() {
 		add_submenu_page(
-			'custom-ajax-plugin-settings',
+			'customkm-ajax-plugin-settings',
 			'Submenu Page Title',       // Page title
 			esc_html__( 'Post Retrievals Title', 'customkm-menu' ),       // Menu title
 			'manage_options',           // Capability
@@ -40,7 +53,7 @@ class PostRetrievals {
 			$posts = json_decode( wp_remote_retrieve_body( $response ), true );
 			// Check if there are posts
 			if ( ! empty( $posts ) ) {
-				include_once plugin_dir_path( __FILE__ ) . 'templates/form.php';
+				include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/form.php';
 				foreach ( $posts as $post ) {
 					$query = new \WP_Query(
 						array(
@@ -57,7 +70,7 @@ class PostRetrievals {
 						$email       = get_post_meta( $post_id, 'email', true );
 						$phone       = get_post_meta( $post_id, 'phone', true );
 						$company     = get_post_meta( $post_id, 'company_name', true );
-						include plugin_dir_path( __FILE__ ) . 'templates/post-row.php';
+						include CUSTOMKM_MENU_PLUGIN_DIR . 'templates/post-row.php';
 					endwhile;
 					wp_reset_postdata(); // Reset post data
 				}
@@ -75,6 +88,7 @@ class PostRetrievals {
 
 		<?php
 	}
+
 	/**
 	* Enqueue the external JavaScript file.
 	*/

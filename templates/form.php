@@ -22,7 +22,7 @@
 		}
 	</style>
 	<tr>
-		<th><?php echo esc_html__( 'Title', 'customkm-menu' ); ?></th>
+	<th><?php echo esc_html__( 'Title', 'customkm-menu' ); ?></th>
 		<th><?php echo esc_html__( 'Name', 'customkm-menu' ); ?></th>
 		<th><?php echo esc_html__( 'Address', 'customkm-menu' ); ?></th>
 		<th><?php echo esc_html__( 'Email', 'customkm-menu' ); ?></th>
