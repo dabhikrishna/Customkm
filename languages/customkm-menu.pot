@@ -1,73 +1,244 @@
 # Copyright (C) 2024 krishna
 # This file is distributed under the same license as the Customkm Menu plugin.
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Customkm Menu 6.5.2\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-plugin\n"
-"POT-Creation-Date: 2024-05-18 09:30+0530\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Project-Id-Version: Customkm Menu 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/customkm-menu\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.3\n"
-"X-Domain: customkm_menu\n"
+"POT-Creation-Date: 2024-06-03T12:16:54+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: customkm-menu\n"
 
 #. Plugin Name of the plugin
-#: custom-plugin.php
+#: customkm-menu.php
+#: includes/class-custommenu.php:31
 msgid "Customkm Menu"
 msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
-#: custom-plugin.php
+#: customkm-menu.php
 msgid "https://qrolic.com"
 msgstr ""
 
 #. Description of the plugin
-#: custom-plugin.php
-msgid "Customkm Plugin for your site."
+#: customkm-menu.php
+msgid "Customkm Menu is the ultimate solution for streamlining website enhancement. This plugin enables you to effortlessly create bespoke menus and submenus, integrate fields, and securely store data leveraging the powerful OPTION API and SETTING API. Moreover, it streamlines the process of establishing a PORTFOLIO post type to elegantly showcase your projects. What's more, Customkm Menu seamlessly incorporates shortcode support, empowering you to seamlessly embed dynamic content throughout your website's pages and posts."
 msgstr ""
 
 #. Author of the plugin
-#: custom-plugin.php
+#: customkm-menu.php
 msgid "krishna"
 msgstr ""
 
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Post Retrievals"
+#: customkm-menu.php:87
+msgid "Plugin details"
 msgstr ""
 
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Store Name"
-msgstr ""
-
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Custom AJAX Plugin Settings"
-msgstr ""
-
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Post Retrievals"
-msgstr ""
-
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Retrieve posts using the REST API"
-msgstr ""
-
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Submenu Menu Title"
-msgstr ""
-
-#: wp-content/plugins/custom-plugin/custom-plugin.php
+#: includes/class-ajaxplugin.php:29
 msgid "Custom AJAX Plugin"
 msgstr ""
 
-#: wp-content/plugins/custom-plugin/custom-plugin.php
+#: includes/class-exampleplugin.php:28
 msgid "Plugin Page"
 msgstr ""
 
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Customkm Menu"
+#: includes/class-postretrievals.php:30
+msgid "Post Retrievals Title"
+msgstr ""
+
+#: includes/class-postretrievals.php:43
+msgid "Post Retrievals"
+msgstr ""
+
+#: includes/class-postretrievals.php:44
+msgid "Retrieve posts using the REST API"
+msgstr ""
+
+#: includes/templates/custom-ajax.php:14
+#: templates/custom-ajax.php:14
+msgid "Custom AJAX Plugin Settings"
+msgstr ""
+
+#: includes/templates/custom-ajax.php:17
+#: templates/custom-ajax.php:17
+msgid "Store Name"
+msgstr ""
+
+#: includes/templates/customkm-page.php:22
+#: includes/templates/form.php:26
+#: templates/customkm-page.php:22
+#: templates/form.php:26
+msgid "Name"
+msgstr ""
+
+#: includes/templates/example-plugin.php:18
+#: templates/example-plugin.php:18
+msgid "My Plugin Settings"
+msgstr ""
+
+#: includes/templates/example-plugin.php:49
+#: templates/example-plugin.php:49
+msgid "Plugin Information"
+msgstr ""
+
+#: includes/templates/example-plugin.php:50
+#: templates/example-plugin.php:50
+msgid "Plugin Name : Customkm Menu"
+msgstr ""
+
+#: includes/templates/example-plugin.php:51
+#: templates/example-plugin.php:51
+msgid "Author : Krishna"
+msgstr ""
+
+#: includes/templates/example-plugin.php:52
+#: templates/example-plugin.php:52
+msgid "Description : Customkm Plugin for your site."
+msgstr ""
+
+#: includes/templates/example-plugin.php:53
+#: templates/example-plugin.php:53
+msgid "Version: 1.0.0"
+msgstr ""
+
+#: includes/templates/form.php:25
+#: templates/form.php:25
+msgid "Title"
+msgstr ""
+
+#: includes/templates/form.php:27
+#: templates/form.php:27
+msgid "Address"
+msgstr ""
+
+#: includes/templates/form.php:28
+#: templates/form.php:28
+msgid "Email"
+msgstr ""
+
+#: includes/templates/form.php:29
+#: templates/form.php:29
+msgid "Phone"
+msgstr ""
+
+#: includes/templates/form.php:30
+#: templates/form.php:30
+msgid "Company Name"
+msgstr ""
+
+#: includes/templates/form.php:31
+#: templates/form.php:31
+msgid "Date"
+msgstr ""
+
+#: includes/templates/form.php:32
+#: templates/form.php:32
+msgid "Action"
+msgstr ""
+
+#: templates/custom-submenu.php:17
+msgid "My Submenu Page"
+msgstr ""
+
+#: templates/example-plugin.php:27
+msgid "Plugin Basic"
+msgstr ""
+
+#: templates/example-plugin.php:28
+msgid "Shortcode"
+msgstr ""
+
+#: templates/example-plugin.php:31
+#: templates/example-plugin.php:81
+msgid "Recent Post"
+msgstr ""
+
+#: templates/example-plugin.php:32
+#: templates/example-plugin.php:89
+msgid "Fetch Data Shortcode"
+msgstr ""
+
+#: templates/example-plugin.php:58
+msgid "Shortcode Usage"
+msgstr ""
+
+#: templates/example-plugin.php:59
+#: templates/example-plugin.php:82
+#: templates/example-plugin.php:90
+msgid "Use the following shortcode to display dynamic content:"
+msgstr ""
+
+#: templates/example-plugin.php:60
+msgid "[portfolio_submission_form]"
+msgstr ""
+
+#: templates/example-plugin.php:61
+msgid "Functionality of Shortcode"
+msgstr ""
+
+#: templates/example-plugin.php:62
+msgid "The [portfolio_submission_form] shortcode displays a simple message. You can customize the functionality by modifying the  portfolio_submission_form_shortcode_function function in the plugin file."
+msgstr ""
+
+#: templates/example-plugin.php:66
+#: templates/portfolio-form.php:20
+msgid "Name:"
+msgstr ""
+
+#: templates/example-plugin.php:68
+#: templates/portfolio-form.php:22
+msgid "Company Name:"
+msgstr ""
+
+#: templates/example-plugin.php:70
+#: templates/portfolio-form.php:24
+msgid "Email:"
+msgstr ""
+
+#: templates/example-plugin.php:72
+#: templates/portfolio-form.php:26
+msgid "Phone:"
+msgstr ""
+
+#: templates/example-plugin.php:74
+#: templates/portfolio-form.php:28
+msgid "Address:"
+msgstr ""
+
+#: templates/example-plugin.php:83
+msgid "[recent_portfolio_posts]"
+msgstr ""
+
+#: templates/example-plugin.php:84
+msgid "using this shortcode you display recent posts from the portfolio."
+msgstr ""
+
+#: templates/example-plugin.php:91
+msgid "[fetch_data]"
+msgstr ""
+
+#: templates/example-plugin.php:92
+msgid "using this shortcode you display name of the field."
+msgstr ""
+
+#: templates/example-plugin.php:97
+msgid "Invalid Tab"
+msgstr ""
+
+#: templates/portfolio-renders.php:16
+msgid "Client Name:"
+msgstr ""
+
+#: templates/portfolio-renders.php:18
+msgid "Project URL:"
+msgstr ""
+
+#: templates/portfolio-submission.php:14
+msgid "Success! Your portfolio has been submitted with email ."
 msgstr ""

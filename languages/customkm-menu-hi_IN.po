@@ -1,12 +1,11 @@
 # Copyright (C) 2024 krishna
 # This file is distributed under the same license as the Customkm Menu plugin.
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Customkm Menu 6.5.2\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-plugin\n"
-"POT-Creation-Date: 2024-05-18 09:30+0530\n"
-"PO-Revision-Date: 2024-05-18 16:16+0530\n"
+"Project-Id-Version: Customkm Menu 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/customkm-menu\n"
+"POT-Creation-Date: 2024-06-03T12:16:54+00:00\n"
+"PO-Revision-Date: 2024-06-03 17:58+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: hi_IN\n"
@@ -14,53 +13,227 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.3\n"
-"X-Domain: customkm_menu\n"
+"X-Domain: customkm-menu\n"
 
 #. Plugin Name of the plugin
-#: custom-plugin.php wp-content/plugins/custom-plugin/custom-plugin.php
+#: customkm-menu.php includes/class-custommenu.php:31
 msgid "Customkm Menu"
 msgstr "कस्टम किमी मेनू"
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
-#: custom-plugin.php
+#: customkm-menu.php
 msgid "https://qrolic.com"
 msgstr ""
 
 #. Description of the plugin
-#: custom-plugin.php
-msgid "Customkm Plugin for your site."
-msgstr "आपकी साइट के लिए Customkm प्लगइन।"
+#: customkm-menu.php
+msgid ""
+"Customkm Menu is the ultimate solution for streamlining website enhancement. "
+"This plugin enables you to effortlessly create bespoke menus and submenus, "
+"integrate fields, and securely store data leveraging the powerful OPTION API "
+"and SETTING API. Moreover, it streamlines the process of establishing a "
+"PORTFOLIO post type to elegantly showcase your projects. What's more, "
+"Customkm Menu seamlessly incorporates shortcode support, empowering you to "
+"seamlessly embed dynamic content throughout your website's pages and posts."
+msgstr ""
+"कस्टमकेएम मेनू वेबसाइट एन्हांसमेंट को सुव्यवस्थित करने का अंतिम समाधान है। यह प्लगइन आपको "
+"आसानी से कस्टम मेनू और सबमेनू बनाने, फ़ील्ड को एकीकृत करने और शक्तिशाली विकल्प एपीआई और "
+"सेटिंग एपीआई का लाभ उठाकर डेटा को सुरक्षित रूप से संग्रहीत करने में सक्षम बनाता है। इसके "
+"अलावा, यह आपकी परियोजनाओं को सुंदर ढंग से प्रदर्शित करने के लिए पोर्टफोलियो पोस्ट प्रकार "
+"स्थापित करने की प्रक्रिया को सुव्यवस्थित करता है। इसके अलावा, कस्टमकेएम मेनू मूल रूप से "
+"शॉर्टकोड समर्थन को शामिल करता है, जो आपको अपनी वेबसाइट के पृष्ठों और पोस्टों में गतिशील "
+"सामग्री को निर्बाध रूप से एम्बेड करने के लिए सशक्त बनाता है।"
 
 #. Author of the plugin
-#: custom-plugin.php
+#: customkm-menu.php
 msgid "krishna"
 msgstr "कृष्णा"
 
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Post Retrievals"
-msgstr "पोस्ट पुनर्प्राप्ति"
+#: customkm-menu.php:87
+msgid "Plugin details"
+msgstr "प्लगइन विवरण"
 
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Store Name"
-msgstr "स्टोर नाम"
-
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Custom AJAX Plugin Settings"
-msgstr "कस्टम AJAX प्लगइन सेटिंग्स"
-
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Retrieve posts using the REST API"
-msgstr "REST API का उपयोग करके पोस्ट पुनर्प्राप्त करें"
-
-#: wp-content/plugins/custom-plugin/custom-plugin.php
-msgid "Submenu Menu Title"
-msgstr "सबमेनू मेनू शीर्षक"
-
-#: wp-content/plugins/custom-plugin/custom-plugin.php
+#: includes/class-ajaxplugin.php:29
 msgid "Custom AJAX Plugin"
 msgstr "कस्टम AJAX प्लगइन सेटिंग्स"
 
-#: wp-content/plugins/custom-plugin/custom-plugin.php
+#: includes/class-exampleplugin.php:28
 msgid "Plugin Page"
 msgstr "प्लगइन पेज"
+
+#: includes/class-postretrievals.php:30
+msgid "Post Retrievals Title"
+msgstr "पोस्ट पुनर्प्राप्ति शीर्षक"
+
+#: includes/class-postretrievals.php:43
+msgid "Post Retrievals"
+msgstr "पोस्ट पुनर्प्राप्ति"
+
+#: includes/class-postretrievals.php:44
+msgid "Retrieve posts using the REST API"
+msgstr "REST API का उपयोग करके पोस्ट पुनर्प्राप्त करें"
+
+#: includes/templates/custom-ajax.php:14 templates/custom-ajax.php:14
+msgid "Custom AJAX Plugin Settings"
+msgstr "कस्टम AJAX प्लगइन सेटिंग्स"
+
+#: includes/templates/custom-ajax.php:17 templates/custom-ajax.php:17
+msgid "Store Name"
+msgstr "स्टोर नाम"
+
+#: includes/templates/customkm-page.php:22 includes/templates/form.php:26
+#: templates/customkm-page.php:22 templates/form.php:26
+msgid "Name"
+msgstr "नाम"
+
+#: includes/templates/example-plugin.php:18 templates/example-plugin.php:18
+msgid "My Plugin Settings"
+msgstr "मेरी प्लगइन सेटिंग्स"
+
+#: includes/templates/example-plugin.php:49 templates/example-plugin.php:49
+msgid "Plugin Information"
+msgstr "प्लगइन जानकारी"
+
+#: includes/templates/example-plugin.php:50 templates/example-plugin.php:50
+msgid "Plugin Name : Customkm Menu"
+msgstr "प्लगइन नाम: कस्टम किमी मेनू"
+
+#: includes/templates/example-plugin.php:51 templates/example-plugin.php:51
+msgid "Author : Krishna"
+msgstr "लेखक: कृष्णा"
+
+#: includes/templates/example-plugin.php:52 templates/example-plugin.php:52
+msgid "Description : Customkm Plugin for your site."
+msgstr "विवरण: आपकी साइट के लिए Customkm प्लगइन।"
+
+#: includes/templates/example-plugin.php:53 templates/example-plugin.php:53
+msgid "Version: 1.0.0"
+msgstr "संस्करण: 1.0.0"
+
+#: includes/templates/form.php:25 templates/form.php:25
+msgid "Title"
+msgstr "शीर्षक"
+
+#: includes/templates/form.php:27 templates/form.php:27
+msgid "Address"
+msgstr "पता"
+
+#: includes/templates/form.php:28 templates/form.php:28
+msgid "Email"
+msgstr "ईमेल"
+
+#: includes/templates/form.php:29 templates/form.php:29
+msgid "Phone"
+msgstr "फ़ोन"
+
+#: includes/templates/form.php:30 templates/form.php:30
+msgid "Company Name"
+msgstr "कंपनी का नाम"
+
+#: includes/templates/form.php:31 templates/form.php:31
+msgid "Date"
+msgstr "तारीख"
+
+#: includes/templates/form.php:32 templates/form.php:32
+msgid "Action"
+msgstr "कार्रवाई"
+
+#: templates/custom-submenu.php:17
+msgid "My Submenu Page"
+msgstr "मेरा सबमेनू पृष्ठ"
+
+#: templates/example-plugin.php:27
+msgid "Plugin Basic"
+msgstr "प्लगइन बेसिक"
+
+#: templates/example-plugin.php:28
+msgid "Shortcode"
+msgstr "लघु कूट संख्या"
+
+#: templates/example-plugin.php:31 templates/example-plugin.php:81
+msgid "Recent Post"
+msgstr "हाल की पोस्ट"
+
+#: templates/example-plugin.php:32 templates/example-plugin.php:89
+msgid "Fetch Data Shortcode"
+msgstr "डेटा शॉर्टकोड प्राप्त करें"
+
+#: templates/example-plugin.php:58
+msgid "Shortcode Usage"
+msgstr "शॉर्टकोड उपयोग"
+
+#: templates/example-plugin.php:59 templates/example-plugin.php:82
+#: templates/example-plugin.php:90
+msgid "Use the following shortcode to display dynamic content:"
+msgstr "गतिशील सामग्री प्रदर्शित करने के लिए निम्नलिखित शॉर्टकोड का उपयोग करें:"
+
+#: templates/example-plugin.php:60
+msgid "[portfolio_submission_form]"
+msgstr "[पोर्टफोलियो_सबमिशन_फॉर्म]"
+
+#: templates/example-plugin.php:61
+msgid "Functionality of Shortcode"
+msgstr "शॉर्टकोड की कार्यक्षमता"
+
+#: templates/example-plugin.php:62
+msgid ""
+"The [portfolio_submission_form] shortcode displays a simple message. You can "
+"customize the functionality by modifying the  "
+"portfolio_submission_form_shortcode_function function in the plugin file."
+msgstr ""
+"[पोर्टफोलियो_सबमिशन_फॉर्म] शॉर्टकोड एक सरल संदेश प्रदर्शित करता है। आप प्लगइन फ़ाइल में "
+"Portfolio_submission_form_shortcode_function फ़ंक्शन को संशोधित करके कार्यक्षमता को "
+"अनुकूलित कर सकते हैं।"
+
+#: templates/example-plugin.php:66 templates/portfolio-form.php:20
+msgid "Name:"
+msgstr "नाम:"
+
+#: templates/example-plugin.php:68 templates/portfolio-form.php:22
+msgid "Company Name:"
+msgstr "कंपनी का नाम:"
+
+#: templates/example-plugin.php:70 templates/portfolio-form.php:24
+msgid "Email:"
+msgstr "ईमेल:"
+
+#: templates/example-plugin.php:72 templates/portfolio-form.php:26
+msgid "Phone:"
+msgstr "फ़ोन:"
+
+#: templates/example-plugin.php:74 templates/portfolio-form.php:28
+msgid "Address:"
+msgstr "पता:"
+
+#: templates/example-plugin.php:83
+msgid "[recent_portfolio_posts]"
+msgstr "[हाल ही में_पोर्टफोलियो_पोस्ट]"
+
+#: templates/example-plugin.php:84
+msgid "using this shortcode you display recent posts from the portfolio."
+msgstr "इस शॉर्टकोड का उपयोग करके आप पोर्टफोलियो से हालिया पोस्ट प्रदर्शित करते हैं।"
+
+#: templates/example-plugin.php:91
+msgid "[fetch_data]"
+msgstr "[fetch_data]"
+
+#: templates/example-plugin.php:92
+msgid "using this shortcode you display name of the field."
+msgstr "इस शॉर्टकोड का उपयोग करके आप फ़ील्ड का नाम प्रदर्शित करते हैं।"
+
+#: templates/example-plugin.php:97
+msgid "Invalid Tab"
+msgstr "अमान्य टैब"
+
+#: templates/portfolio-renders.php:16
+msgid "Client Name:"
+msgstr "ग्राहक नाम:"
+
+#: templates/portfolio-renders.php:18
+msgid "Project URL:"
+msgstr "प्रोजेक्ट यूआरएल:"
+
+#: templates/portfolio-submission.php:14
+msgid "Success! Your portfolio has been submitted with email ."
+msgstr "सफलता! आपका पोर्टफ़ोलियो ईमेल से सबमिट कर दिया गया है."
