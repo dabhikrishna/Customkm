@@ -97,7 +97,6 @@ class PostRetrievals {
 		wp_enqueue_script( 'delete-post-js', plugins_url( 'js/delete-post.js', __FILE__ ), array( 'jquery', 'wp-util' ), '1.0', true );
 		// Localize the script with the 'ajaxurl' and the nonce
 		$rest_url = esc_url_raw( rest_url( 'custom/v1/portfolio' ) );
-		//var_dump( $rest_url );
 		wp_localize_script(
 			'delete-post-js',
 			'rest_object',
