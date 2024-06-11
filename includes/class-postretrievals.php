@@ -11,7 +11,19 @@ if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
  * Class PostRetrievals
  * Handles functionality related to retrieving and displaying posts.
  */
+// If this file is called directly, abort.
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
+/**
+ * Class PostRetrievals
+ * Handles functionality related to retrieving and displaying posts.
+ */
 class PostRetrievals {
+	/**
+	 * Constructor.
+	 */
 	/**
 	 * Constructor.
 	 */
@@ -22,11 +34,13 @@ class PostRetrievals {
 		add_action( 'rest_api_init', array( $this, 'register_custom_rest_api' ) );
 	}
 
+
 	/**
 	* Adds a submenu page to the custom AJAX plugin settings.
 	*/
 	public function customkm_submenu() {
 		add_submenu_page(
+			'customkm-ajax-plugin-settings',
 			'customkm-ajax-plugin-settings',
 			'Submenu Page Title',       // Page title
 			esc_html__( 'Post Retrievals Title', 'customkm-menu' ),       // Menu title
@@ -87,6 +101,7 @@ class PostRetrievals {
 		<div id="page-content"></div>
 		<?php
 	}
+
 
 	/**
 	* Enqueue the external JavaScript file.

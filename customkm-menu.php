@@ -45,6 +45,40 @@ if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_URL' ) ) {
 	define( 'CUSTOMKM_MENU_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Plugin name constant.
+ */
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_NAME' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_NAME', 'customkm-menu' );
+}
+
+/**
+ * Plugin version constant.
+ */
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_VERSION' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_VERSION', '1.0.0' );
+}
+
+/**
+ * Plugin Folder Path constant.
+ */
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
+/**
+ * Plugin Folder URL constant.
+ */
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_URL' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
+
 /**
  * Includes necessary files.
  */
@@ -86,10 +120,14 @@ $cron            = new Portfolio_Email_Notification();
 /**
  *Add a custom button next to Activate button on the plugins page
  */
+
 function customkm_add_custom_plugin_button( $links ) {
 	$custom_plugin_page = admin_url( 'admin.php?page=customkm-ajax-plugin-settings' );
 	$custom_link_text   = esc_html__( 'Plugin details', 'customkm-menu' );
+	$custom_plugin_page = admin_url( 'admin.php?page=customkm-ajax-plugin-settings' );
+	$custom_link_text   = esc_html__( 'Plugin details', 'customkm-menu' );
 
+	$custom_link = '<a href="' . esc_url( $custom_plugin_page ) . '">' . esc_html( $custom_link_text ) . '</a>';
 	$custom_link = '<a href="' . esc_url( $custom_plugin_page ) . '">' . esc_html( $custom_link_text ) . '</a>';
 	array_unshift( $links, $custom_link );
 

@@ -22,7 +22,11 @@
 		}
 	</style>
 	<tr>
+<<<<<<<< HEAD:templates/form.php
 	<th><?php echo esc_html__( 'Title', 'customkm-menu' ); ?></th>
+========
+		<th><?php echo esc_html__( 'Title', 'customkm-menu' ); ?></th>
+>>>>>>>> a6719ac514c5ab92aa59c39115dbb0e99ff6b942:includes/templates/form.php
 		<th><?php echo esc_html__( 'Name', 'customkm-menu' ); ?></th>
 		<th><?php echo esc_html__( 'Address', 'customkm-menu' ); ?></th>
 		<th><?php echo esc_html__( 'Email', 'customkm-menu' ); ?></th>

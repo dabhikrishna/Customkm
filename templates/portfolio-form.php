@@ -14,7 +14,7 @@
 ?>
 <div class="my">
 	<h2 style="font-weight: bold;"><?php echo esc_html( $atts['title'] ); ?></h2>
-<form id="portfolio_submission_form">
+	<form id="portfolio_submission_form">
 		<input type="hidden" name="action" value="portfolio_submission">
 		<?php wp_nonce_field( 'portfolio_submission_nonce', 'portfolio_submission_nonce_field' ); ?>
 		<label for="name"><?php echo esc_html__( 'Name:', 'customkm-menu' ); ?></label>
@@ -30,5 +30,9 @@
 		<input type="button" id="submit_btn" value="Submit">
 	</form>
 	<div id="response_msg"></div>
+<<<<<<<< HEAD:templates/portfolio-form.php
 	</div>
 	
+========
+</div>
+>>>>>>>> a6719ac514c5ab92aa59c39115dbb0e99ff6b942:includes/templates/portfolio-form.php

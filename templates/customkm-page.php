@@ -14,7 +14,7 @@
 // Wrap the content in a div with the class 'logo-container' to display the plugin logo.
 ?>
 <div class="logo-container">
-		<img src="<?php echo esc_url( plugins_url( 'images/custom-logo.png', __FILE__ ) ); ?>" alt="Plugin Logo">
+	<img src="<?php echo esc_url( plugins_url( 'images/custom-logo.png', __FILE__ ) ); ?>" alt="Plugin Logo">
 	</div>
 	<div class="wrap">
 		<form action="" method="post">
@@ -23,4 +23,8 @@
 			<input type="submit" name="submit" value="Submit"/>
 		</form>
 	</div>
+<<<<<<<< HEAD:templates/customkm-page.php
 	
+========
+</div>
+>>>>>>>> a6719ac514c5ab92aa59c39115dbb0e99ff6b942:includes/templates/customkm-page.php
