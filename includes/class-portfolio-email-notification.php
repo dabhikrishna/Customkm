@@ -59,6 +59,7 @@ class Portfolio_Email_Notification {
 		// Unschedule cron job on plugin deactivation
 		wp_clear_scheduled_hook( 'portfolio_email_notification_cron' );
 	}
+<<<<<<< HEAD
 	public function schedule_cron_job() {
 		if ( ! wp_next_scheduled( 'portfolio_email_notification_cron' ) ) {
 			// Check if email notifications are enabled
@@ -67,6 +68,14 @@ class Portfolio_Email_Notification {
 			if ( $email_notifications && ! wp_next_scheduled( 'portfolio_email_notification_cron' ) ) {
 				wp_schedule_event( time(), 'daily', 'portfolio_email_notification_cron' );
 			}
+=======
+
+
+	private function schedule_cron_job() {
+		// Schedule cron job
+		if ( ! wp_next_scheduled( 'portfolio_email_notification_cron' ) ) {
+			wp_schedule_event( time(), 'daily', 'portfolio_email_notification_cron' );
+>>>>>>> a6719ac514c5ab92aa59c39115dbb0e99ff6b942
 		}
 	}
 }

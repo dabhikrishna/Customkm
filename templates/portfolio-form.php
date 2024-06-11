@@ -14,7 +14,11 @@
 ?>
 <div class="my">
 	<h2 style="font-weight: bold;"><?php echo esc_html( $atts['title'] ); ?></h2>
+<<<<<<< HEAD
+	<form id="portfolio_submission_form">
+=======
 <form id="portfolio_submission_form">
+>>>>>>> a6719ac514c5ab92aa59c39115dbb0e99ff6b942
 		<input type="hidden" name="action" value="portfolio_submission">
 		<?php wp_nonce_field( 'portfolio_submission_nonce', 'portfolio_submission_nonce_field' ); ?>
 		<label for="name"><?php echo esc_html__( 'Name:', 'customkm-menu' ); ?></label>
@@ -28,7 +32,20 @@
 		<label for="address"><?php echo esc_html__( 'Address:', 'customkm-menu' ); ?></label>
 		<textarea id="address" name="address" autocomplete="address" rows="10" cols="50"></textarea><br><br>
 		<input type="button" id="submit_btn" value="Submit">
+<<<<<<< HEAD
+<<<<<<<< HEAD:templates/portfolio-form.php
 </form>
 <div id="response_msg"></div>
 </div>
 	
+========
+	</form>
+	<div id="response_msg"></div>
+</div>
+>>>>>>>> a6719ac514c5ab92aa59c39115dbb0e99ff6b942:includes/templates/portfolio-form.php
+=======
+	</form>
+	<div id="response_msg"></div>
+	</div>
+	
+>>>>>>> a6719ac514c5ab92aa59c39115dbb0e99ff6b942
