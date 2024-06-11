@@ -1,5 +1,8 @@
 <?php
 
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
 
 
 class Settings {
@@ -49,41 +52,13 @@ class Settings {
 			<?php
 		}
 
-		$email_notifications    = get_option( 'email_notifications', 1 );
+		$email_notifications    = get_option( 'email_notifications', 'on' );
 		$notification_frequency = get_option( 'notification_frequency', 'daily' );
-		//Searching (akila_notification_frequency) in the database will show that daily, monthly, weekly are set.
-		?>
-	<div class="wrap">
-		<h1><?php esc_html_e( 'Email Settings', 'portfolio' ); ?></h1>
-		<p><?php esc_html_e( 'Please Select Email notification send notification enable Or disable', 'portfolio' ); ?></p>	
-		<form method="post" action="">
-			<?php wp_nonce_field( 'settings_action', 'settings_nonce' ); ?>
-			<table class="form-table">
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Email Notifications', 'portfolio' ); ?></th>
-					<td>
-						<label>
-							<input type="checkbox" name="email_notifications" <?php checked( $email_notifications, 1 ); ?> />
-							<?php esc_html_e( 'Enable email notifications', 'portfolio' ); ?>
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Notification Frequency', 'portfolio' ); ?></th>
-					<td>
-						<select name="notification_frequency">
-							<option value="daily" <?php selected( $notification_frequency, 'daily' ); ?>><?php esc_html_e( 'Daily', 'portfolio' ); ?></option>
-							<option value="weekly" <?php selected( $notification_frequency, 'weekly' ); ?>><?php esc_html_e( 'Weekly', 'portfolio' ); ?></option>
-							<option value="monthly" <?php selected( $notification_frequency, 'monthly' ); ?>><?php esc_html_e( 'Monthly', 'portfolio' ); ?></option>
-						</select>
-					</td>
-				</tr>
-			</table>
 
-			<input type="hidden" name="submit" value="1" />
-			<?php submit_button( esc_html__( 'Save Settings', 'portfolio' ), 'primary', 'submit', false ); ?>
-		</form>
-	</div>
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/email-notification.php';
+
+		?>
+	
 		<?php
 	}
 
