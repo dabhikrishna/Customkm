@@ -15,7 +15,7 @@
 // Wrap the content in a div with the class 'wrap'.
 ?>
 <div class="wrap">
-	<h2>My Plugin Settings</h2>
+	<h2><?php echo esc_html__( 'My Plugin Settings', 'customkm-menu' ); ?></h2>
 	<!-- Create tabs navigation -->
 	<h2 class="nav-tab-wrapper">
 	<?php
@@ -46,11 +46,11 @@
 	switch ( $active_tab ) :
 		case 'pluginbasic':
 			?>
-			<h3>Plugin Information</h3>
-			<p>Plugin Name : Customkm Menu</p>
-			<p>Author : Krishna</p>
-			<p>Description : Customkm Plugin for your site.</p>
-			<P>Version: 6.5.2</P>
+			<h3><?php echo esc_html__( 'Plugin Information', 'customkm-menu' ); ?></h3>
+			<p><?php echo esc_html__( 'Plugin Name : Customkm Menu', 'customkm-menu' ); ?></p>
+			<p><?php echo esc_html__( 'Author : Krishna', 'customkm-menu' ); ?></p>
+			<p><?php echo esc_html__( 'Description : Customkm Plugin for your site.', 'customkm-menu' ); ?></p>
+			<P><?php echo esc_html__( 'Version: 1.0.0', 'customkm-menu' ); ?>version :1.0.0</P>
 			<?php
 			break;
 		case 'shortcode':

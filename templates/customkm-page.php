@@ -14,7 +14,7 @@
 // Wrap the content in a div with the class 'logo-container' to display the plugin logo.
 ?>
 <div class="logo-container">
-	<img src="<?php echo esc_url( plugins_url( 'images/custom-logo.png', __FILE__ ) ); ?>" alt="Plugin Logo">
+		<img src="<?php echo esc_url( plugins_url( 'images/custom-logo.png', __FILE__ ) ); ?>" alt="Plugin Logo">
 	</div>
 	<div class="wrap">
 		<form action="" method="post">
@@ -23,4 +23,4 @@
 			<input type="submit" name="submit" value="Submit"/>
 		</form>
 	</div>
-</div>
+	

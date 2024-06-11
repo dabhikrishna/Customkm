@@ -2,7 +2,19 @@
 
 namespace CustomkmMenu\Includes;
 
+if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
+	define( 'CUSTOMKM_MENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
+/**
+ * Class Portfolio
+ * Handles functionality related to the portfolio custom post type.
+ */
 class Portfolio {
+
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'save_post', array( $this, 'customkm_save_portfolio_custom_fields' ) );
@@ -10,6 +22,10 @@ class Portfolio {
 		add_action( 'manage_portfolio_posts_custom_column', array( $this, 'customkm_display_portfolio_custom_columns' ), 10, 2 );
 		add_action( 'add_meta_boxes', array( $this, 'customkm_portfolio_custom_fields' ) );
 	}
+
+	/**
+	 * Registers the portfolio custom post type.
+	 */
 	public function register_post_type() {
 		// Labels for the custom post type
 		$labels = array(
@@ -102,6 +118,7 @@ class Portfolio {
 		$columns['email']        = 'Email';
 		$columns['phone']        = 'Phone';
 		$columns['company_name'] = 'company_name';
+		$columns['mail']         = 'Mail_sent';
 		unset( $columns['categories'] ); // Remove categories column
 		unset( $columns['tags'] ); // Remove tags column
 		return $columns;
@@ -130,6 +147,9 @@ class Portfolio {
 			case 'client_name':
 				echo esc_html( get_post_meta( $post_id, 'client_name', true ) );
 				break;
+			case 'mail':
+				echo esc_html( get_post_meta( $post_id, 'mail', true ) );
+				break;
 		}
 	}
 
@@ -151,7 +171,6 @@ class Portfolio {
 	 */
 	public function render_portfolio_fields() {
 		// Include the template file for rendering the custom fields
-		include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-renders.php';
+		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/portfolio-renders.php';
 	}
-	
 }
