@@ -42,6 +42,7 @@ class CustomMenu {
 	* Custom page content for submenu.
 	*/
 	public function page_content() {
+
 		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/customkm-page.php';
 	}
 
