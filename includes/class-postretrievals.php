@@ -26,7 +26,7 @@ class PostRetrievals {
 	*/
 	public function customkm_submenu() {
 		add_submenu_page(
-			'custom-ajax-plugin-settings',
+			'customkm-ajax-plugin-settings',
 			'Submenu Page Title',       // Page title
 			esc_html__( 'Post Retrievals Title', 'customkm-menu' ),       // Menu title
 			'manage_options',           // Capability

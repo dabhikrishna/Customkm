@@ -11,6 +11,7 @@ if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
  * Handles registration of custom shortcodes and related functionalities.
  */
 class Shortcode {
+
 	/**
 	 * Constructor.
 	 */
@@ -77,6 +78,11 @@ class Shortcode {
 					echo 'Portfolio already submitted successfully. Please wait before submitting again.';
 					die();
 				}
+				// Check if the form has already been submitted successfully
+				if ( isset( $_SESSION['portfolio_submission_success'] ) && $_SESSION['portfolio_submission_success'] ) {
+					echo 'Portfolio already submitted successfully. Please wait before submitting again.';
+					die();
+				}
 				$name         = sanitize_text_field( $_POST['name'] );
 				$company_name = sanitize_text_field( $_POST['company_name'] );
 				$email        = sanitize_email( $_POST['email'] );
@@ -94,6 +100,7 @@ class Shortcode {
 						'company_name' => $company_name,
 						'address'      => $address,
 						'mail'         => gmdate( 'Y-m-d H:i:s' ),
+
 					),
 				);
 				// Insert the post into the database
@@ -102,23 +109,23 @@ class Shortcode {
 				if ( is_wp_error( $post_id ) ) {
 					echo 'Error: ' . esc_html( $post_id->get_error_message() );
 				}
-				// Send custom email to submitted email address
-				$subject  = 'Portfolio Submission Received';
-				$message  = 'Dear ' . $name . ',<br><br>';
-				$message .= 'Thank you for submitting your portfolio. We have received your submission and will review it shortly.<br><br>';
-				$message .= 'Best regards,<br>Your Website Team';
+					$subject  = 'Portfolio Submission Received';
+					$message  = 'Dear ' . $name . ',<br><br>';
+					$message .= 'Thank you for submitting your portfolio. We have received your submission and will review it shortly.<br><br>';
+					$message .= 'Best regards,<br>Your Website Team';
 
-				$headers[] = 'Content-Type: text/html; charset=UTF-8';
+					$headers[] = 'Content-Type: text/html; charset=UTF-8';
 
-				$email_sent = wp_mail( $email, $subject, $message, $headers );
-
-				// Display success message based on email sending status
+					$email_sent = wp_mail( $email, $subject, $message, $headers );
+					// Schedule cron job
+					$this->schedule_cron_job();
+					// Display success message based on email sending status
 				if ( $email_sent ) {
 					echo 'Portfolio submitted successfully. We will review it shortly.';
 				} else {
-					include_once plugin_dir_path( __FILE__ ) . 'templates/portfolio-submission.php';
 					echo 'Error sending email. Please try again later.';
 				}
+
 				// Schedule cron job based on notification frequency
 
 			}
@@ -136,14 +143,13 @@ class Shortcode {
 	* Enqueues the stylesheet for the plugin.
 	*/
 	public function customkm_enqueue_styles() {
-		//if ( has_shortcode( get_post()->post_content, 'portfolio_submission_form' ) ) {
-		wp_enqueue_style(
-			'your_plugin_portfolio_submission_form_style', // Handle
-			plugins_url( '/css/portfolio-submission-form.css', __FILE__ ), // URL to CSS file
-			array(), // Dependencies
-			'1.0', // Version number
-			'all' // Media type
-		);
-		//}
+			// Enqueue CSS file located within your plugin directory
+			wp_enqueue_style(
+				'your_plugin_portfolio_submission_form_style', // Handle
+				plugins_url( '/css/portfolio-submission-form.css', __FILE__ ), // URL to CSS file
+				array(), // Dependencies
+				'1.0', // Version number
+				'all' // Media type
+			);
 	}
 }

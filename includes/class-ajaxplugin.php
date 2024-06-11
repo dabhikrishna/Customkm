@@ -28,7 +28,7 @@ class AjaxPlugin {
 			'Custom AJAX Plugin Settings',    // Page title
 			esc_html__( 'Custom AJAX Plugin', 'customkm-menu' ),         // Menu title
 			'manage_options',         // Capability
-			'custom-ajax-plugin-settings',         // Menu slug
+			'customkm-ajax-plugin-settings',         // Menu slug
 			array( $this, 'settings_page' ),    // Callback function
 			'dashicons-menu', // Icon
 			28 // Position of the menu in the admin sidebar
@@ -64,7 +64,7 @@ class AjaxPlugin {
 	* Enqueues JavaScript for AJAX.
 	*/
 	public function customkm_ajax_plugin_enqueue_scripts( $hook ) {
-		if ( 'toplevel_page_custom-ajax-plugin-settings' !== $hook ) {
+		if ( 'toplevel_page_customkm-ajax-plugin-settings' !== $hook ) {
 			return;
 		}
 		wp_enqueue_script( 'custom-ajax-plugin-script', plugins_url( '/js/custom-ajax-plugin-script.js', __FILE__ ), array( 'jquery' ), '1.0', true );
