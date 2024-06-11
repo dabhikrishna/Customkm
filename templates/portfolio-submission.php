@@ -11,11 +11,7 @@
  * @subpackage customkm-menu/templates
  */
 ?>
-<<<<<<<< HEAD:templates/portfolio-submission.php
 <div id="success-message"><?php echo esc_html__( 'Success! Your portfolio has been submitted with email .', 'customkm-menu' ); ?></div>
-========
-<div id="success-message">Success! Your portfolio has been submitted with emails .</div>
->>>>>>>> a6719ac514c5ab92aa59c39115dbb0e99ff6b942:includes/templates/portfolio-submission.php
 
 <script>
 	setTimeout(function() {

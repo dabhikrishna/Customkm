@@ -59,11 +59,7 @@ require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-restapi.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-kmd-widget.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-widget.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio-email-notification.php'; // Include
-<<<<<<< HEAD
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-settings.php';
-
-=======
->>>>>>> a6719ac514c5ab92aa59c39115dbb0e99ff6b942
 
 use CustomkmMenu\Includes\Portfolio; //Import the Portfolio class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\AjaxPlugin; //Import the AjaxPlugin class from the CustomkmMenu\Includes namespace.

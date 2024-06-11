@@ -40,59 +40,10 @@ class PostRetrievals {
 	 * Retrieve all portfolio posts' data.
 	 */
 	public function page_contents() {
-<<<<<<< HEAD
 		$args = array(
 			'post_type'      => 'portfolio',
 			'posts_per_page' => -1,
 		);
-=======
-		?>
-	<div class="wrap">
-		<h1><?php echo esc_html__( 'Post Retrievals', 'customkm-menu' ); ?></h1>
-		<p><?php echo esc_html__( 'Retrieve posts using the REST API', 'customkm-menu' ); ?></p>
-		<?php
-		// Retrieve posts using REST API
-		$url      = home_url();
-		$response = wp_remote_get( rest_url( 'wp/v2/portfolio' ) );
-		// Check if request was successful
-		if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
-			// Decode the JSON response body
-			$posts = json_decode( wp_remote_retrieve_body( $response ), true );
-			// Check if there are posts
-			if ( ! empty( $posts ) ) {
-				include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/form.php';
-				foreach ( $posts as $post ) {
-					$query = new \WP_Query(
-						array(
-							'post_type' => 'portfolio',
-							'p'         => $post['id'],
-						)
-					); // Specify post type as portfolio
-					while ( $query->have_posts() ) :
-						$query->the_post(); // Using $query to iterate through posts
-						// Get the post ID
-						$post_id     = get_the_ID();
-						$client_name = get_post_meta( $post_id, 'client_name', true );
-						$address     = get_post_meta( $post_id, 'address', true );
-						$email       = get_post_meta( $post_id, 'email', true );
-						$phone       = get_post_meta( $post_id, 'phone', true );
-						$company     = get_post_meta( $post_id, 'company_name', true );
-						include CUSTOMKM_MENU_PLUGIN_DIR . 'templates/post-row.php';
-					endwhile;
-					wp_reset_postdata(); // Reset post data
-				}
-				echo '</table>';
-			} else {
-				// No posts found message
-				echo '<p>No posts found.</p>';
-			}
-		} else {
-			// Error message if request was not successful
-			echo '<p>An error occurred while retrieving posts.</p>';
-		}
-		?>
-	</div>
->>>>>>> a6719ac514c5ab92aa59c39115dbb0e99ff6b942
 
 		$query = new \WP_Query( $args );
 

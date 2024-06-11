@@ -42,10 +42,6 @@ class CustomMenu {
 	* Custom page content for submenu.
 	*/
 	public function page_content() {
-<<<<<<< HEAD
-
-=======
->>>>>>> a6719ac514c5ab92aa59c39115dbb0e99ff6b942
 		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/customkm-page.php';
 	}
 
