@@ -166,6 +166,7 @@ class Portfolio {
 			'default'
 		);
 	}
+	
 	/**
 	 * Renders the custom fields for the portfolio post type.
 	 */

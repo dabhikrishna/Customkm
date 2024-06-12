@@ -29,7 +29,7 @@ class AjaxPlugin {
 			esc_html__( 'Custom AJAX Plugin', 'customkm-menu' ),         // Menu title
 			'manage_options',         // Capability
 			'customkm-ajax-plugin-settings',         // Menu slug
-			array( $this, 'settings_page' ),    // Callback function
+			array( $this, 'menu_page' ),    // Callback function
 			'dashicons-menu', // Icon
 			28 // Position of the menu in the admin sidebar
 		);
@@ -38,7 +38,7 @@ class AjaxPlugin {
 	/**
 	 * Callback function to display the plugin settings page.
 	 */
-	public function settings_page() {
+	public function menu_page() {
 		require_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/custom-ajax.php';
 		//include_once plugin_dir_path( __FILE__ ) . 'templates/custom-ajax.php';
 	}
