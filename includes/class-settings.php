@@ -52,11 +52,10 @@ class Settings {
 			<?php
 		}
 
-		$email_notifications = get_option( 'email_notifications', 'on' );
-	    $notification_frequency = get_option( 'notification_frequency', 'daily' );
+			$email_notifications = get_option( 'email_notifications', 1 );
+			$notification_frequency = get_option( 'notification_frequency', 'daily' );
 
-		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/email-notification.php';
-	
+			include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/email-notification.php';
 		?>
 	
 		<?php

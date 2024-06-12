@@ -1,3 +1,4 @@
+<div id="page-content"></div>
 <script type="text/html" id="tmpl-portfolio">
 	<style>
 		th {
@@ -22,6 +23,7 @@
 			
 		</thead>
 		<tbody>
+			
 			<# _.each( data, function ( item ) { #>
 				<tr style="background-color: #ddd;">
 					<td>{{ item.id }}</td>

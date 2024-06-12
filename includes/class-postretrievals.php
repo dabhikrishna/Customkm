@@ -84,7 +84,6 @@ class PostRetrievals {
 
 		include CUSTOMKM_MENU_PLUGIN_DIR . 'templates/tmpl-portfolio.php';
 		?>
-		<div id="page-content"></div>
 		<?php
 	}
 
