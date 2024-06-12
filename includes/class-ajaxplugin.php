@@ -15,10 +15,10 @@ class AjaxPlugin {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'ajax_plugin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'customkm_ajax_plugin_enqueue_scripts' ) );
 		add_action( 'wp_ajax_custom_ajax_plugin_update_store_name', array( $this, 'customkm_ajax_plugin_ajax_handler' ) );
 	}
+<<<<<<< Updated upstream
 
 	/**
 	 * Adds the plugin menu page to the WordPress admin dashboard.
@@ -43,6 +43,8 @@ class AjaxPlugin {
 		//include_once plugin_dir_path( __FILE__ ) . 'templates/custom-ajax.php';
 	}
 
+=======
+>>>>>>> Stashed changes
 	/**
 	* Handles AJAX request to update store name.
 	*/

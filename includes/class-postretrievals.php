@@ -16,11 +16,11 @@ class PostRetrievals {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'customkm_submenu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'customkm_enqueue_delete_post_script' ) );
 		add_action( 'wp_ajax_delete_post_action', array( $this, 'customkm_delete_post_action_callback' ) );
 	}
 
+<<<<<<< Updated upstream
 	/**
 	* Adds a submenu page to the custom AJAX plugin settings.
 	*/
@@ -87,6 +87,48 @@ class PostRetrievals {
 	</div>
 
 		<?php
+=======
+		/**
+	 * Retrieve all portfolio posts' data.
+	 */
+	public function page_contents() {
+		$args = array(
+			'post_type'      => 'portfolio',
+			'posts_per_page' => -1,
+		);
+
+		$query = new \WP_Query( $args );
+
+		$posts_data = array();
+
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				$post_id = get_the_ID();
+				// Retrieve necessary post data
+				$post_data = array(
+					'id'           => $post_id,
+					'title'        => get_the_title(),
+					'content'      => get_the_content(),
+					'address'      => get_post_meta( $post_id, 'address', true ),
+					'phone'        => get_post_meta( $post_id, 'phone', true ),
+					'email'        => get_post_meta( $post_id, 'email', true ),
+					'company_name' => get_post_meta( $post_id, 'company_name', true ),
+					'mail'         => get_post_meta( $post_id, 'mail', true ),
+					// Add more meta fields as needed
+				);
+				$posts_data[] = $post_data;
+
+			}
+			wp_reset_postdata();
+		}
+		return new \WP_REST_Response(
+			array(
+				'data' => $posts_data,
+			),
+			200,
+		);
+>>>>>>> Stashed changes
 	}
 
 	/**
@@ -97,6 +139,11 @@ class PostRetrievals {
 		$nonce = wp_create_nonce( 'delete_post_nonce' );
 		wp_enqueue_script( 'delete-post-js', plugins_url( 'js/delete-post.js', __FILE__ ), array( 'jquery' ), '1.0', true );
 		// Localize the script with the 'ajaxurl' and the nonce
+<<<<<<< Updated upstream
+=======
+		$rest_url = esc_url_raw( rest_url( 'custom/v1/portfolio' ) );
+
+>>>>>>> Stashed changes
 		wp_localize_script(
 			'delete-post-js',
 			'delete_post_object',

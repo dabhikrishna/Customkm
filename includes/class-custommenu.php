@@ -15,34 +15,10 @@ class CustomMenu {
 	* Constructor.
 	*/
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'customkm_menu_page' ) );
 		add_action( 'init', array( $this, 'customkm_data_save_table' ) );
 		add_shortcode( 'fetch_data', array( $this, 'customkm_fetch_data_shortcode' ) );
 		add_action( 'admin_menu', array( $this, 'customkm_my_custom_submenu_page' ) );
 		add_action( 'admin_init', array( $this, 'customkm_my_custom_settings_init' ) );
-	}
-
-	/**
-	* Adds a submenu page to the custom AJAX plugin settings.
-	*/
-	public function customkm_menu_page() {
-		add_submenu_page(
-			'customkm-ajax-plugin-settings',
-			'Customkm Menu',              // Page title
-			esc_html__( 'Customkm Menu', 'customkm-menu' ),              // Menu title
-			'manage_options',           // Capability
-			'customkm-page-slug',         // Menu slug
-			array( $this, 'page_content' ),      // Callback function
-			25,                          // Position
-			'dashicons-admin-generic' // Icon
-		);
-	}
-
-	/**
-	* Custom page content for submenu.
-	*/
-	public function page_content() {
-		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/customkm-page.php';
 	}
 
 	/**

@@ -1,17 +1,25 @@
 <?php
+
 namespace CustomkmMenu\Includes;
 
-//var_dump( $portfolio_posts->request );
-//error_log( 'Cron job started for portfolio email notification.' );
 class Portfolio_Email_Notification {
 
 public function __construct() {
 	register_activation_hook( __FILE__, array( $this, 'activate_cron_job' ) );
 	register_deactivation_hook( __FILE__, array( $this, 'deactivate_cron_job' ) );
 
+<<<<<<< Updated upstream
 	add_action( 'portfolio_email_notification_cron', array( $this, 'send_email_notification' ) );
 	$this->schedule_cron_job();
 }
+=======
+		add_action( 'portfolio_email_notification_cron', array( $this, 'send_email_notification' ) );
+
+		// Reschedule the cron job with the current frequency
+		$notification_frequency = get_option( 'notification_frequency', 'daily' );
+		$this->reschedule_cron_job( $notification_frequency );
+	}
+>>>>>>> Stashed changes
 
 public function send_email_notification() {
 	// Fetch portfolio posts with associated emails
@@ -44,6 +52,40 @@ public function send_email_notification() {
 
 			$debug[ $index++ ] = wp_mail( $email, $subject, $message, $headers );
 
+<<<<<<< Updated upstream
+=======
+			}
+		}
+		// Reset post data
+		wp_reset_postdata();
+	}
+
+	public function activate_cron_job() {
+		$notification_frequency = get_option( 'notification_frequency', 'daily' );
+		$this->reschedule_cron_job( $notification_frequency );
+	}
+
+	public function deactivate_cron_job() {
+		// Unschedule cron job on plugin deactivation
+		wp_clear_scheduled_hook( 'portfolio_email_notification_cron' );
+	}
+
+	public function reschedule_cron_job( $frequency ) {
+		wp_clear_scheduled_hook( 'portfolio_email_notification_cron' ); // Clear existing cron job
+		if ( 'daily' === $frequency ) {
+			$interval = 'daily';
+		} elseif ( 'weekly' === $frequency ) {
+			$interval = 'weekly';
+		} elseif ( 'monthly' === $frequency ) {
+			$interval = 'monthly';
+		} else {
+			error_log( 'Invalid frequency provided: ' . $frequency );
+			return; // Exit the function if the frequency is invalid
+		}
+		if ( $interval ) {
+			wp_schedule_event( time(), $interval, 'portfolio_email_notification_cron' ); // Schedule new cron job
+			//error_log( 'Cron job scheduled successfully with frequency: ' . $frequency );
+>>>>>>> Stashed changes
 		}
 	}
 	// Reset post data

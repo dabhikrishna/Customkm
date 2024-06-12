@@ -54,34 +54,53 @@ require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-shortcode.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-postretrievals.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-custommenu.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-recentportfolio.php';
-require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-exampleplugin.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-restapi.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-kmd-widget.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-widget.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio-email-notification.php'; // Include
-require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-settings.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-setting.php';
 
-use CustomkmMenu\Includes\Portfolio; //Import the Portfolio class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\AjaxPlugin; //Import the AjaxPlugin class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\Shortcode; //Import the Shortcode class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\PostRetrievals; //Import the PostRetrievals class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\CustomMenu; //Import the CustomMenu class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\RecentPortfolio; //Import the RecentPortfolio class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\ExamplePlugin; //Import the ExamplePlugin class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\RestApi; //Import the RestApi class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\Widget; //Import the RestApi class from the CustomkmMenu\Includes namespace.
+//Import the AjaxPlugin class from the CustomkmMenu\Includes namespace.
+use CustomkmMenu\Includes\AjaxPlugin;
+//Import the Portfolio class from the CustomkmMenu\Includes namespace.
+use CustomkmMenu\Includes\Portfolio;
+//Import the Shortcode class from the CustomkmMenu\Includes namespace.
+use CustomkmMenu\Includes\Shortcode;
+//Import the PostRetrievals class from the CustomkmMenu\Includes namespace.
+use CustomkmMenu\Includes\PostRetrievals;
+//Import the CustomMenu class from the CustomkmMenu\Includes namespace.
+use CustomkmMenu\Includes\CustomMenu;
+//Import the RecentPortfolio class from the CustomkmMenu\Includes namespace.
+use CustomkmMenu\Includes\RecentPortfolio;
+//Import the RestApi class from the CustomkmMenu\Includes namespace.
+use CustomkmMenu\Includes\RestApi;
+//Import the Widget class from the CustomkmMenu\Includes namespace.
+use CustomkmMenu\Includes\Widget;
+//Import the Portfolio_Email_Notification class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\Portfolio_Email_Notification;
+//Import the Setting class from the CustomkmMenu\Includes namespace.
+use CustomkmMenu\Includes\Setting;
 
-$portfolio       = new Portfolio(); //Initialize a new instance of the Portfolio class for managing portfolio-related functionalities.
-$ajaxplugin      = new AjaxPlugin(); // Initialize a new instance of the AjaxPlugin class for handling Ajax functionality within the plugin.
-$shortcode       = new Shortcode(); // Initialize a new instance of the Shortcode class for managing custom shortcodes.
-$postretrievals  = new PostRetrievals(); // Initialize a new instance of the PostRetrievals class for retrieving posts.
-$custommenu      = new CustomMenu(); //Initialize a new instance of the CustomMenu class for managing custom menus.
-$recentportfolio = new RecentPortfolio(); // Initialize a new instance of the RecentPortfolio class for managing recent portfolio items.
-$exampleplugin   = new ExamplePlugin(); //Initialize a new instance of the ExamplePlugin class (replace with actual purpose).
-$restapi         = new RestApi(); //Initialize a new instance of the RestApi class for handling REST API functionalities.
-$widget          = new Widget(); ////Initialize a new instance of the widget class for display recent posts using widget.
+//Initialize a new instance of the AjaxPLugin class for managing ajaxplugin-related functionalities.
+$ajaxplugin      = new AjaxPlugin();
+//Initialize a new instance of the Portfolio class for managing portfolio-related functionalities.
+$portfolio       = new Portfolio();
+// Initialize a new instance of the Shortcode class for managing custom shortcodes.
+$shortcode       = new Shortcode();
+// Initialize a new instance of the PostRetrievals class for retrieving posts.
+$postretrievals  = new PostRetrievals();
+//Initialize a new instance of the CustomMenu class for managing custom menus.
+$custommenu      = new CustomMenu();
+// Initialize a new instance of the RecentPortfolio class for managing recent portfolio items.
+$recentportfolio = new RecentPortfolio();
+//Initialize a new instance of the RestApi class for handling REST API functionalities.
+$restapi         = new RestApi();
+//Initialize a new instance of the widget class for display recent posts using widget.
+$widget          = new Widget();
+////Initialize a new instance of the portfolio_email_notification for email.
 $cron            = new Portfolio_Email_Notification();
+////Initialize a new instance of the setting class for display menus.
+$settings          = new Setting();
 
 /**
  *Add a custom button next to Activate button on the plugins page
