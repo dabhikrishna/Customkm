@@ -166,10 +166,6 @@ class Portfolio {
 			'default'
 		);
 	}
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 	/**
 	 * Renders the custom fields for the portfolio post type.
 	 */

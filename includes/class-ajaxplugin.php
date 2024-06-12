@@ -18,33 +18,6 @@ class AjaxPlugin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'customkm_ajax_plugin_enqueue_scripts' ) );
 		add_action( 'wp_ajax_custom_ajax_plugin_update_store_name', array( $this, 'customkm_ajax_plugin_ajax_handler' ) );
 	}
-<<<<<<< Updated upstream
-
-	/**
-	 * Adds the plugin menu page to the WordPress admin dashboard.
-	 */
-	public function ajax_plugin_menu() {
-		add_menu_page(
-			'Custom AJAX Plugin Settings',    // Page title
-			esc_html__( 'Custom AJAX Plugin', 'customkm-menu' ),         // Menu title
-			'manage_options',         // Capability
-			'customkm-ajax-plugin-settings',         // Menu slug
-			array( $this, 'settings_page' ),    // Callback function
-			'dashicons-menu', // Icon
-			28 // Position of the menu in the admin sidebar
-		);
-	}
-
-	/**
-	 * Callback function to display the plugin settings page.
-	 */
-	public function settings_page() {
-		require_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/custom-ajax.php';
-		//include_once plugin_dir_path( __FILE__ ) . 'templates/custom-ajax.php';
-	}
-
-=======
->>>>>>> Stashed changes
 	/**
 	* Handles AJAX request to update store name.
 	*/
