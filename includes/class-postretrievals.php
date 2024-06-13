@@ -16,24 +16,9 @@ class PostRetrievals {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'customkm_submenu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'customkm_enqueue_delete_post_script' ) );
 		add_action( 'wp_ajax_delete_post_action', array( $this, 'customkm_delete_post_action_callback' ) );
 		add_action( 'rest_api_init', array( $this, 'register_custom_rest_api' ) );
-	}
-
-	/**
-	* Adds a submenu page to the custom AJAX plugin settings.
-	*/
-	public function customkm_submenu() {
-		add_submenu_page(
-			'customkm-ajax-plugin-settings',
-			'Submenu Page Title',       // Page title
-			esc_html__( 'Post Retrievals Title', 'customkm-menu' ),       // Menu title
-			'manage_options',           // Capability
-			'customkm-submenu-slug',    // Submenu slug
-			array( $this, 'page_contents_html' )  // Callback function for submenu content
-		);
 	}
 
 		/**
@@ -48,7 +33,7 @@ class PostRetrievals {
 		$query = new \WP_Query( $args );
 
 		$posts_data = array();
-		//include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/form.php';
+
 		if ( $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
@@ -67,8 +52,6 @@ class PostRetrievals {
 				);
 				$posts_data[] = $post_data;
 
-				//print_r( $post_data['email'] );
-				//include CUSTOMKM_MENU_PLUGIN_DIR . 'templates/post-row.php';
 			}
 			wp_reset_postdata();
 		}
@@ -80,13 +63,6 @@ class PostRetrievals {
 		);
 	}
 
-	public function page_contents_html() {
-
-		include CUSTOMKM_MENU_PLUGIN_DIR . 'templates/tmpl-portfolio.php';
-		?>
-		<?php
-	}
-
 	/**
 	* Enqueue the external JavaScript file.
 	*/
@@ -96,7 +72,7 @@ class PostRetrievals {
 		wp_enqueue_script( 'delete-post-js', plugins_url( 'js/delete-post.js', __FILE__ ), array( 'jquery', 'wp-util' ), '1.0', true );
 		// Localize the script with the 'ajaxurl' and the nonce
 		$rest_url = esc_url_raw( rest_url( 'custom/v1/portfolio' ) );
-		//var_dump( $rest_url );
+
 		wp_localize_script(
 			'delete-post-js',
 			'rest_object',

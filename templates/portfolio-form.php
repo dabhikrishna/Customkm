@@ -28,7 +28,7 @@
 		<label for="address"><?php echo esc_html__( 'Address:', 'customkm-menu' ); ?></label>
 		<textarea id="address" name="address" autocomplete="address" rows="10" cols="50"></textarea><br><br>
 		<input type="button" id="submit_btn" value="Submit">
-	</form>
-	<div id="response_msg"></div>
-	</div>
+</form>
+<div id="response_msg"></div>
+</div>
 	

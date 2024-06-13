@@ -20,16 +20,16 @@
 	<h2 class="nav-tab-wrapper">
 	<?php
 	// Generate nonce
-	$nonce = wp_create_nonce( 'example-plugin-nonce' );
+	$nonce = wp_create_nonce( 'example-plugin-submenu-nonce' );
 	// Append nonce to the link URL
-	$link_url = add_query_arg( '_wpnonce', $nonce, '?page=example-plugin&tab=pluginbasic' );
+	$link_url = add_query_arg( '_wpnonce', $nonce, '?page=example-plugin-submenu&tab=pluginbasic' );
 	?>
 	<a href="<?php echo esc_url( $link_url ); ?>" class="nav-tab <?php echo ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'example-plugin-nonce' ) ) || ! isset( $_GET['tab'] ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html__( 'Plugin Basic', 'customkm-menu' ); ?></a>
-	<a href="?page=example-plugin&tab=shortcode" class="nav-tab <?php echo 'shortcode' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html__( 'Shortcode', 'customkm-menu' ); ?></a>
+	<a href="?page=example-plugin-submenu&tab=shortcode" class="nav-tab <?php echo 'shortcode' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html__( 'Shortcode', 'customkm-menu' ); ?></a>
 	<!-- Add nonce fields for each form -->
 	<?php wp_nonce_field( 'example-plugin-action', 'example-plugin-nonce' ); ?>
-	<a href="?page=example-plugin&tab=recentpost" class="nav-tab <?php echo 'recentpost' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html__( 'Recent Post', 'customkm-menu' ); ?></a>
-	<a href="?page=example-plugin&tab=fetchdata" class="nav-tab <?php echo 'fetchdata' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html__( 'Fetch Data Shortcode', 'customkm-menu' ); ?></a>
+	<a href="?page=example-plugin-submenu&tab=recentpost" class="nav-tab <?php echo 'recentpost' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html__( 'Recent Post', 'customkm-menu' ); ?></a>
+	<a href="?page=example-plugin-submenu&tab=fetchdata" class="nav-tab <?php echo 'fetchdata' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html__( 'Fetch Data Shortcode', 'customkm-menu' ); ?></a>
 </h2>
 <!-- Display tab content -->
 <div class="tab-content">

@@ -8,7 +8,7 @@
 					<th scope="row"><?php esc_html_e( 'Email Notifications', 'portfolio' ); ?></th>
 					<td>
 						<label>
-							<input type="checkbox" name="email_notifications" <?php checked( $email_notifications, 'on' ); ?> />
+							<input type="checkbox" name="email_notifications" <?php checked( $email_notifications, '1' ); ?> />
 							<?php esc_html_e( 'Enable email notifications', 'portfolio' ); ?>
 						</label>
 					</td>
@@ -21,7 +21,7 @@
 							<option value="weekly" <?php selected( $notification_frequency, 'weekly' ); ?>><?php esc_html_e( 'Weekly', 'portfolio' ); ?></option>
 							<option value="monthly" <?php selected( $notification_frequency, 'monthly' ); ?>><?php esc_html_e( 'Monthly', 'portfolio' ); ?></option>
 						</select>
-				,</td>
+				</td>
 				</tr>
 			</table>
 
