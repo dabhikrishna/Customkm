@@ -30,6 +30,7 @@
 	<?php wp_nonce_field( 'example-plugin-action', 'example-plugin-nonce' ); ?>
 	<a href="?page=example-plugin-submenu&tab=recentpost" class="nav-tab <?php echo 'recentpost' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html__( 'Recent Post', 'customkm-menu' ); ?></a>
 	<a href="?page=example-plugin-submenu&tab=fetchdata" class="nav-tab <?php echo 'fetchdata' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html__( 'Fetch Data Shortcode', 'customkm-menu' ); ?></a>
+	<a href="?page=example-plugin-submenu&tab=email_settings" class="nav-tab <?php echo 'email_settings' === ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' ) ? 'nav-tab-active' : ''; ?>"><?php echo esc_html__( 'Email Settings', 'customkm-menu' ); ?></a>
 </h2>
 <!-- Display tab content -->
 <div class="tab-content">
@@ -91,6 +92,53 @@
 			<code><?php echo esc_html__( '[fetch_data]', 'customkm-menu' ); ?></code>
 			<p><?php echo esc_html__( 'using this shortcode you display name of the field.', 'customkm-menu' ); ?></p>
 			<?php
+			break;
+		case 'email_settings':
+			if ( isset( $_POST['submit'] ) && wp_verify_nonce( $_POST['settings_nonce'], 'settings_action' ) ) {
+					// Save settings
+					$email_notifications = isset( $_POST['email_notifications'] ) ? 1 : 0;
+					update_option( 'email_notifications', $email_notifications );
+					$notification_frequency = isset( $_POST['notification_frequency'] ) ? sanitize_text_field( $_POST['notification_frequency'] ) : 'daily';
+					update_option( 'notification_frequency', $notification_frequency );
+					// Display success message
+				?>
+					<div class="updated"><p><?php esc_html_e( 'Settings saved successfully.', 'portfolio' ); ?></p></div>
+					<?php
+			}
+				// Retrieve current settings
+				$email_notifications = get_option( 'email_notifications', 1 );
+				$notification_frequency = get_option( 'notification_frequency', 'daily' );
+			// Display the form
+			?>
+				<h3><?php echo esc_html__( 'Email Settings', 'customkm-menu' ); ?></h3>
+				<form method="post" action="">
+				<table class="form-table">
+					<?php wp_nonce_field( 'settings_action', 'settings_nonce' ); ?>
+					<tr>
+					<th>
+					<label for="email_notifications"><?php echo esc_html__( 'Email Notifications:', 'customkm-menu' ); ?></label>
+					</th>
+					<td>
+					<input type="checkbox" id="email_notifications" name="email_notifications" <?php checked( $email_notifications, 1 ); ?> /><br><br>
+					</td>
+					</tr>
+					<tr>
+					<th>
+					<label for="notification_frequency"><?php echo esc_html__( 'Notification Frequency:', 'customkm-menu' ); ?></label>
+					</th>
+					<td>
+					<select id="notification_frequency" name="notification_frequency">
+						<option value="daily" <?php selected( $notification_frequency, 'daily' ); ?>><?php echo esc_html__( 'Daily', 'customkm-menu' ); ?></option>
+						<option value="hourly" <?php selected( $notification_frequency, 'hourly' ); ?>><?php echo esc_html__( 'hourly', 'customkm-menu' ); ?></option>
+						<option value="weekly" <?php selected( $notification_frequency, 'weekly' ); ?>><?php echo esc_html__( 'Weekly', 'customkm-menu' ); ?></option>
+						<option value="monthly" <?php selected( $notification_frequency, 'monthly' ); ?>><?php echo esc_html__( 'Monthly', 'customkm-menu' ); ?></option>
+					</select><br><br>
+					</td>
+					</tr>
+					</table>
+					<input type="submit" name="submit" value="<?php echo esc_attr__( 'Save Settings', 'customkm-menu' ); ?>" class="button button-primary" />
+				</form>
+				<?php
 			break;
 		default:
 			?>

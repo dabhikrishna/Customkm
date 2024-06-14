@@ -18,6 +18,7 @@
 					<td>
 						<select name="notification_frequency">
 							<option value="daily" <?php selected( $notification_frequency, 'daily' ); ?>><?php esc_html_e( 'Daily', 'portfolio' ); ?></option>
+							<option value="monthly" <?php selected( $notification_frequency, 'monthly' ); ?>><?php esc_html_e( 'Hourly', 'portfolio' ); ?></option>
 							<option value="weekly" <?php selected( $notification_frequency, 'weekly' ); ?>><?php esc_html_e( 'Weekly', 'portfolio' ); ?></option>
 							<option value="monthly" <?php selected( $notification_frequency, 'monthly' ); ?>><?php esc_html_e( 'Monthly', 'portfolio' ); ?></option>
 						</select>
