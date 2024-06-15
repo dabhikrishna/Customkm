@@ -10,6 +10,9 @@ if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
 /**
  * Class PostRetrievals
  * Handles functionality related to retrieving and displaying posts.
+ * @package CustomkmMenu
+ * @subpackage Includes
+ * @since 1.0.0
  */
 class PostRetrievals {
 	/**

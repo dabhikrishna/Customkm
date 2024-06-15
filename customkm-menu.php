@@ -55,38 +55,41 @@ require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-recentportfolio.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio-email-notification.php'; // Include
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-setting.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-email-details.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio-cron-manager.php';
 
-
-//Import the Portfolio class from the CustomkmMenu\Includes namespace.
+// Import the necessary classes from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\Portfolio;
-//Import the Shortcode class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\Shortcode;
-//Import the PostRetrievals class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\PostRetrievals;
-//Import the RecentPortfolio class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\RecentPortfolio;
-//Import the Portfolio_Email_Notification class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\Portfolio_Email_Notification;
-//Import the Setting class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\Setting;
-//Import the Email_Details class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\Email_Details;
-
+use CustomkmMenu\Includes\Portfolio_Cron_Manager;
 
 //Initialize a new instance of the Portfolio class for managing portfolio-related functionalities.
 $portfolio       = new Portfolio();
+
 // Initialize a new instance of the Shortcode class for managing custom shortcodes.
 $shortcode       = new Shortcode();
+
 // Initialize a new instance of the PostRetrievals class for retrieving posts.
 $postretrievals  = new PostRetrievals();
+
 // Initialize a new instance of the RecentPortfolio class for managing recent portfolio items.
 $recentportfolio = new RecentPortfolio();
+
 //Initialize a new instance of the portfolio_email_notification for email.
 $cron            = new Portfolio_Email_Notification();
+
 //Initialize a new instance of the setting class for display menus.
-$settings          = new Setting();
+$settings        = new Setting();
+
 //Initialize a new instance of the email_details class for display menus.
-$settings          = new Email_Details();
+$email_details   = new Email_Details();
+
+//Initialize a new instance of the email_details class for display menus.
+$cron_manager    = new Portfolio_Cron_Manager();
 
 
 /**
@@ -126,3 +129,21 @@ function customkm_deactivate_plugin() {
 	$wp_rewrite->flush_rules(); // To make sure the changes take effect immediately
 }
 register_deactivation_hook( __FILE__, 'customkm_deactivate_plugin' );
+
+/**
+* Activates the cron job for email notifications.
+*/
+function activate_cron_job() {
+	$notification_frequency = get_option( 'notification_frequency', 'daily' );
+	reschedule_cron_job( $notification_frequency );
+}
+register_activation_hook( __FILE__, 'activate_cron_job' );
+
+/**
+* Deactivates the cron job for email notifications.
+*/
+function deactivate_cron_job() {
+	// Unschedule cron job on plugin deactivation
+	wp_clear_scheduled_hook( 'portfolio_email_notification_cron' );
+}
+register_deactivation_hook( __FILE__, 'deactivate_cron_job' );

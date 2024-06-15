@@ -10,6 +10,9 @@ namespace CustomkmMenu\Includes;
  *  Cron Event: Schedules a cron event to periodically refresh the displayed recent portfolio posts.
  *
  * This ensures that the displayed portfolio posts are always up-to-date.
+ * @package CustomkmMenu
+ * @subpackage Includes
+ * @since 1.0.0
  */
 class RecentPortfolio {
 	public function __construct() {

@@ -9,7 +9,9 @@ namespace CustomkmMenu\Includes;
  * It registers activation and deactivation hooks, sets up cron jobs based on notification frequency,
  * and sends email notifications to specified recipients when new portfolio posts are added.
  *
- * @package CustomkmMenu\Includes
+ * @package CustomkmMenu
+ * @subpackage Includes
+ * @since 1.0.0
  */
 class Portfolio_Email_Notification {
 
@@ -19,14 +21,7 @@ class Portfolio_Email_Notification {
 	 * and schedules the cron job based on the notification frequency.
 	 */
 	public function __construct() {
-		register_activation_hook( __FILE__, array( $this, 'activate_cron_job' ) );
-		register_deactivation_hook( __FILE__, array( $this, 'deactivate_cron_job' ) );
-
 		add_action( 'portfolio_email_notification_cron', array( $this, 'send_email_notification' ) );
-
-		// Reschedule the cron job with the current frequency
-		$notification_frequency = get_option( 'notification_frequency', 'daily' );
-		$this->reschedule_cron_job( $notification_frequency );
 	}
 
 	/**
@@ -67,55 +62,6 @@ class Portfolio_Email_Notification {
 		}
 		// Reset post data
 		wp_reset_postdata();
-	}
-
-	/**
-	 * Activates the cron job for email notifications.
-	 */
-	public function activate_cron_job() {
-		$notification_frequency = get_option( 'notification_frequency', 'daily' );
-		$this->reschedule_cron_job( $notification_frequency );
-	}
-
-	/**
-	 * Deactivates the cron job for email notifications.
-	 */
-	public function deactivate_cron_job() {
-		// Unschedule cron job on plugin deactivation
-		wp_clear_scheduled_hook( 'portfolio_email_notification_cron' );
-	}
-
-	/**
-	 * Reschedules the cron job based on the specified frequency.
-	 *
-	 *  @param string $frequency The frequency at which the cron job should run ('daily', 'weekly', or 'monthly').
-	*/
-	public function reschedule_cron_job( $frequency ) {
-		wp_clear_scheduled_hook( 'portfolio_email_notification_cron' ); // Clear existing cron job
-		if ( 'daily' === $frequency ) {
-			$interval = 'daily';
-		} elseif ( 'hourly' === $frequency ) {
-			$interval = 'hourly';
-		} elseif ( 'weekly' === $frequency ) {
-			$interval = 'weekly';
-		} elseif ( 'monthly' === $frequency ) {
-			$interval = 'monthly';
-			add_filter( 'cron_schedules', array( $this, 'add_custom_cron_schedules' ) ); // Add custom cron schedule
-		} else {
-			 error_log( 'Invalid frequency provided: ' . $frequency );
-			return; // Exit the function if the frequency is invalid
-		}
-		if ( $interval ) {
-			wp_schedule_event( time(), $interval, 'portfolio_email_notification_cron' ); // Schedule new cron job
-			// error_log( 'Cron job scheduled successfully with frequency: ' . $frequency );
-		}
-	}
-	public function add_custom_cron_schedules( $schedules ) {
-		$schedules['monthly'] = array(
-			'interval' => 30 * DAY_IN_SECONDS, // Approximate monthly interval
-			'display'  => __( 'Once a Month', 'customkm-menu' ),
-		);
-		return $schedules;
 	}
 }
 

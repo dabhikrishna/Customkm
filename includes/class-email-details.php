@@ -10,6 +10,9 @@ if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
 /**
  * Class Email_Details
  * Handles functionality related to displaying sent email details.
+ * @package CustomkmMenu
+ * @subpackage Includes
+ * @since 1.0.0
  */
 class Email_Details {
 
@@ -25,12 +28,11 @@ class Email_Details {
 	* @return string Output HTML for displaying sent email details.
 	*/
 	public function customkm_display_sent_emails() {
-		// Query sent emails
 		$sent_emails = get_posts(
 			array(
-				'post_type'      => 'portfolio', // Assuming 'portfolio' is the post type where email details are stored
-				'meta_key'       => 'email', // Assuming 'email' is the meta key for storing email addresses
-				'posts_per_page' => -1, // Retrieve all sent emails
+				'post_type'      => 'portfolio',
+				'meta_key'       => 'email',
+				'posts_per_page' => -1,
 			)
 		);
 

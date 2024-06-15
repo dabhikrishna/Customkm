@@ -10,6 +10,9 @@ if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
  * Class Setting
  *
  * This class handles the creation and management of custom menus and settings for plugin named "Customkm Menu."
+ * @package CustomkmMenu
+ * @subpackage Includes
+ * @since 1.0.0
  */
 class Setting {
 

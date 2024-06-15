@@ -9,6 +9,9 @@ if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
 /**
  * Class Shortcode
  * Handles registration of custom shortcodes and related functionalities.
+ * @package CustomkmMenu
+ * @subpackage Includes
+ * @since 1.0.0
  */
 class Shortcode {
 
