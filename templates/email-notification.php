@@ -1,3 +1,17 @@
+<?php
+/**
+ * Email Settings Page
+ *
+ * This file represents the settings page for configuring email notifications in a WordPress plugin or theme.
+ * It allows users to enable or disable email notifications and select the notification frequency.
+ *
+ * @package    Portfolio
+ * @subpackage Email_Settings
+ * @since      1.0.0
+ */
+
+// Wrap the content in a div with the class 'wrap'.
+?>
 <div class="wrap">
 		<h1><?php esc_html_e( 'Email Settings', 'portfolio' ); ?></h1>
 		<p><?php esc_html_e( 'Please Select Email notification send notification enable Or disable', 'portfolio' ); ?></p>	
@@ -14,10 +28,11 @@
 					</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Notification Frequency', 'portfolio' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Notification Frequency', 'portfolio' ); ?></th>
 					<td>
 						<select name="notification_frequency">
 							<option value="daily" <?php selected( $notification_frequency, 'daily' ); ?>><?php esc_html_e( 'Daily', 'portfolio' ); ?></option>
+							<option value="monthly" <?php selected( $notification_frequency, 'monthly' ); ?>><?php esc_html_e( 'Hourly', 'portfolio' ); ?></option>
 							<option value="weekly" <?php selected( $notification_frequency, 'weekly' ); ?>><?php esc_html_e( 'Weekly', 'portfolio' ); ?></option>
 							<option value="monthly" <?php selected( $notification_frequency, 'monthly' ); ?>><?php esc_html_e( 'Monthly', 'portfolio' ); ?></option>
 						</select>

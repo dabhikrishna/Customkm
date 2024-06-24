@@ -10,6 +10,9 @@ if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
 /**
  * Class PostRetrievals
  * Handles functionality related to retrieving and displaying posts.
+ * @package CustomkmMenu
+ * @subpackage Includes
+ * @since 1.0.0
  */
 class PostRetrievals {
 	/**
@@ -83,6 +86,9 @@ class PostRetrievals {
 		);
 	}
 
+	/**
+	 * Registers custom REST API endpoints for deleting posts and retrieving portfolio content.
+	 */
 	public function register_custom_rest_api() {
 		register_rest_route(
 			'custom/v1',
@@ -90,6 +96,7 @@ class PostRetrievals {
 			array(
 				'methods'  => 'GET',
 				'callback' => array( $this, 'custom_delete_post_callback' ),
+				'permission_callback' => '__return_true',
 			)
 		);
 
@@ -99,14 +106,23 @@ class PostRetrievals {
 			array(
 				'methods'  => 'GET',
 				'callback' => array( $this, 'page_contents' ),
+				'permission_callback' => '__return_true',
 			)
 		);
 	}
 
+	/**
+	 * Callback function for the `/delete-post/(?P<id>\d+)` REST API endpoint.
+	 *
+	 * This function handles deleting a post based on the provided ID in the request.
+	 *
+	 * @param \WP_REST_Request $request The incoming REST API request object.
+	 * @return WP_Error|WP_REST_Response  - A WP_Error object on failure or a WP_REST_Response object on success.
+	 */
 	public function custom_delete_post_callback( \WP_REST_Request $request ) {
 
 		$params = $request->get_params();
-		//var_dump( $request );
+
 		$post_id = $params['id'];
 
 		if ( ! get_post( $post_id ) ) {

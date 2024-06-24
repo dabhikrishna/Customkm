@@ -9,6 +9,9 @@ if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
 /**
  * Class Shortcode
  * Handles registration of custom shortcodes and related functionalities.
+ * @package CustomkmMenu
+ * @subpackage Includes
+ * @since 1.0.0
  */
 class Shortcode {
 
@@ -16,19 +19,27 @@ class Shortcode {
 	 * Constructor.
 	 */
 	public function __construct() {
+		// Add shortcode for portfolio submission form
 		add_shortcode( 'portfolio_submission_form', array( $this, 'customkm_portfolio_submission_form_shortcode' ) );
+		// Enqueue scripts and styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'customkm_enqueue_scripts' ) );
+		// Handle form submission AJAX request
 		add_action( 'wp_ajax_portfolio_submission', array( $this, 'customkm_process_portfolio_submission' ) );
 		add_action( 'wp_ajax_nopriv_portfolio_submission', array( $this, 'customkm_process_portfolio_submission' ) );
+		// Enqueue styles conditionally
 		add_action( 'wp_enqueue_scripts', array( $this, 'customkm_enqueue_styles' ) );
+		// Schedule cron job for weekly portfolio submissions
 		add_action( 'portfolio_submit_cron_job_weekly', array( $this, 'customkm_process_portfolio_submission' ) );
 	}
 
 	/**
-	* Creates a shortcode for the form.
-	*/
+	 * display shortcode for portfolio submission form
+	 *
+	 * @param array $atts Shortcode attributes (optional)
+	 * @return string The HTML content of the shortcode
+	 */
 	public function customkm_portfolio_submission_form_shortcode( $atts ) {
-		// Extract shortcode attributes
+		// Extract shortcode attributes with defaults
 		$atts = shortcode_atts(
 			array(
 				'title' => 'My Form Submission', // Default title if not provided
@@ -37,13 +48,12 @@ class Shortcode {
 			'portfolio_submission_form'
 		);
 
-		ob_start();
 		include_once CUSTOMKM_MENU_PLUGIN_DIR . 'templates/portfolio-form.php';
-		?>
-		<?php
-		return ob_get_clean();
 	}
 
+	/**
+	 * Enqueues scripts for the portfolio submission form.
+	 */
 	public function customkm_enqueue_scripts() {
 		// Enqueue custom script
 		wp_enqueue_script(
@@ -63,24 +73,19 @@ class Shortcode {
 	}
 
 	/**
-	* Processes form submission for portfolio.
+	* Processes form submission for portfolio using AJAX.
 	*/
 	public function customkm_process_portfolio_submission() {
 		if ( isset( $_POST['portfolio_submission_nonce_field'] ) && wp_verify_nonce( $_POST['portfolio_submission_nonce_field'], 'portfolio_submission_nonce' ) ) {
 			if ( isset( $_POST['name'] ) && isset( $_POST['email'] ) ) {
 
 				if ( empty( $_POST['name'] ) || empty( $_POST['email'] ) || empty( $_POST['company_name'] ) || empty( $_POST['phone'] ) || empty( $_POST['address'] ) ) {
-					echo 'Please fill out all required fields.';
+					esc_html_e( 'Please fill out all required fields.', 'customkm-menu' );
 					die();
 				}
 				// Check if the form has already been submitted successfully
 				if ( isset( $_SESSION['portfolio_submission_success'] ) && $_SESSION['portfolio_submission_success'] ) {
-					echo 'Portfolio already submitted successfully. Please wait before submitting again.';
-					die();
-				}
-				// Check if the form has already been submitted successfully
-				if ( isset( $_SESSION['portfolio_submission_success'] ) && $_SESSION['portfolio_submission_success'] ) {
-					echo 'Portfolio already submitted successfully. Please wait before submitting again.';
+					esc_html_e( 'Portfolio already submitted successfully. Please wait before submitting again.', 'customkm-menu' );
 					die();
 				}
 				$name         = sanitize_text_field( $_POST['name'] );
@@ -109,21 +114,21 @@ class Shortcode {
 				if ( is_wp_error( $post_id ) ) {
 					echo 'Error: ' . esc_html( $post_id->get_error_message() );
 				}
-					$subject  = 'Portfolio Submission Received';
-					$message  = 'Dear ' . $name . ',<br><br>';
-					$message .= 'Thank you for submitting your portfolio. We have received your submission and will review it shortly.<br><br>';
-					$message .= 'Best regards,<br>Your Website Team';
+				$subject  = esc_html__( 'Portfolio Submission Received', 'customkm-menu' );
+				$message  = esc_html__( 'Dear ', 'customkm-emnu' ) . esc_html( $name ) . ',<br><br>';
+				$message .= esc_html__( 'Thank you for submitting your portfolio. We have received your submission and will review it shortly.<br><br>', 'customkm-menu' );
+				$message .= esc_html__( 'Best regards,<br>Your Website Team', 'customkm-menu' );
 
-					$headers[] = 'Content-Type: text/html; charset=UTF-8';
+				$headers[] = 'Content-Type: text/html; charset=UTF-8';
 
-					$email_sent = wp_mail( $email, $subject, $message, $headers );
-					// Schedule cron job
-					$this->schedule_cron_job();
-					// Display success message based on email sending status
+				$email_sent = wp_mail( $email, $subject, $message, $headers );
+				// Schedule cron job
+				$this->schedule_cron_job();
+				// Display success message based on email sending status
 				if ( $email_sent ) {
-					echo 'Portfolio submitted successfully. We will review it shortly.';
+					esc_html_e( 'Portfolio submitted successfully. We will review it shortly.', 'customkm-menu' );
 				} else {
-					echo 'Error sending email. Please try again later.';
+					esc_html_e( 'Error sending email. Please try again later.', 'text-domain' );
 				}
 
 				// Schedule cron job based on notification frequency
@@ -143,6 +148,7 @@ class Shortcode {
 	* Enqueues the stylesheet for the plugin.
 	*/
 	public function customkm_enqueue_styles() {
+		if ( is_singular() && has_shortcode( get_post()->post_content, 'portfolio_submission_form' ) ) {
 			// Enqueue CSS file located within your plugin directory
 			wp_enqueue_style(
 				'your_plugin_portfolio_submission_form_style', // Handle
@@ -151,5 +157,6 @@ class Shortcode {
 				'1.0', // Version number
 				'all' // Media type
 			);
+		}
 	}
 }

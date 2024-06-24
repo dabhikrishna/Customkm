@@ -9,6 +9,9 @@ if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_DIR' ) ) {
 /**
  * Class Portfolio
  * Handles functionality related to the portfolio custom post type.
+ * @package CustomkmMenu
+ * @subpackage Includes
+ * @since 1.0.0
  */
 class Portfolio {
 

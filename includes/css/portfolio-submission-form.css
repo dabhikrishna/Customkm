@@ -1,5 +1,5 @@
 #portfolio_submission_form {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     background-color: #f7f7f7;
@@ -57,4 +57,7 @@ th {
 }
 tr:nth-child(even) {
     background-color: #f2f2f2;
+}
+.my h2{
+    text-align:center;
 }

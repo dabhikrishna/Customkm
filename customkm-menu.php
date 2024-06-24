@@ -9,7 +9,7 @@
  * Text Domain: customkm-menu
  * Domain Path: /languages
  *
- * Customkm Menu plugin adds custom menus, submenus, fields, shortcode and post types to your WordPress site, enhancing its functionality.
+ * Customkm Menu plugin adds custom menus,shortcode and post types to your WordPress site, enhancing its functionality.
  */
 
 // If this file is called directly, abort.
@@ -49,58 +49,48 @@ if ( ! defined( 'CUSTOMKM_MENU_PLUGIN_URL' ) ) {
  * Includes necessary files.
  */
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio.php';
-require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-ajaxplugin.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-shortcode.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-postretrievals.php';
-require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-custommenu.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-recentportfolio.php';
-require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-restapi.php';
-require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-kmd-widget.php';
-require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-widget.php';
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio-email-notification.php'; // Include
 require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-setting.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-email-details.php';
+require_once CUSTOMKM_MENU_PLUGIN_DIR . 'includes/class-portfolio-cron-manager.php';
 
-//Import the AjaxPlugin class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\AjaxPlugin;
-//Import the Portfolio class from the CustomkmMenu\Includes namespace.
+// Import the necessary classes from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\Portfolio;
-//Import the Shortcode class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\Shortcode;
-//Import the PostRetrievals class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\PostRetrievals;
-//Import the CustomMenu class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\CustomMenu;
-//Import the RecentPortfolio class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\RecentPortfolio;
-//Import the RestApi class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\RestApi;
-//Import the Widget class from the CustomkmMenu\Includes namespace.
-use CustomkmMenu\Includes\Widget;
-//Import the Portfolio_Email_Notification class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\Portfolio_Email_Notification;
-//Import the Setting class from the CustomkmMenu\Includes namespace.
 use CustomkmMenu\Includes\Setting;
+use CustomkmMenu\Includes\Email_Details;
+use CustomkmMenu\Includes\Portfolio_Cron_Manager;
 
-//Initialize a new instance of the AjaxPLugin class for managing ajaxplugin-related functionalities.
-$ajaxplugin      = new AjaxPlugin();
 //Initialize a new instance of the Portfolio class for managing portfolio-related functionalities.
 $portfolio       = new Portfolio();
+
 // Initialize a new instance of the Shortcode class for managing custom shortcodes.
 $shortcode       = new Shortcode();
+
 // Initialize a new instance of the PostRetrievals class for retrieving posts.
 $postretrievals  = new PostRetrievals();
-//Initialize a new instance of the CustomMenu class for managing custom menus.
-$custommenu      = new CustomMenu();
+
 // Initialize a new instance of the RecentPortfolio class for managing recent portfolio items.
 $recentportfolio = new RecentPortfolio();
-//Initialize a new instance of the RestApi class for handling REST API functionalities.
-$restapi         = new RestApi();
-//Initialize a new instance of the widget class for display recent posts using widget.
-$widget          = new Widget();
-////Initialize a new instance of the portfolio_email_notification for email.
+
+//Initialize a new instance of the portfolio_email_notification for email.
 $cron            = new Portfolio_Email_Notification();
-////Initialize a new instance of the setting class for display menus.
-$settings          = new Setting();
+
+//Initialize a new instance of the setting class for display menus.
+$settings        = new Setting();
+
+//Initialize a new instance of the email_details class for display menus.
+$email_details   = new Email_Details();
+
+//Initialize a new instance of the email_details class for display menus.
+$cron_manager    = new Portfolio_Cron_Manager();
+
 
 /**
  *Add a custom button next to Activate button on the plugins page
@@ -136,40 +126,24 @@ register_activation_hook( __FILE__, 'customkm_activate_plugin' );
 function customkm_deactivate_plugin() {
 	// Change permalink structure to Plain
 	global $wp_rewrite;
-	$wp_rewrite->set_permalink_structure( '' );
 	$wp_rewrite->flush_rules(); // To make sure the changes take effect immediately
 }
 register_deactivation_hook( __FILE__, 'customkm_deactivate_plugin' );
 
 /**
- * Shortcode function to display sent email details
- */
-function customkm_display_sent_emails() {
-	// Query sent emails
-	$sent_emails = get_posts(
-		array(
-			'post_type'      => 'portfolio', // Assuming 'portfolio' is the post type where email details are stored
-			'meta_key'       => 'email', // Assuming 'email' is the meta key for storing email addresses
-			'posts_per_page' => -1, // Retrieve all sent emails
-		)
-	);
-
-	// Display sent emails
-	$output = '';
-	if ( $sent_emails ) {
-		$output .= '<ul>';
-		foreach ( $sent_emails as $email ) {
-			$email_address = get_post_meta( $email->ID, 'email', true );
-			$sent_time     = get_post_meta( $email->ID, 'mail', true ); // Assuming 'mail' is the meta key for storing sent time
-			$output       .= '<li>Email: ' . $email_address . ' - Sent Time: ' . $sent_time . '</li>';
-		}
-		$output .= '</ul>';
-	} else {
-		$output .= 'No emails have been sent yet.';
-	}
-
-	return $output;
+* Activates the cron job for email notifications.
+*/
+function activate_cron_job() {
+	$notification_frequency = get_option( 'notification_frequency', 'daily' );
+	reschedule_cron_job( $notification_frequency );
 }
+register_activation_hook( __FILE__, 'activate_cron_job' );
 
-// Register the shortcode
-add_shortcode( 'sent_emails', 'customkm_display_sent_emails' );
+/**
+* Deactivates the cron job for email notifications.
+*/
+function deactivate_cron_job() {
+	// Unschedule cron job on plugin deactivation
+	wp_clear_scheduled_hook( 'portfolio_email_notification_cron' );
+}
+register_deactivation_hook( __FILE__, 'deactivate_cron_job' );

@@ -17,7 +17,7 @@ jQuery(document).ready(function ($) {
             method: 'GET',
             success: function (response) {
                 console.log("Post deleted successfully.");
-                $button.fadeOut();
+                $button.closest('tr').remove();
             },
             error: function (xhr, status, error) {
                 console.error("Error deleting post:", error);
